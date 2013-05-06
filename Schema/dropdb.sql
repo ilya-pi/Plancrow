@@ -1,0 +1,14 @@
+drop table `clockhog`.`TIMING`;
+drop table `clockhog`.`INVOICE`;
+drop table `clockhog`.`TEMPLATE`;
+drop table `clockhog`.`RATE`;
+drop table `clockhog`.`NORM`;
+drop table `clockhog`.`ASSIGNMENT`;
+drop table `clockhog`.`TASK`;
+drop table `clockhog`.`PROJECT_PHASE`;
+drop table `clockhog`.`PROJECT`;
+drop table `clockhog`.`CUSTOMER`;
+drop table `clockhog`.`USERLINK`;
+drop table `clockhog`.`COMPANY`;
+drop table `clockhog`.`DICT_CURRENCY`;
+drop table `clockhog`.`APP_USER`;
