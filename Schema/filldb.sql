@@ -1,5 +1,5 @@
-
-insert into dict_currency (CURRENCY_CODE,CURRENCY_SYMBOL,CURRENCY_NAME) values ('EUR','€','Euro'),  ('USD','$','U.S. Dollar');
+use plancrow;
+insert into currency (CODE,SYMBOL,NAME) values ('EUR','€','Euro'),  ('USD','$','U.S. Dollar');
 
 insert into company (NAME, URL_EXT, CURRENCY_ID, NOTIFF_DAY) values ('ClockHog','clockhog',1,5);
 
@@ -8,14 +8,14 @@ insert into app_user (login,pwd,first_name,second_name,primary_email) values
 ('ipimenov','123','Ilya','Pimenov','ilya.pimenov@gmail.com'),
 ('tkalapun','123','Taras','Kalapun','t.kalapun@gmail.com');
 
-insert into userlink (C_ID,U_ID,AMND_USER,EMAIL,ROLE) values
+insert into userlink (COMPANY_ID,USER_ID,AMND_USER,EMAIL,ROLE) values
 (1,1,1,'korotkov.maxim@gmail.com','PM'),
 (1,2,1,'ilya.pimenov@gmail.com','ADM'),
 (1,3,1,'t.kalapun@gmail.com','EXEC');
 
 
-insert into customer (C_ID,AMND_USER,NAME) values (1,1,'Mega-Customer');
-insert into project (C_ID,CUSTOMER_ID,AMND_DATE,AMND_USER,NAME,ESTIMATE) values
+insert into customer (COMPANY_ID,AMND_USER,NAME) values (1,1,'Mega-Customer');
+insert into project (COMPANY_ID,CUSTOMER_ID,AMND_DATE,AMND_USER,NAME,ESTIMATE) values
 (1,1,SYSDATE(),1,'Project 1',1000*60*60*24*100);
 
 insert into project_phase (AMND_USER,PROJECT_ID,PARENT_ID,NAME) values
