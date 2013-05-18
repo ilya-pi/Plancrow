@@ -43,26 +43,9 @@ CREATE TABLE `APP_USER` (
 
 LOCK TABLES `APP_USER` WRITE;
 /*!40000 ALTER TABLE `APP_USER` DISABLE KEYS */;
-INSERT INTO `APP_USER` VALUES (1,'mkorotkov','123','Maxim','Korotkov',NULL,'2013-05-18 23:08:52','korotkov.maxim@gmail.com','Y'),(2,'ipimenov','123','Ilya','Pimenov',NULL,'2013-05-18 23:08:52','ilya.pimenov@gmail.com','Y'),(3,'tkalapun','123','Taras','Kalapun',NULL,'2013-05-18 23:08:52','t.kalapun@gmail.com','Y');
+INSERT INTO `APP_USER` VALUES (1,'mkorotkov','123','Maxim','Korotkov',NULL,NULL,'korotkov.maxim@gmail.com','Y'),(2,'ipimenov','123','Ilya','Pimenov',NULL,NULL,'ilya.pimenov@gmail.com','Y'),(3,'tkalapun','123','Taras','Kalapun',NULL,NULL,'t.kalapun@gmail.com','Y');
 /*!40000 ALTER TABLE `APP_USER` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `APP_USER_BINS` BEFORE INSERT ON APP_USER FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.CREATED_AT = SYSDATE() */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `ASSIGNMENT`
@@ -101,46 +84,9 @@ CREATE TABLE `ASSIGNMENT` (
 
 LOCK TABLES `ASSIGNMENT` WRITE;
 /*!40000 ALTER TABLE `ASSIGNMENT` DISABLE KEYS */;
-INSERT INTO `ASSIGNMENT` VALUES (1,1,'2013-05-18 23:08:52',1,1,1,NULL,'PM',NULL),(2,1,'2013-05-18 23:08:52',1,1,1,NULL,'U',NULL),(3,1,'2013-05-18 23:08:52',1,1,1,1,'U',NULL);
+INSERT INTO `ASSIGNMENT` VALUES (1,NULL,NULL,1,1,1,NULL,'PM',NULL),(2,NULL,NULL,1,1,1,NULL,'U',NULL),(3,NULL,NULL,1,1,1,1,'U',NULL);
 /*!40000 ALTER TABLE `ASSIGNMENT` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `ASSIGNMENT_BINS` BEFORE INSERT ON ASSIGNMENT FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-begin
-SET NEW.AMND_DATE = SYSDATE();
-SET NEW.COMPANY_ID = (SELECT MAX(COMPANY_ID) FROM USERLINK UL WHERE UL.ID = NEW.USERLINK_ID); 
-end */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `ASSIGNMENT_BUPD` BEFORE UPDATE ON ASSIGNMENT FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.AMND_DATE = SYSDATE() */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `COMPANY`
@@ -173,26 +119,9 @@ CREATE TABLE `COMPANY` (
 
 LOCK TABLES `COMPANY` WRITE;
 /*!40000 ALTER TABLE `COMPANY` DISABLE KEYS */;
-INSERT INTO `COMPANY` VALUES (1,'ClockHog','clockhog',1,NULL,NULL,NULL,NULL,5,'D','2013-05-18 23:08:52');
+INSERT INTO `COMPANY` VALUES (1,'ClockHog','clockhog',1,NULL,NULL,NULL,NULL,5,'D',NULL);
 /*!40000 ALTER TABLE `COMPANY` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `COMPANY_BINS` BEFORE INSERT ON COMPANY FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.CREATED_AT = SYSDATE() */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `CURRENCY`
@@ -250,43 +179,9 @@ CREATE TABLE `CUSTOMER` (
 
 LOCK TABLES `CUSTOMER` WRITE;
 /*!40000 ALTER TABLE `CUSTOMER` DISABLE KEYS */;
-INSERT INTO `CUSTOMER` VALUES (1,1,'2013-05-18 23:08:52',1,'Mega-Customer',NULL,NULL);
+INSERT INTO `CUSTOMER` VALUES (1,1,NULL,1,'Mega-Customer',NULL,NULL);
 /*!40000 ALTER TABLE `CUSTOMER` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `CUSTOMER_BINS` BEFORE INSERT ON CUSTOMER FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.AMND_DATE = SYSDATE() */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `CUSTOMER_BUPD` BEFORE UPDATE ON CUSTOMER FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.AMND_DATE = SYSDATE() */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `INVOICE`
@@ -321,43 +216,6 @@ LOCK TABLES `INVOICE` WRITE;
 /*!40000 ALTER TABLE `INVOICE` DISABLE KEYS */;
 /*!40000 ALTER TABLE `INVOICE` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `INVOICE_BINS` BEFORE INSERT ON INVOICE FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-begin
-SET NEW.AMND_DATE = SYSDATE();
-SET NEW.COMPANY_ID = (SELECT MAX(COMPANY_ID) FROM CUSTOMER C WHERE C.ID = NEW.CUSTOMER_ID);
-end */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `INVOICE_BUPD` BEFORE UPDATE ON INVOICE FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.AMND_DATE = SYSDATE() */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `NORM`
@@ -395,42 +253,6 @@ LOCK TABLES `NORM` WRITE;
 /*!40000 ALTER TABLE `NORM` DISABLE KEYS */;
 /*!40000 ALTER TABLE `NORM` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `NORM_BINS` BEFORE INSERT ON NORM FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-begin
-SET NEW.AMND_DATE = SYSDATE();
-end */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `NORM_BUPD` BEFORE UPDATE ON NORM FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.AMND_DATE = SYSDATE() */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `PROJECT`
@@ -468,43 +290,9 @@ CREATE TABLE `PROJECT` (
 
 LOCK TABLES `PROJECT` WRITE;
 /*!40000 ALTER TABLE `PROJECT` DISABLE KEYS */;
-INSERT INTO `PROJECT` VALUES (1,1,'2013-05-18 23:08:52',1,'Project 1',NULL,NULL,8640000000,'0.00',0,'Y',1);
+INSERT INTO `PROJECT` VALUES (1,1,'2013-05-19 01:10:31',1,'Project 1',NULL,NULL,8640000000,'0.00',0,'Y',1);
 /*!40000 ALTER TABLE `PROJECT` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `PROJECT_BINS` BEFORE INSERT ON PROJECT FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.AMND_DATE = SYSDATE() */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `PROJECT_BUPD` BEFORE UPDATE ON PROJECT FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.AMND_DATE = SYSDATE() */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `PROJECT_PHASE`
@@ -531,7 +319,7 @@ CREATE TABLE `PROJECT_PHASE` (
   CONSTRAINT `FK_PHASE_PROJECT` FOREIGN KEY (`PROJECT_ID`) REFERENCES `PROJECT` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_PHASE_PARENT` FOREIGN KEY (`PARENT_ID`) REFERENCES `PROJECT_PHASE` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_PHASE_AMND_USER` FOREIGN KEY (`AMND_USER`) REFERENCES `APP_USER` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf16 COLLATE=utf16_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf16 COLLATE=utf16_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -540,49 +328,9 @@ CREATE TABLE `PROJECT_PHASE` (
 
 LOCK TABLES `PROJECT_PHASE` WRITE;
 /*!40000 ALTER TABLE `PROJECT_PHASE` DISABLE KEYS */;
-INSERT INTO `PROJECT_PHASE` VALUES (1,1,'2013-05-18 23:08:52',1,1,NULL,'Phase 1',NULL),(2,1,'2013-05-18 23:08:52',1,1,NULL,'Phase 2',NULL),(3,1,'2013-05-18 23:08:52',1,1,1,'Phase 1 subphase 1',NULL),(4,1,'2013-05-18 23:08:52',1,1,1,'Phase 1 subphase 2',NULL);
+INSERT INTO `PROJECT_PHASE` VALUES (1,NULL,NULL,1,1,NULL,'Phase 1',NULL),(2,NULL,NULL,1,1,NULL,'Phase 2',NULL),(3,NULL,NULL,1,1,1,'Phase 1 subphase 1',NULL),(4,NULL,NULL,1,1,1,'Phase 1 subphase 2',NULL);
 /*!40000 ALTER TABLE `PROJECT_PHASE` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `PROJECT_PHASE_BINS` BEFORE INSERT ON PROJECT_PHASE FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-begin
-SET NEW.AMND_DATE = SYSDATE();
-SET NEW.COMPANY_ID = (SELECT MAX(COMPANY_ID) FROM PROJECT P WHERE P.ID = NEW.PROJECT_ID); 
-end */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `PROJECT_PHASE_BUPD` BEFORE UPDATE ON PROJECT_PHASE FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-begin
-SET NEW.AMND_DATE = SYSDATE();
-SET NEW.COMPANY_ID = (SELECT MAX(COMPANY_ID) FROM PROJECT P WHERE P.ID = NEW.PROJECT_ID); 
-end */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `RATE`
@@ -623,40 +371,6 @@ LOCK TABLES `RATE` WRITE;
 /*!40000 ALTER TABLE `RATE` DISABLE KEYS */;
 /*!40000 ALTER TABLE `RATE` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `RATE_BINS` BEFORE INSERT ON RATE FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.AMND_DATE = SYSDATE() */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `RATE_BUPD` BEFORE UPDATE ON RATE FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.AMND_DATE = SYSDATE() */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `TASK`
@@ -686,7 +400,7 @@ CREATE TABLE `TASK` (
   CONSTRAINT `FK_TASK_PROJECT` FOREIGN KEY (`PROJECT_ID`) REFERENCES `PROJECT` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_TASK_PHASE` FOREIGN KEY (`PROJECT_PHASE_ID`) REFERENCES `PROJECT_PHASE` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_TASK_AMND_USER` FOREIGN KEY (`AMND_USER`) REFERENCES `APP_USER` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf16 COLLATE=utf16_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf16 COLLATE=utf16_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -695,50 +409,9 @@ CREATE TABLE `TASK` (
 
 LOCK TABLES `TASK` WRITE;
 /*!40000 ALTER TABLE `TASK` DISABLE KEYS */;
-INSERT INTO `TASK` VALUES (1,1,'2013-05-18 23:08:52',1,3,1,'Task A',NULL,172800000,0,'A'),(2,1,'2013-05-18 23:08:52',1,3,1,'Task B',NULL,432000000,0,'A'),(3,1,'2013-05-18 23:08:52',1,4,1,'Task C',NULL,86400000,0,'A'),(4,1,'2013-05-18 23:08:52',1,2,1,'Task D',NULL,864000000,0,'A');
+INSERT INTO `TASK` VALUES (1,NULL,NULL,1,3,NULL,'Task A',NULL,172800000,0,'A'),(2,NULL,NULL,1,3,NULL,'Task B',NULL,432000000,0,'A'),(3,NULL,NULL,1,4,NULL,'Task C',NULL,86400000,0,'A'),(4,NULL,NULL,1,2,NULL,'Task D',NULL,864000000,0,'A');
 /*!40000 ALTER TABLE `TASK` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `TASK_BINS` BEFORE INSERT ON TASK FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-begin
-SET NEW.AMND_DATE = SYSDATE();
-SET NEW.PROJECT_ID = (SELECT MAX(PROJECT_ID) FROM PROJECT_PHASE PH WHERE PH.ID = NEW.PROJECT_PHASE_ID);
-SET NEW.COMPANY_ID = (SELECT MAX(COMPANY_ID) FROM PROJECT_PHASE PH WHERE PH.ID = NEW.PROJECT_PHASE_ID); 
-end */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `TASK_BUPD` BEFORE UPDATE ON TASK FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-BEGIN
-SET NEW.AMND_DATE = SYSDATE();
-SET NEW.PROJECT_ID = (SELECT MAX(PROJECT_ID) FROM PROJECT_PHASE PH WHERE PH.ID = NEW.PROJECT_PHASE_ID);
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `TEMPLATE`
@@ -773,43 +446,6 @@ LOCK TABLES `TEMPLATE` WRITE;
 /*!40000 ALTER TABLE `TEMPLATE` DISABLE KEYS */;
 /*!40000 ALTER TABLE `TEMPLATE` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `TEMPLATE_BINS` BEFORE INSERT ON TEMPLATE FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-begin
-SET NEW.AMND_DATE = SYSDATE();
-SET NEW.COMPANY_ID = (SELECT MAX(COMPANY_ID) FROM CUSTOMER C WHERE C.ID = NEW.CUSTOMER_ID);
-end */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `TEMPLATE_BUPD` BEFORE UPDATE ON TEMPLATE FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.AMND_DATE = SYSDATE() */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `TIMING`
@@ -852,47 +488,9 @@ CREATE TABLE `TIMING` (
 
 LOCK TABLES `TIMING` WRITE;
 /*!40000 ALTER TABLE `TIMING` DISABLE KEYS */;
-INSERT INTO `TIMING` VALUES (1,1,'2013-05-18 23:08:52',1,1,3600000,'2013-05-18 23:08:52',1,NULL,1),(2,1,'2013-05-18 23:08:52',1,2,3600000,'2013-05-18 23:08:52',1,NULL,1),(3,1,'2013-05-18 23:08:52',2,1,7200000,'2013-05-18 23:08:52',2,NULL,1);
+INSERT INTO `TIMING` VALUES (1,NULL,NULL,1,1,3600000,'2013-05-19 01:10:31',1,NULL,NULL),(2,NULL,NULL,1,2,3600000,'2013-05-19 01:10:31',1,NULL,NULL),(3,NULL,NULL,2,1,7200000,'2013-05-19 01:10:31',2,NULL,NULL);
 /*!40000 ALTER TABLE `TIMING` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `TIMING_BINS` BEFORE INSERT ON TIMING FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-begin
-SET NEW.AMND_DATE = SYSDATE();
-SET NEW.COMPANY_ID = (SELECT MAX(COMPANY_ID) FROM USERLINK UL WHERE UL.ID = NEW.USERLINK_ID);
-SET NEW.PROJECT_ID = (SELECT MAX(PROJECT_ID) FROM TASK T WHERE T.ID = NEW.TASK_ID);
-end */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `TIMING_BUPD` BEFORE UPDATE ON TIMING FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.AMND_DATE = SYSDATE() */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `USERLINK`
@@ -927,43 +525,9 @@ CREATE TABLE `USERLINK` (
 
 LOCK TABLES `USERLINK` WRITE;
 /*!40000 ALTER TABLE `USERLINK` DISABLE KEYS */;
-INSERT INTO `USERLINK` VALUES (1,1,1,'2013-05-18 23:08:52',1,'korotkov.maxim@gmail.com','PM','Y',NULL),(2,1,2,'2013-05-18 23:08:52',1,'ilya.pimenov@gmail.com','ADM','Y',NULL),(3,1,3,'2013-05-18 23:08:52',1,'t.kalapun@gmail.com','EXEC','Y',NULL);
+INSERT INTO `USERLINK` VALUES (1,1,1,NULL,1,'korotkov.maxim@gmail.com','PM','Y',NULL),(2,1,2,NULL,1,'ilya.pimenov@gmail.com','ADM','Y',NULL),(3,1,3,NULL,1,'t.kalapun@gmail.com','EXEC','Y',NULL);
 /*!40000 ALTER TABLE `USERLINK` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `USER_LINK_BINS` BEFORE INSERT ON USERLINK FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.AMND_DATE = SYSDATE() */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ALLOW_INVALID_DATES,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `USER_LINK_BUPD` BEFORE UPDATE ON USERLINK FOR EACH ROW
--- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.AMND_DATE = SYSDATE() */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -974,4 +538,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-05-18 22:36:43
+-- Dump completed on 2013-05-18 23:11:36
