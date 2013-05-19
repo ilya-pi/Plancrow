@@ -11,24 +11,46 @@ exports.screen09_project_list = function (req, res) {
     });
 };
 
-var tree_from_list = function(list) {
-    var map = new Array()
-    var result = new Array()
-    for (i in list){
+var tree_from_list = function (list) {
+    var map = new Array();
+    var result = new Array();
+    var missed = new Array();
+    for (i in list) {
         list[i].children = undefined
     }
-    for (i in list){
+    for (i in list) {
         var node = list[i]
-        if (node.parent_id == null){
+        map[node.id] = node;
+        if (node.parent_id == null) {
             result.push(node);
-            map[node.id] = node;
-        }else {
-            if (map[node.parent_id].children == undefined){
-                map[node.parent_id].children = new Array()
+        } else {
+            if (map[node.parent_id] != undefined) {
+                if (map[node.parent_id].children == undefined) {
+                    map[node.parent_id].children = new Array()
+                }
+                map[node.parent_id].children.push(node)
+            } else {
+                missed.push(node);
             }
-            map[node.parent_id].children.push(node)
         }
     }
+//    for (i in missed) {
+//        var node = missed[i]
+//        if (node.parent_id == null) {
+//            result.push(node);
+//            map[node.id] = node;
+//        } else {
+//            if (map[node.parent_id].children == undefined) {
+//                map[node.parent_id].children = new Array()
+//            }
+//            if (map[node.parent_id] != undefined) {
+//                map[node.parent_id].children.push(node)
+//            } else {
+//                missed.push(node);
+//            }
+//        }
+//    }
+    //still can be issues
     return result;
 }
 
