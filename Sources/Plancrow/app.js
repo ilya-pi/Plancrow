@@ -16,7 +16,7 @@ var app = express();
 //orm
 app.use(orm.express(conf.mysqlConnectionString(), {
     define: function (db, models) {
-        models.project = db.define("project", {
+        models.project = db.define("PROJECT", {
             name    : String,
             is_active: Boolean,
             estimate : Number
