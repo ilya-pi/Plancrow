@@ -1,0 +1,31 @@
+extends ../authed_layout
+
+mixin phases(parent)
+    li= parent.name
+        ul
+            - if (parent.children != undefined){
+                - each phase in parent.children
+                    mixin phases(phase)
+            - }
+
+block au_content
+    div.row-fluid
+        div.span6
+            h4 #{project.name}
+        div.span6
+            ul.nav.nav-pills
+                li
+                    a(href="#edit", alt="edit") Edit&nbsp;
+                        i.icon-pencil
+                li
+                    a(href="#configure", alt="configure") Configure&nbsp;
+                        i.icon-wrench
+                li
+                    a(href="#invoicing", alt="invoicing") Invoicing&nbsp;
+                        i.icon-list-alt
+    div.row-fluid
+        div.span12
+            ul
+                - each phase in phases
+                    mixin phases(phase)
+

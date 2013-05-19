@@ -1,0 +1,41 @@
+extends layout
+
+block content
+    div.container
+        div.masthead
+            div.row-fluid
+                div.span8
+                    p project:&nbsp;
+                        i A
+                    p company:&nbsp;
+                        i B
+                    h4= screen_name
+                div.span4
+                    h3.muted.pull-right
+                        a(href="/") Plancrow
+            div.navbar
+                div.navbar-inner
+                    div.container
+                        ul.nav
+                            li.active
+                                a(href="#") User Settings
+                            li
+                                a(href="#") Company Settings
+                            li
+                                a(href="#") My Projects
+                            li
+                                a(href="#") Reports
+                        ul.nav.pull-right
+                            li
+                                a(href="#") Post Time
+        div.row-fluid
+            div.span12.alert.alert-block
+                h4 Warnings!
+                p Your hardcoded indentification values are CUSTOMER_ID=1 and COMPANY_ID=1
+
+        block au_content
+
+        hr
+
+        div.footer
+            p &copy; Plancrow 2013
