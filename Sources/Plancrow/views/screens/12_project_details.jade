@@ -10,15 +10,11 @@ mixin phases(phase)
         - if (phase.tasks != undefined){
             ul
                 - each task in phase.tasks
-                    li.task(id ="#{task.id}")
+                    li.task(id ="#{task.id}", data-taskid="#{task.id}", data-taskname = "#{task.name}")
                         div.row-fluid
-                            div.span2= task.name
+                            div.name.span2= task.name
                             div.span4
                                 p [posted #{task.posted}, estimated #{task.estimate}]
-                            //    div.progress
-                            //        div.bar.bar-success(style = "width: #{task.completed}%") posted: #{task.posted}
-                            //div.span2 out of #{task.estimate}
-
         - }
 
 block au_content
@@ -42,3 +38,4 @@ block au_content
                 - each phase in phases
                     mixin phases(phase)
 
+    script(type='text/javascript', src='/javascripts/client/12_project_details.js')
