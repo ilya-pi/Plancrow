@@ -9,6 +9,7 @@ var express = require('express')
     , http = require('http')
     , path = require('path')
     , conf = require('./my_modules/crow-conf.js')
+    , crowapi= require('./my_modules/crow-api.js')
     , orm = require('orm');
 
 var app = express();
@@ -90,6 +91,9 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/screens/09_project_list', screens.screen09_project_list);
 app.get('/screens/12_project_details', screens.screen12_project_details);
+
+
+app.post('/json/task/update', crowapi.updateTask);
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));

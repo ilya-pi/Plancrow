@@ -10,8 +10,7 @@
     });
 
     var TaskView = Backbone.View.extend({
-//        template:jade.compile('\ndiv.num #{number}\ndiv.img\n\tdiv\n\t\timg(alt="logo", width="105px", src="http://graph.facebook.com/" + fb_id + "/picture?type=large")\ndiv.description\n\th3 #{name}\n\tdiv\n\t\tp.time #{time}\n\t\tp.location #{venue}\n\tp.desc #{description}\na.button(href="http://facebook.com/" + fb_id,target="_blank")\n\tdiv.arrow'),
-        template: jade.compile('div.row-fluid\n\tdiv.name.span2= name\n\tdiv.span4 there is no saving yet'),
+        template: jade.compile('div.row-fluid\n\tdiv.name.span2= name\n\tdiv.span4 \n\t\tp [posted #{posted}, estimate #{estimate}]'),
         editTemplate: jade.compile('div.row-fluid\n\tdiv.span4\n\t\tinput.editname(type="text", value=name)'),
 
         events: {
@@ -20,12 +19,12 @@
         },
 
         initialize: function () {
-            _.bindAll(this, 'rename', 'saveRenamed');
+            _.bindAll(this, 'render', 'rename', 'saveRenamed');
         },
 
-//        render:function () {
-//            return $(this.el).html(this.template(this.model));
-//        },
+        render:function () {
+            return $(this.el).html(this.template(this.model.attributes));
+        },
 
         rename: function () {
             $(this.el).html(this.editTemplate(this.model.attributes));
@@ -34,8 +33,14 @@
         },
 
         saveRenamed: function(){
+            var that = this
             //and jquery-coin "saved" notification
-            $(this.el).html(this.template(this.model.attributes));
+            var newName = $(this.el).find(".editname").val();
+            this.model.attributes.name = newName;
+            AjaxRequests.updateTask(this.model.attributes, function(task){
+                $.extend(that.model.attributes, task);
+                that.render();
+            })
         }
 
     });

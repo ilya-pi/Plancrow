@@ -6,11 +6,8 @@
  */
 var AjaxRequests = {
 
-    //facebook requests
-
-    fb_events:function (params, callback) {
-        $.ajax({type:'GET', url:'json/events/'+params, success:function (data) {
-            console.log(data);
+    updateTask:function (params, callback) {
+        $.ajax({type:'POST', url:'/json/task/update', data: {data: JSON.stringify(params)}, success:function (data) {
             callback(data);
         }, dataType:"json"});
     }
