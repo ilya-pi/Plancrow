@@ -32,11 +32,29 @@ app.use(orm.express(conf.mysqlConnectionString(), {
             notes: String
         });
 
+        models.task = db.define("TASK", {
+            id: Number,
+            company_id: Number,
+            amnd_date: Date,
+            amnd_user: Number,
+            project_phase_id: Number,
+            project_id: Number,
+            name: String,
+            notes: String,
+            estimate: Number,
+            posted: Number,
+            status: String
+        });
+
         models.project_phase.topPhases = function (projectId, callback) {
             this.find({ project_id: projectId, parent_id: null }, callback);
         };
 
         models.project_phase.phases = function (projectId, callback) {
+            this.find({ project_id: projectId}, callback);
+        };
+
+        models.task.tasksByProject = function (projectId, callback) {
             this.find({ project_id: projectId}, callback);
         };
 

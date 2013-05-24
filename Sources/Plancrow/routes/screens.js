@@ -11,15 +11,16 @@ exports.screen09_project_list = function (req, res) {
     });
 };
 
-var tree_from_list = function (list) {
+var tree_from_list = function (list, tasks) {
     var map = new Array();
     var result = new Array();
     var missed = new Array();
     for (i in list) {
         list[i].children = undefined
+        list[i].tasks = undefined
     }
     for (i in list) {
-        var node = list[i]
+        var node = list[i];
         map[node.id] = node;
         if (node.parent_id == null) {
             result.push(node);
@@ -34,30 +35,29 @@ var tree_from_list = function (list) {
             }
         }
     }
-//    for (i in missed) {
-//        var node = missed[i]
-//        if (node.parent_id == null) {
-//            result.push(node);
-//            map[node.id] = node;
-//        } else {
-//            if (map[node.parent_id].children == undefined) {
-//                map[node.parent_id].children = new Array()
-//            }
-//            if (map[node.parent_id] != undefined) {
-//                map[node.parent_id].children.push(node)
-//            } else {
-//                missed.push(node);
-//            }
-//        }
-//    }
-    //still can be issues
+    for (i in tasks) {
+        var task  = tasks[i];
+        task.completed = task.posted / task.estimate * 100;
+        if (task.completed > 100){
+            task.overdue = task.completed - 100;
+        }
+        if (map[task.project_phase_id] != undefined){
+            var phase = map[task.project_phase_id];
+            if (phase.tasks == undefined){
+                phase.tasks = new Array();
+            }
+            phase.tasks.push(task);
+        }
+    }
     return result;
 }
 
 exports.screen12_project_details = function (req, res) {
     req.models.project.get(1, function (err, project) {
         req.models.project_phase.phases(project.id, function (err, phases) {
-            res.render('screens/12_project_details', { title: 'Plancrow', screen_name: '12 Project Details', project: project, phases: tree_from_list(phases)});
+            req.models.task.tasksByProject(project.id, function (err, tasks) {
+                res.render('screens/12_project_details', { title: 'Plancrow', screen_name: '12 Project Details', project: project, phases: tree_from_list(phases, tasks)});
+            });
         });
     });
 };

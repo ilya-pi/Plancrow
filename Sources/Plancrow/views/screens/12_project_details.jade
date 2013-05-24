@@ -1,12 +1,25 @@
 extends ../authed_layout
 
-mixin phases(parent)
-    li= parent.name
-        ul
-            - if (parent.children != undefined){
-                - each phase in parent.children
-                    mixin phases(phase)
-            - }
+mixin phases(phase)
+    li.phase(id = "#{phase.id}")= phase.name
+        - if (phase.children != undefined){
+            ul
+                - each child in phase.children
+                    mixin phases(child)
+        - }
+        - if (phase.tasks != undefined){
+            ul
+                - each task in phase.tasks
+                    li.task(id ="#{task.id}")
+                        div.row-fluid
+                            div.span2= task.name
+                            div.span4
+                                p [posted #{task.posted}, estimated #{task.estimate}]
+                            //    div.progress
+                            //        div.bar.bar-success(style = "width: #{task.completed}%") posted: #{task.posted}
+                            //div.span2 out of #{task.estimate}
+
+        - }
 
 block au_content
     div.row-fluid
