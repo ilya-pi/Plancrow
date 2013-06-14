@@ -1,37 +1,34 @@
 extends ../authed_layout
 
 mixin phases(phase)
-    li.phase(id = "#{phase.id}")= phase.name
+    li.phase(id = "#{phase.id}") Phase: #{phase.name}
         - if (phase.children != undefined){
             ul
                 - each child in phase.children
                     mixin phases(child)
         - }
         - if (phase.tasks != undefined){
-            ul
-                - each task in phase.tasks
-                    li.task(id ="#{task.id}", data-taskid="#{task.id}", data-taskname = "#{task.name}")
-                        div.row-fluid
-                            div.name.span2= task.name
-                            div.span4
-                                p [posted #{task.posted}, estimated #{task.estimate}]
+            div.row-fluid.droppable
+                div.name.span12 drag here [   ]
+            - each task in phase.tasks
+                div.row-fluid.task(id ="#{task.id}", data-taskid="#{task.id}", data-taskname = "#{task.name}")
+                    div.name.span1
+                        i.icon-tasks.pull-right
+                    div.name.span5 Task: #{task.name}
+                    div.span6
+                        p [estimated: #{task.estimate}, posted: #{task.posted}]
         - }
 
 block au_content
     div.row-fluid
         div.span6
-            h4 #{project.name}
+            h4 Project: #{project.name}
         div.span6
             ul.nav.nav-pills
                 li
-                    a(href="#edit", alt="edit") Edit&nbsp;
-                        i.icon-pencil
+                    a(href="#edit", alt="edit") Edit settings
                 li
-                    a(href="#configure", alt="configure") Configure&nbsp;
-                        i.icon-wrench
-                li
-                    a(href="#invoicing", alt="invoicing") Invoicing&nbsp;
-                        i.icon-list-alt
+                    a(href="#invoicing", alt="invoicing") Invoicing
     div.row-fluid
         div.span12
             ul

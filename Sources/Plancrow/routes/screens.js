@@ -2,6 +2,8 @@
  * GET screen 09 projets list.
  */
 
+var conf = require('../my_modules/crow-conf.js');
+
 exports.screen09_project_list = function (req, res) {
     req.models.project.find({ }, function (err, projects) {
         if (projects == undefined) {
@@ -53,7 +55,7 @@ var tree_from_list = function (list, tasks) {
 }
 
 exports.screen12_project_details = function (req, res) {
-    req.models.project.get(1, function (err, project) {
+    req.models.project.get(conf.currentlyAuthorized().project_id, function (err, project) {
         req.models.project_phase.phases(project.id, function (err, phases) {
             req.models.task.tasksByProject(project.id, function (err, tasks) {
                 res.render('screens/12_project_details', { title: 'Plancrow', screen_name: '12 Project Details', project: project, phases: tree_from_list(phases, tasks)});
