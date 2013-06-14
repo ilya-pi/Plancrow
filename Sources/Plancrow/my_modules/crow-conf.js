@@ -5,7 +5,7 @@
  * @returns {string}
  */
 exports.mysqlConnectionString = function(){
-    var result = 'mysql://sa:assa@localhost/Plancrow';
+    var result = 'mysql://root:@localhost/Plancrow';
     if (process.env.VCAP_SERVICES !== undefined){
         var env = JSON.parse(process.env.VCAP_SERVICES);
         var cre = env['mysql-5.1'][0]['credentials'];
