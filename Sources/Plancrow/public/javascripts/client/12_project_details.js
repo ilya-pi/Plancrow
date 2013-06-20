@@ -10,7 +10,7 @@
     });
 
     var TaskView = Backbone.View.extend({
-        template: jade.compile('div.row-fluid\n\tdiv.span1\n\t\ti.icon-tasks.pull-right\n\tdiv.name.span5 Task: #{name}\n\tdiv.span6 \n\t\tp [posted #{posted}, estimate #{estimate}]'),
+        template: jade.compile('div.row-fluid\n\tdiv.span1\n\t\ti.icon-tasks.pull-right\n\tdiv.name.span5 Task: #{name}\n\tdiv.span6 \n\t\tp [estimated: #{estimate}, posted: #{posted}]'),
         editTemplate: jade.compile('div.row-fluid\n\tdiv.span1\n\t\ti.icon-tasks.pull-right\n\tdiv.span4 Task:&nbsp;\n\t\tinput.editname(type="text", value=name)'),
 
         events: {
@@ -49,6 +49,10 @@
         /* } Draggable kitchen */
 
         render:function () {
+            $(this.el).addClass("task").attr("data-taskid", this.model.attributes.id);
+//            $.data(this.el, "taskid", this.model.attributes.id);
+//            $(this.el).data("taskid") = this.model.attributes.id;
+//                (id = "#{id}, data-taskid = "#{id}").task
             return $(this.el).html(this.template(this.model.attributes));
         },
 
@@ -131,8 +135,20 @@
         },
 
         drop: function (data, dataTransfer, e) {
-            console.info("Dropped data");
-            console.info(data)
+            console.info(data);
+            var to_phase = $(e.toElement).data("phase-id");
+            AjaxRequests.moveTask({task_id: data.id, to_phase: to_phase}, function(task){
+                $("div[data-taskid=" + data.id + "]").remove();
+                $("li.phase[id=" + to_phase + "]").append(
+                    new TaskView({model: new Task(task)}).render()
+                );
+//                console.info(new TaskView({model: new Task(task)}).render());
+//                $.extend(that.model.attributes, task);
+//                that.render();
+                console.info("Saved");
+                console.info(task);
+            })
+
         }, // overide me!  if the draggable class returned some data on 'dragStart' it will be the first argument
         //     /* } Draggable kitchen */
 

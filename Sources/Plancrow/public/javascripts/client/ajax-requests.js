@@ -10,5 +10,11 @@ var AjaxRequests = {
         $.ajax({type:'POST', url:'/json/task/update', data: {data: JSON.stringify(params)}, success:function (data) {
             callback(data);
         }, dataType:"json"});
+    },
+
+    moveTask:function (params, callback) {
+        $.ajax({type:'POST', url:'/json/task/move', data: {data: JSON.stringify(params)}, success:function (data) {
+            callback(data);
+        }, dataType:"json"});
     }
 }

@@ -97,6 +97,7 @@ app.get('/screens/12_project_details', screens.screen12_project_details);
 
 
 app.post('/json/task/update', crowapi.updateTask);
+app.post('/json/task/move', crowapi.moveTask);
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));

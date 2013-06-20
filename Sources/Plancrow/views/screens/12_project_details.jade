@@ -2,14 +2,15 @@ extends ../authed_layout
 
 mixin phases(phase)
     li.phase(id = "#{phase.id}") Phase: #{phase.name}
+        div.row-fluid.droppable
+            div.name.span12(data-phase-id = "#{phase.id}") drag here [   ]
+
         - if (phase.children != undefined){
             ul
                 - each child in phase.children
                     mixin phases(child)
         - }
         - if (phase.tasks != undefined){
-            div.row-fluid.droppable
-                div.name.span12 drag here [   ]
             - each task in phase.tasks
                 div.row-fluid.task(id ="#{task.id}", data-taskid="#{task.id}", data-taskname = "#{task.name}")
                     div.name.span1
