@@ -4,6 +4,18 @@
 
 var conf = require('../my_modules/crow-conf.js');
 
+exports.screen01_welcome_page = function (req, res) {
+    res.render('screens/01_welcome_page', { title: 'Plancrow', screen_name: '01 Welcome Page'});
+};
+
+exports.screen02_pricing_page = function (req, res) {
+    res.render('screens/02_pricing_page', { title: 'Plancrow', screen_name: '01 Pricing Page'});
+};
+
+exports.screen03_registration_page = function (req, res) {
+    res.render('screens/03_registration_page', { title: 'Plancrow', screen_name: '03 Registration Page'});
+};
+
 exports.screen09_project_list = function (req, res) {
     req.models.project.find({ }, function (err, projects) {
         if (projects == undefined) {
@@ -38,14 +50,14 @@ var tree_from_list = function (list, tasks) {
         }
     }
     for (i in tasks) {
-        var task  = tasks[i];
+        var task = tasks[i];
         task.completed = task.posted / task.estimate * 100;
-        if (task.completed > 100){
+        if (task.completed > 100) {
             task.overdue = task.completed - 100;
         }
-        if (map[task.project_phase_id] != undefined){
+        if (map[task.project_phase_id] != undefined) {
             var phase = map[task.project_phase_id];
-            if (phase.tasks == undefined){
+            if (phase.tasks == undefined) {
                 phase.tasks = new Array();
             }
             phase.tasks.push(task);

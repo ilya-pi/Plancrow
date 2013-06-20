@@ -4,5 +4,5 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Plancrow' });
+  res.render('index', { title: 'Plancrow', screen_name: "" });
 };

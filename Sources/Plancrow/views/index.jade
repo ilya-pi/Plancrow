@@ -1,58 +1,47 @@
-extends layout
+extends anon_layout
 
-block content
-    div.container
-        div.masthead
-            h3.muted Plancrow
-            div.navbar
-                div.navbar-inner
-                    div.container
-                        ul.nav
-                            li.active
-                                a(href="#") What is Plancrow?
-                            li
-                                a(href="#") Our Customers
-                            li
-                                a(href="#") Pricing
-                            li
-                                a(href="#") Public Projects
-                        ul.nav.pull-right
-                            li
-                                a(href="#") Sign In
-        div.jumbotron
-            h1= title
-            p.lead Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
+block au_content
+    div.jumbotron
+        h1= title
+        p.lead Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
             a.btn.btn-large.btn-success(href="#") Get started today
         hr
 
-        div.row-fluid
-            div.span12
-                div.alert.alert-block
-                    h4 Static assets: Screens
-                    ul
-                        li
-                            a(href="/screens/09_project_list") Screen 9: Project List
-                        li
-                            a(href="/screens/12_project_details") Screen 12: Project Details
+    div.row-fluid
+        div.span12
+            div.alert.alert-block
+                h4 Static assets: Screens
+                ul
+                    li
+                        a(href="/screens/01_welcome_page") Screen 1: Welcome Page
+                        tt  (not started)
+                    li
+                        a(href="/screens/02_pricing_page") Screen 2: Pricing Page
+                        tt  (not started)
+                    li
+                        a(href="/screens/03_registration_page") Screen 3: Registration Page
+                        tt  (not started)
+                    li
+                        a(href="/screens/09_project_list") Screen 9: Project List
+                        tt  (ilya: in progress)
+                    li
+                        a(href="/screens/12_project_details") Screen 12: Project Details
+                        tt  (ilya: in progress)
 
 
-        div.row-fluid
-            div.span4
-                h2 Heading
-                p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-                p
-                    a.btn(href="#") View details &raquo;
-            div.span4
-                h2 Heading
-                p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-                p
-                    a.btn(href="#") View details &raquo;
-            div.span4
-                h2 Heading
-                p Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.
-                p
-                    a.btn(href="#") View details &raquo;
-        hr
-
-        div.footer
-            p &copy; Plancrow 2013
+    div.row-fluid
+        div.span4
+            h2 Heading
+            p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+            p
+                a.btn(href="#") View details &raquo;
+        div.span4
+            h2 Heading
+            p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+            p
+                a.btn(href="#") View details &raquo;
+        div.span4
+            h2 Heading
+            p Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.
+            p
+                a.btn(href="#") View details &raquo;
