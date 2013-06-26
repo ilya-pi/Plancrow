@@ -9,11 +9,31 @@ exports.screen01_welcome_page = function (req, res) {
 };
 
 exports.screen02_pricing_page = function (req, res) {
-    res.render('screens/02_pricing_page', { title: 'Plancrow', screen_name: '01 Pricing Page'});
+    res.render('screens/02_pricing_page', { title: 'Plancrow', screen_name: '02 Pricing Page'});
 };
 
 exports.screen03_registration_page = function (req, res) {
     res.render('screens/03_registration_page', { title: 'Plancrow', screen_name: '03 Registration Page'});
+};
+
+exports.screen04_sign_in_page = function (req, res) {
+    res.render('screens/04_sign_in_page', { title: 'Plancrow', screen_name: '04 Sign In Page'});
+};
+
+exports.screen05_company_admin = function (req, res) {
+    res.render('screens/05_company_admin', { title: 'Plancrow', screen_name: '05 Company Admin'});
+};
+
+exports.screen06_user_settings = function (req, res) {
+    res.render('screens/06_user_settings', { title: 'Plancrow', screen_name: '06 User Settings'});
+};
+
+exports.screen07_user_list = function (req, res) {
+    res.render('screens/07_user_list', { title: 'Plancrow', screen_name: '07 User List'});
+};
+
+exports.screen08_invitation = function (req, res) {
+    res.render('screens/08_invitation', { title: 'Plancrow', screen_name: '08 Invitation'});
 };
 
 exports.screen09_project_list = function (req, res) {
@@ -24,6 +44,15 @@ exports.screen09_project_list = function (req, res) {
         res.render('screens/09_project_list', { title: 'Plancrow', screen_name: '09 Project List', projects: projects});
     });
 };
+
+exports.screen10_project_creation = function (req, res) {
+    res.render('screens/10_project_creation', { title: 'Plancrow', screen_name: '10 Project Creation'});
+};
+
+exports.screen11_project_settings= function (req, res) {
+    res.render('screens/11_project_settings', { title: 'Plancrow', screen_name: '11 Project Settings'});
+};
+
 
 var tree_from_list = function (list, tasks) {
     var map = new Array();

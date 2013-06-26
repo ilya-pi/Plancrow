@@ -18,17 +18,42 @@ block content
                 div.navbar-inner
                     div.container
                         ul.nav
+                            - if (screen_name == '06 User Settings') {
                             li.active
-                                a(href="#") User Settings
+                                a(href="/pages/06_user_settings") User Settings
+                            - }else{
                             li
-                                a(href="#") Company Settings
+                                a(href="/pages/06_user_settings") User Settings
+                            - }
+                            - if (screen_name == '05 Company Admin') {
+                            li.active
+                                a(href="/pages/05_company_admin") Company Settings
+                            - }else{
+                            li
+                                a(href="/pages/05_company_admin") Company Settings
+                            - }
+                            - if (screen_name == '09 Project List') {
+                            li.active
+                                a(href="/pages/09_project_list") My Projects
+                            - }else{
                             li
                                 a(href="/pages/09_project_list") My Projects
+                            - }
+                            - if (screen_name == '18 Reports') {
+                            li.active
+                                a(href="/pages/18_reports") Reports
+                            - }else{
                             li
-                                a(href="#") Reports
+                                a(href="/pages/18_reports") Reports
+                            - }
                         ul.nav.pull-right
+                            - if (screen_name == '22 Post Time') {
+                            li.active
+                                a(href="/pages/22_post_time") Post Time
+                            - }else{
                             li
-                                a(href="#") Post Time
+                                a(href="/pages/22_post_time") Post Time
+                            - }
         div.row-fluid
             div.span12.alert.alert-block
                 h4 Warnings!

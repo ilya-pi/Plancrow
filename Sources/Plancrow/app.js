@@ -92,7 +92,14 @@ app.get('/users', user.list);
 app.get('/pages/01_welcome_page', screens.screen01_welcome_page);
 app.get('/pages/02_pricing_page', screens.screen02_pricing_page);
 app.get('/pages/03_registration_page', screens.screen03_registration_page);
+app.get('/pages/04_sign_in_page', screens.screen04_sign_in_page);
+app.get('/pages/05_company_admin', screens.screen05_company_admin);
+app.get('/pages/06_user_settings', screens.screen06_user_settings);
+app.get('/pages/07_user_list', screens.screen07_user_list);
+app.get('/pages/08_invitation', screens.screen08_invitation);
 app.get('/pages/09_project_list', screens.screen09_project_list);
+app.get('/pages/10_project_creation', screens.screen10_project_creation);
+app.get('/pages/11_project_settings', screens.screen11_project_settings);
 app.get('/pages/12_project_details', screens.screen12_project_details);
 
 

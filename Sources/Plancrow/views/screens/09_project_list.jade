@@ -10,8 +10,9 @@ block au_content
                     th Actions
                 - each project in projects
                     tr
-                        td= project.name
+                        td
+                            a(href="/pages/12_project_details")= project.name
                         td= project.is_active
                         td
-                            a(href="#configure", alt="configure")
-                                i.icon-wrench
+                            a(href="/pages/11_project_settings", alt="configure") settings
+            a(href="/pages/10_project_creation") create
