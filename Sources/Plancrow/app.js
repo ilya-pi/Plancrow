@@ -89,15 +89,16 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/users', user.list);
-app.get('/screens/01_welcome_page', screens.screen01_welcome_page);
-app.get('/screens/02_pricing_page', screens.screen02_pricing_page);
-app.get('/screens/03_registration_page', screens.screen03_registration_page);
-app.get('/screens/09_project_list', screens.screen09_project_list);
-app.get('/screens/12_project_details', screens.screen12_project_details);
+app.get('/pages/01_welcome_page', screens.screen01_welcome_page);
+app.get('/pages/02_pricing_page', screens.screen02_pricing_page);
+app.get('/pages/03_registration_page', screens.screen03_registration_page);
+app.get('/pages/09_project_list', screens.screen09_project_list);
+app.get('/pages/12_project_details', screens.screen12_project_details);
 
 
 app.post('/json/task/update', crowapi.updateTask);
 app.post('/json/task/move', crowapi.moveTask);
+app.post('/json/task/delete', crowapi.deleteTask);
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));

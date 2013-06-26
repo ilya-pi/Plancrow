@@ -16,5 +16,12 @@ var AjaxRequests = {
         $.ajax({type:'POST', url:'/json/task/move', data: {data: JSON.stringify(params)}, success:function (data) {
             callback(data);
         }, dataType:"json"});
+    },
+
+    deleteTask:function (params, callback) {
+        $.ajax({type:'POST', url:'/json/task/delete', data: {data: JSON.stringify(params)}, success:function (data) {
+            callback(data);
+        }, dataType:"json"});
     }
+
 }

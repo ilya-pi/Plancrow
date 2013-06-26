@@ -10,16 +10,18 @@
     });
 
     var TaskView = Backbone.View.extend({
-        template: jade.compile('div.row-fluid\n\tdiv.span1\n\t\ti.icon-tasks.pull-right\n\tdiv.name.span5 Task: #{name}\n\tdiv.span6 \n\t\tp [estimated: #{estimate}, posted: #{posted}]'),
+        template: jade.compile('div.row-fluid\n\tdiv.span1\n\t\ti.icon-tasks.pull-right\n\tdiv.name.span5 Task: #{name}\n\tdiv.span6 \n\t\tp [est.: #{estimate}, posted: #{posted}]'),
         editTemplate: jade.compile('div.row-fluid\n\tdiv.span1\n\t\ti.icon-tasks.pull-right\n\tdiv.span4 Task:&nbsp;\n\t\tinput.editname(type="text", value=name)'),
 
         events: {
             "click .name": "rename",
-            "blur": "saveRenamed"
+            "blur": "saveRenamed",
+            "click button.delete" : "deleteTask",
+            "click button.details" : "details"
         },
 
         initialize: function () {
-            _.bindAll(this, 'render', 'rename', 'saveRenamed', '_dragStartEvent');
+            _.bindAll(this, 'render', 'rename', 'saveRenamed', 'deleteTask', 'details', '_dragStartEvent');
 
             //draggable kitchen
             this.$el.attr("draggable", "true")
@@ -71,6 +73,24 @@
                 $.extend(that.model.attributes, task);
                 that.render();
             })
+        },
+
+        deleteTask: function(){
+            var that = this;
+            AjaxRequests.deleteTask(this.model.attributes, function(response){
+                if (response.status !== "undefined" && response.status === "error"){
+                    window.alert(response.message);
+                }else{
+                    that.$el.remove();
+                }
+            })
+        },
+
+        details: function(){
+//            var that = this;
+//            console.info(this.model.attributes);
+//            window.alert(this.model.attributes.notes);
+            this.$el.find(".notes").toggle();
         }
 
     });
@@ -167,7 +187,8 @@
                 var task = $(renderedTasks[k]);
 //                console.info(task.data("taskid"));
 //                console.info(task.data("taskname"));
-                new TaskView({el: renderedTasks[k], model: new Task({id: task.data("taskid"), name: task.data("taskname")})});
+                new TaskView({el: renderedTasks[k], model: new Task({id: task.data("taskid"), name: task.data("taskname"),
+                    notes: task.data("tasknotes")})});
             }
 
             var renderedDroppables = $(".droppable");
@@ -181,6 +202,8 @@
             //DroppableView
 
 //            this.render();
+
+            this.$el.find(".notes").toggle();
         },
         render: function () {
 //            $(this.el).append("<button id='add'>Add list item</button>");

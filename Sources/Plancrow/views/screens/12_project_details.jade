@@ -12,12 +12,26 @@ mixin phases(phase)
         - }
         - if (phase.tasks != undefined){
             - each task in phase.tasks
-                div.row-fluid.task(id ="#{task.id}", data-taskid="#{task.id}", data-taskname = "#{task.name}")
+                div.row-fluid.task(id ="#{task.id}", data-taskid="#{task.id}", data-taskname = "#{task.name}", data-tasknotes = "#{task.notes}")
                     div.name.span1
                         i.icon-tasks.pull-right
                     div.name.span5 Task: #{task.name}
-                    div.span6
-                        p [estimated: #{task.estimate}, posted: #{task.posted}]
+                        div.notes= task.notes
+                    div.span3
+                        p [est.: #{task.estimate}, posted: #{task.posted}]
+                    div.span3
+                        button.btn.btn-mini.btn-danger.delete delete
+                        button.btn.btn-mini.btn-info.details details
+                        div.btn-group
+                            a.btn.btn-primary= task.status
+                            a.btn.btn-primary.dropdown-toggle(data-toggle="dropdown")
+                                span.caret
+                            ul.dropdown-menu
+                                li new
+                                li started
+                                li 50% ready
+                                li.divider
+                                li finished
         - }
 
 block au_content
