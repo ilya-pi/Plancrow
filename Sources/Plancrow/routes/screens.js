@@ -104,3 +104,52 @@ exports.screen12_project_details = function (req, res) {
         });
     });
 };
+
+exports.screen13_customers= function (req, res) {
+    res.render('screens/13_customers', { title: 'Plancrow', screen_name: '13 Customers'});
+};
+
+exports.screen14_edit_customer = function (req, res) {
+    res.render('screens/14_edit_customer', { title: 'Plancrow', screen_name: '14 Edit Customer'});
+};
+
+exports.screen15_invocing_for_project= function (req, res) {
+    res.render('screens/15_invoicing_for_project', { title: 'Plancrow', screen_name: '15 Invoicing For Project'});
+};
+
+exports.screen16_invoices_history = function (req, res) {
+    res.render('screens/16_invoices_history', { title: 'Plancrow', screen_name: '16 Invoices History'});
+};
+
+exports.screen17_invoice_saving = function (req, res) {
+    res.render('screens/17_invoice_saving', { title: 'Plancrow', screen_name: '17 Invoice Saving'});
+};
+
+exports.screen18_reports_page = function (req, res) {
+    res.render('screens/18_reports_page', { title: 'Plancrow', screen_name: '18 Reports Page'});
+};
+
+exports.screen19_management_report_screen = function (req, res) {
+    res.render('screens/19_management_report_screen', { title: 'Plancrow', screen_name: '19 Management Report Screeen'});
+};
+
+exports.screen20_project_chart = function (req, res) {
+    res.render('screens/20_project_chart', { title: 'Plancrow', screen_name: '20 Project Chart'});
+};
+
+exports.screen21_user_timing_history = function (req, res) {
+    res.render('screens/21_user_timing_history', { title: 'Plancrow', screen_name: '21 User Timing History'});
+};
+
+exports.screen22_post_time = function (req, res) {
+    res.render('screens/22_post_time', { title: 'Plancrow', screen_name: '22 Post Time'});
+};
+
+exports.screen23_public_project_registration = function (req, res) {
+    res.render('screens/23_public_project_registration', { title: 'Plancrow', screen_name: '23 Public Project Registration'});
+};
+
+exports.screen24_public_projects = function (req, res) {
+    res.render('screens/24_public_projects', { title: 'Plancrow', screen_name: '24 Public Projects'});
+};
+

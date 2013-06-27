@@ -101,6 +101,18 @@ app.get('/pages/09_project_list', screens.screen09_project_list);
 app.get('/pages/10_project_creation', screens.screen10_project_creation);
 app.get('/pages/11_project_settings', screens.screen11_project_settings);
 app.get('/pages/12_project_details', screens.screen12_project_details);
+app.get('/pages/13_customer', screens.screen13_customers);
+app.get('/pages/14_edit_customer', screens.screen14_edit_customer);
+app.get('/pages/15_invoicing_for_project', screens.screen15_invocing_for_project);
+app.get('/pages/16_invoices_history', screens.screen16_invoices_history);
+app.get('/pages/17_invoice_saving', screens.screen17_invoice_saving);
+app.get('/pages/18_reports_page', screens.screen18_reports_page);
+app.get('/pages/19_management_report_screen', screens.screen19_management_report_screen);
+app.get('/pages/20_project_chart', screens.screen20_project_chart);
+app.get('/pages/21_user_timing_history', screens.screen21_user_timing_history);
+app.get('/pages/22_post_time', screens.screen22_post_time);
+app.get('/pages/23_public_project_registration', screens.screen23_public_project_registration);
+app.get('/pages/24_public_projects', screens.screen24_public_projects);
 
 
 app.post('/json/task/update', crowapi.updateTask);
