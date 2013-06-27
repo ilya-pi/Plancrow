@@ -10,18 +10,54 @@
     });
 
     var TaskView = Backbone.View.extend({
-        template: jade.compile('div.row-fluid\n\tdiv.span1\n\t\ti.icon-tasks.pull-right\n\tdiv.name.span5 Task: #{name}\n\tdiv.span6 \n\t\tp [est.: #{estimate}, posted: #{posted}]'),
+//        template: jade.compile('div.row-fluid\n\tdiv.span1\n\t\ti.icon-tasks.pull-right\n\tdiv.name.span5 Task: #{name}\n\tdiv.span6 \n\t\tp [est.: #{estimate}, posted: #{posted}]'),
+        template: jade.compile('div.row-fluid.task(id ="#{id}", data-taskid="#{id}", data-taskname = "#{name}", data-tasknotes = "#{notes}")' +
+            '\n\tdiv.name.span1' +
+            '\n\t\ti.icon-tasks.pull-right' +
+            '\n\tdiv.name.span5 Task: #{name}' +
+            '\n\t\tdiv.notes(style="display:none;")= notes' +
+            '\n\tdiv.span3' +
+            '\n\t\tp [est.: #{estimate}, posted: #{posted}]' +
+            '\n\tdiv.span1' +
+            '\n\t\tbutton.btn.btn-mini.btn-danger.delete delete' +
+            '\n\tdiv.span1' +
+            '\n\t\tbutton.btn.btn-mini.btn-info.details details' +
+            '\n\tdiv.span1' +
+            '\n\t\tdiv.btn-group.status' +
+            '\n\t\t\ta.btn.btn-mini.btn-primary' +
+            '\n\t\t\t\t- if (status == "A"){' +
+            '\n\t\t\t\t\tfont Active' +
+            '\n\t\t\t\t- }else if (status == "N"){' +
+            '\n\t\t\t\t\tfont Not Started' +
+            '\n\t\t\t\t- }else if (status == "C"){' +
+            '\n\t\t\t\t\tfont Completed' +
+            '\n\t\t\t\t- }' +
+            '\n\t\t\ta.btn.btn-mini.btn-primary.dropdown-toggle(data-toggle="dropdown")' +
+            '\n\t\t\t\tspan.caret' +
+            '\n\t\t\tul.dropdown-menu(role = "menu")' +
+            '\n\t\t\t\tli(role = "presentation")' +
+            '\n\t\t\t\t\ta(role = "menuitem", data-status="A") Active' +
+            '\n\t\t\t\tli(role = "presentation")' +
+            '\n\t\t\t\t\ta(role = "menuitem", data-status="N") Not Started' +
+            '\n\t\t\t\tli.divider' +
+            '\n\t\t\t\tli(role = "presentation")' +
+            '\n\t\t\t\t\ta(role = "menuitem", data-status="C") Completed'
+        ),
+
+
+
         editTemplate: jade.compile('div.row-fluid\n\tdiv.span1\n\t\ti.icon-tasks.pull-right\n\tdiv.span4 Task:&nbsp;\n\t\tinput.editname(type="text", value=name)'),
 
         events: {
             "click .name": "rename",
             "blur": "saveRenamed",
             "click button.delete" : "deleteTask",
-            "click button.details" : "details"
+            "click button.details" : "details",
+            "click .status a[role = 'menuitem']": "changeStatus"
         },
 
         initialize: function () {
-            _.bindAll(this, 'render', 'rename', 'saveRenamed', 'deleteTask', 'details', '_dragStartEvent');
+            _.bindAll(this, 'render', 'rename', 'saveRenamed', 'deleteTask', 'details', 'changeStatus', '_dragStartEvent');
 
             //draggable kitchen
             this.$el.attr("draggable", "true")
@@ -87,11 +123,19 @@
         },
 
         details: function(){
-//            var that = this;
-//            console.info(this.model.attributes);
-//            window.alert(this.model.attributes.notes);
             this.$el.find(".notes").toggle();
+        },
+
+        changeStatus: function(src){
+            var that = this
+            //and jquery-coin "saved" notification
+            this.model.attributes.status = $(src.target).data("status");
+            AjaxRequests.updateTask(this.model.attributes, function(task){
+                $.extend(that.model.attributes, task);
+                that.render();
+            })
         }
+
 
     });
 
@@ -204,6 +248,7 @@
 //            this.render();
 
             this.$el.find(".notes").toggle();
+//            $('.dropdown-toggle').dropdown();
         },
         render: function () {
 //            $(this.el).append("<button id='add'>Add list item</button>");

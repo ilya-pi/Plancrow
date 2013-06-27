@@ -19,20 +19,31 @@ mixin phases(phase)
                         div.notes= task.notes
                     div.span3
                         p [est.: #{task.estimate}, posted: #{task.posted}]
-                    div.span3
+                    div.span1
                         button.btn.btn-mini.btn-danger.delete delete
+                    div.span1
                         button.btn.btn-mini.btn-info.details details
-                        div.btn-group
-                            a.btn.btn-primary= task.status
-                            a.btn.btn-primary.dropdown-toggle(data-toggle="dropdown")
+                    div.span1
+                        div.btn-group.status
+                            a.btn.btn-mini.btn-primary
+                                - if (task.status == "A"){
+                                    font Active
+                                - }else if (task.status == 'N'){
+                                    font Not Started
+                                - }else if (task.status == 'C'){
+                                    font Completed
+                                - }
+                            a.btn.btn-mini.btn-primary.dropdown-toggle(data-toggle="dropdown")
                                 span.caret
-                            ul.dropdown-menu
-                                li new
-                                li started
-                                li 50% ready
+                            ul.dropdown-menu(role = "menu")
+                                li(role = "presentation")
+                                    a(role = "menuitem", data-status="A") Active
+                                li(role = "presentation")
+                                    a(role = "menuitem", data-status="N") Not Started
                                 li.divider
-                                li finished
-        - }
+                                li(role = "presentation")
+                                    a(role = "menuitem", data-status="C") Completed
+    - }
 
 block au_content
     div.row-fluid
