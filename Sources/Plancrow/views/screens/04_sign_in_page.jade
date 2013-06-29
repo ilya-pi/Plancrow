@@ -2,5 +2,14 @@ extends ../anon_layout
 
 block au_content
     div.row-fluid
-        div.span12
-            h1 not started
+        div.center.offset4.span4.well
+            form(action="/pages/04_sign_in_page", method="post")
+                legend Sign In
+                div
+                    label Username:
+                    input(type="text", name="username")
+                div
+                    label Password:
+                    input(type="password", name="password")
+                div
+                    button.btn.btn-primary(type="submit",name="submit") Log In
