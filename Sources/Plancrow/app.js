@@ -19,22 +19,22 @@ var app = express();
 //move to separate module
 orm.connect(conf.mysqlConnectionString(), function (err, db) {
     if (err) throw err;
-AppUser = db.define("APP_USER", {
-    id: Number,
-    login: String,
-    pwd: String,
-    first_name: String,
-    second_name: String,
-    salutation: String,
-    created_at: Date,
-    primary_email: String,
-    is_active: String
-}, {
-    methods: {
-        validPassword: function (password) {
-            return (this.pwd === password);
-        }
-    }});
+    AppUser = db.define("APP_USER", {
+        id: Number,
+        login: String,
+        pwd: String,
+        first_name: String,
+        second_name: String,
+        salutation: String,
+        created_at: Date,
+        primary_email: String,
+        is_active: String
+    }, {
+        methods: {
+            validPassword: function (password) {
+                return (this.pwd === password);
+            }
+        }});
 });
 
 //orm
@@ -123,7 +123,7 @@ passport.use(new LocalStrategy(
             if (err) {
                 return done(err);
             }
-            if (user.length > 1){
+            if (user.length > 1) {
                 return done(null, false, { message: 'Inconsistent data.' });
             }
             if (!user[0]) {
@@ -137,14 +137,14 @@ passport.use(new LocalStrategy(
     }
 ));
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
 //    console.log(user)
 //    console.log(user.id)
     done(null, user.id);
 });
 
-passport.deserializeUser(function(id, done) {
-    AppUser.get(id, function(err, user) {
+passport.deserializeUser(function (id, done) {
+    AppUser.get(id, function (err, user) {
         done(err, user);
     });
 });
@@ -156,6 +156,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 // development only
 if ('development' == app.get('env')) {
     app.use(express.errorHandler());
+}
+
+function check_auth(req, res, next) {
+    console.info(req.user);
+    if (req.user == undefined) {
+        console.info(user);
+        res.redirect("/pages/04_sign_in_page");
+    }else{
+        next();
+    }
 }
 
 app.get('/', routes.index);
@@ -177,7 +187,8 @@ app.get('/pages/05_company_admin', screens.screen05_company_admin);
 app.get('/pages/06_user_settings', screens.screen06_user_settings);
 app.get('/pages/07_user_list', screens.screen07_user_list);
 app.get('/pages/08_invitation', screens.screen08_invitation);
-app.get('/pages/09_project_list', screens.screen09_project_list);
+app.get('/pages/09_project_list', check_auth, screens.screen09_project_list);
+//app.get('/pages/09_project_list', screens.screen09_project_list);
 app.get('/pages/10_project_creation', screens.screen10_project_creation);
 app.get('/pages/11_project_settings', screens.screen11_project_settings);
 app.get('/pages/12_project_details', screens.screen12_project_details);
