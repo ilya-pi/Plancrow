@@ -6,6 +6,18 @@
  */
 var AjaxRequests = {
 
+    addPhase:function (params, callback) {
+        $.ajax({type:'POST', url:'/json/phase/add', data: {data: JSON.stringify(params)}, success:function (data) {
+            callback(data);
+        }, dataType:"json"});
+    },
+
+    addTask:function (params, callback) {
+        $.ajax({type:'POST', url:'/json/task/add', data: {data: JSON.stringify(params)}, success:function (data) {
+            callback(data);
+        }, dataType:"json"});
+    },
+
     updateTask:function (params, callback) {
         $.ajax({type:'POST', url:'/json/task/update', data: {data: JSON.stringify(params)}, success:function (data) {
             callback(data);

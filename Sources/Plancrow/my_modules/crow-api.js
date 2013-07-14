@@ -1,3 +1,32 @@
+
+exports.addPhase = function (req, res) {
+    var data = JSON.parse(req.body.data)
+//    data.parent_phase_id
+    req.models.project_phase.create([{
+        project_id: 1, //nb!: harcoded
+        parent_id: data.parent_phase_id,
+        name: "New Phase",
+        notes: "Some Notes"
+    }],function(err, items){
+       res.json(items[0]);
+    });
+};
+
+exports.addTask = function (req, res) {
+    var data = JSON.parse(req.body.data)
+//    data.phase_id
+    req.models.task.create([{
+        company_id: 1,
+        project_phase_id: data.phase_id,
+        project_id: 1,
+        name: "New Task",
+        notes: "New Notes",
+        status: "N"
+    }],function(err, items){
+       res.json(items[0]);
+    });
+};
+
 exports.updateTask = function (req, res) {
     var task = JSON.parse(req.body.data)
     req.models.task.get(task.id, function (err, fromdb) {

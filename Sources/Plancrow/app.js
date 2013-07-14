@@ -65,6 +65,7 @@ app.use(orm.express(conf.mysqlConnectionString(), {
             amnd_date: Date,
             amnd_user: Number,
             project_id: Number,
+            parent_id: Number,
             name: String,
             notes: String
         });
@@ -206,6 +207,9 @@ app.get('/pages/23_public_project_registration', screens.screen23_public_project
 app.get('/pages/24_public_projects', screens.screen24_public_projects);
 
 
+app.post('/json/phase/add', crowapi.addPhase);
+
+app.post('/json/task/add', crowapi.addTask);
 app.post('/json/task/update', crowapi.updateTask);
 app.post('/json/task/move', crowapi.moveTask);
 app.post('/json/task/delete', crowapi.deleteTask);

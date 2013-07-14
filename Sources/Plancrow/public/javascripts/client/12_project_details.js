@@ -139,6 +139,59 @@
 
     });
 
+    var Phase = Backbone.Model.extend({
+        defaults: {
+            id: -1,
+            name: 'n/a'
+        }
+    });
+
+    var PhaseView = Backbone.View.extend({
+
+        tagName: 'li',
+
+        template: jade.compile('font Phase: #{name}\n' +
+            'div.row-fluid\n' +
+            '\tdiv.name.span2.droppable(data-phase-id=id) drag here [   ]\n' +
+            '\tdiv.name.span2\n' +
+            '\t\tbutton.btn.btn-primary.addphase(type="button", data-phase-id=id) + phase\n' +
+            '\tdiv.name.span2\n' +
+            '\t\tbutton.btn.btn-primary.addtask(type="button", data-phase-id=id) + task\n' +
+            'ul'),
+
+        events: {
+            "click .addtask": "addTask",
+            "click .addphase": "addPhase"
+        },
+
+        initialize: function () {
+            _.bindAll(this, 'addTask', 'addPhase', 'render');
+        },
+
+        addTask: function(target){
+           var phase_id = $(target.toElement).data("phase-id");
+            AjaxRequests.addTask({phase_id: phase_id}, function(task){
+                $("li.phase[id=" + phase_id + "]").append(
+                    new TaskView({model: new Task(task)}).render()
+                );
+            })
+        },
+
+        addPhase: function(target){
+            var phase_id = $(target.toElement).data("phase-id");
+            AjaxRequests.addPhase({parent_phase_id: phase_id}, function(phase){
+                $("li.phase[id=" + phase_id + "] ul").prepend(
+                    new PhaseView({model: new Phase(phase)}).render()
+                );
+            });
+        },
+
+        render:function () {
+            $(this.el).addClass("phase").attr("phase-id", this.model.attributes.id);
+            return $(this.el).html(this.template(this.model.attributes));
+        }
+    });
+
     var DroppableView = Backbone.View.extend({
         template: jade.compile('div.row-fluid.droppable\n\tdiv.name.span2 drag here [   ]'),
 
@@ -238,9 +291,13 @@
             var renderedDroppables = $(".droppable");
             for (var k = 0; k < renderedDroppables.size(); k++) {
                 var droppable = $(renderedDroppables[k]);
-//                console.info(task.data("taskid"));
-//                console.info(task.data("taskname"));
                 new DroppableView({el: renderedDroppables[k]});
+            }
+
+            var phases = $(".phase");
+            for (var k = 0; k < phases.size(); k++) {
+                var phase = $(phases[k]);
+                new PhaseView({el: phase[k]});
             }
 
             //DroppableView
