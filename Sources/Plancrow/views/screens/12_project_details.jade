@@ -18,9 +18,14 @@ mixin phases(phase)
                 div.row-fluid.task(id ="#{task.id}", data-taskid="#{task.id}", data-taskname = "#{task.name}", data-tasknotes = "#{task.notes}")
                     div.name.span1
                         i.icon-tasks.pull-right
-                    div.name.span5 Task: #{task.name}
+                    div.name.span3 Task: #{task.name}
                         div.notes= task.notes
                     div.span3
+                        select.multiple.assignment(multiple, s)
+                            option(value="ilya", selected=true) Ilya Pimenov
+                            option(value="max") Max Korotkov
+                            option(value="taras") Taras Kalapun
+                    div.span2
                         p [est.: #{task.estimate}, posted: #{task.posted}]
                     div.span1
                         button.btn.btn-mini.btn-danger.delete delete

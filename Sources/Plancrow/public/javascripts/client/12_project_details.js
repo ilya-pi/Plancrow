@@ -304,6 +304,8 @@
 
 //            this.render();
 
+            $(".assignment").select2();
+
             this.$el.find(".notes").toggle();
 //            $('.dropdown-toggle').dropdown();
         },
