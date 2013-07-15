@@ -40,6 +40,18 @@ orm.connect(conf.mysqlConnectionString(), function (err, db) {
 //orm
 app.use(orm.express(conf.mysqlConnectionString(), {
     define: function (db, models) {
+        models.assignment = db.define("ASSIGNMENT", {
+            id: Number,
+            company_id: Number,
+            amnd_date: Date,
+            amnd_user: Number,
+            project_id: Number,
+            userlink_id: Number,
+            task_id: Number,
+            type: String,
+            notes: String
+        });
+
         models.appUser = db.define("APP_USER", {
             id: Number,
             login: String,
@@ -82,6 +94,18 @@ app.use(orm.express(conf.mysqlConnectionString(), {
             estimate: Number,
             posted: Number,
             status: String
+        });
+
+        models.userlink = db.define("USERLINK", {
+            id: Number,
+            company_id: Number,
+            user_id: Number,
+            amnd_date: Date,
+            amnd_user: Number,
+            email: String,
+            role: String,
+            is_active: String,
+            job_title: String
         });
 
         models.project_phase.topPhases = function (projectId, callback) {
@@ -207,6 +231,7 @@ app.get('/pages/23_public_project_registration', screens.screen23_public_project
 app.get('/pages/24_public_projects', screens.screen24_public_projects);
 
 
+app.get('/json/task/assigned', crowapi.assignedTasks);
 app.get('/json/task/all', crowapi.allTasks);
 
 app.post('/json/phase/add', crowapi.addPhase);

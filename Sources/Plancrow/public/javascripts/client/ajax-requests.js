@@ -6,40 +6,46 @@
  */
 var AjaxRequests = {
 
-    allTasks:function (params, callback) {
-        $.ajax({type:'GET', url:'/json/task/all', data: {data: JSON.stringify(params)}, success:function (data) {
+    assignedTasks: function (params, callback) {
+        $.ajax({type: 'GET', url: '/json/task/assigned', data: {data: JSON.stringify(params)}, success: function (data) {
             callback(data);
-        }, dataType:"json"});
+        }, dataType: "json"});
     },
 
-    addPhase:function (params, callback) {
-        $.ajax({type:'POST', url:'/json/phase/add', data: {data: JSON.stringify(params)}, success:function (data) {
+    allTasks: function (params, callback) {
+        $.ajax({type: 'GET', url: '/json/task/all', data: {data: JSON.stringify(params)}, success: function (data) {
             callback(data);
-        }, dataType:"json"});
+        }, dataType: "json"});
     },
 
-    addTask:function (params, callback) {
-        $.ajax({type:'POST', url:'/json/task/add', data: {data: JSON.stringify(params)}, success:function (data) {
+    addPhase: function (params, callback) {
+        $.ajax({type: 'POST', url: '/json/phase/add', data: {data: JSON.stringify(params)}, success: function (data) {
             callback(data);
-        }, dataType:"json"});
+        }, dataType: "json"});
     },
 
-    updateTask:function (params, callback) {
-        $.ajax({type:'POST', url:'/json/task/update', data: {data: JSON.stringify(params)}, success:function (data) {
+    addTask: function (params, callback) {
+        $.ajax({type: 'POST', url: '/json/task/add', data: {data: JSON.stringify(params)}, success: function (data) {
             callback(data);
-        }, dataType:"json"});
+        }, dataType: "json"});
     },
 
-    moveTask:function (params, callback) {
-        $.ajax({type:'POST', url:'/json/task/move', data: {data: JSON.stringify(params)}, success:function (data) {
+    updateTask: function (params, callback) {
+        $.ajax({type: 'POST', url: '/json/task/update', data: {data: JSON.stringify(params)}, success: function (data) {
             callback(data);
-        }, dataType:"json"});
+        }, dataType: "json"});
     },
 
-    deleteTask:function (params, callback) {
-        $.ajax({type:'POST', url:'/json/task/delete', data: {data: JSON.stringify(params)}, success:function (data) {
+    moveTask: function (params, callback) {
+        $.ajax({type: 'POST', url: '/json/task/move', data: {data: JSON.stringify(params)}, success: function (data) {
             callback(data);
-        }, dataType:"json"});
+        }, dataType: "json"});
+    },
+
+    deleteTask: function (params, callback) {
+        $.ajax({type: 'POST', url: '/json/task/delete', data: {data: JSON.stringify(params)}, success: function (data) {
+            callback(data);
+        }, dataType: "json"});
     }
 
 }

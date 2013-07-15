@@ -1,5 +1,18 @@
 var conf = require('../my_modules/crow-conf.js');
 
+exports.assignedTasks = function (req, res) {
+    var customerId = conf.currentlyAuthorized().customer_id;
+//    req.models.project_phase.phases(projectId, function (err, phases) {
+//        user_id
+//        is_active == Y
+//        req.models.task.tasksByProject(projectId, function (err, tasks) {
+//            res.json({root: tree_from_list(phases, tasks)});
+            res.json({assignments: [{name: "Screen 22 markup", posted: 666},
+                {name: "Screen 12a javascripts", posted: 100500}]});
+//        });
+//    });
+}
+
 var tree_from_list = function (list, tasks) {
     var map = new Array();
     var result = new Array();
