@@ -207,6 +207,8 @@ app.get('/pages/23_public_project_registration', screens.screen23_public_project
 app.get('/pages/24_public_projects', screens.screen24_public_projects);
 
 
+app.get('/json/task/all', crowapi.allTasks);
+
 app.post('/json/phase/add', crowapi.addPhase);
 
 app.post('/json/task/add', crowapi.addTask);

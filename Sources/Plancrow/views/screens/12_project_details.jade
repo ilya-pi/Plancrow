@@ -1,58 +1,5 @@
 extends ../authed_layout
 
-mixin phases(phase)
-    li.phase(id = "#{phase.id}") Phase: #{phase.name}
-        div.row-fluid
-            div.name.span2.droppable(data-phase-id = "#{phase.id}") drag here [   ]
-            div.name.span2
-                button.btn.btn-primary.addphase(type = "button", data-phase-id = "#{phase.id}") + phase
-            div.name.span2
-                button.btn.btn-primary.addtask(type = "button", data-phase-id = "#{phase.id}") + task
-        - if (phase.children != undefined){
-            ul
-                - each child in phase.children
-                    mixin phases(child)
-        - }
-        - if (phase.tasks != undefined){
-            - each task in phase.tasks
-                div.row-fluid.task(id ="#{task.id}", data-taskid="#{task.id}", data-taskname = "#{task.name}", data-tasknotes = "#{task.notes}")
-                    div.name.span1
-                        i.icon-tasks.pull-right
-                    div.name.span3 Task: #{task.name}
-                        div.notes= task.notes
-                    div.span3
-                        select.multiple.assignment(multiple, s)
-                            option(value="ilya", selected=true) Ilya Pimenov
-                            option(value="max") Max Korotkov
-                            option(value="taras") Taras Kalapun
-                    div.span2
-                        p [est.: #{task.estimate}, posted: #{task.posted}]
-                    div.span1
-                        button.btn.btn-mini.btn-danger.delete delete
-                    div.span1
-                        button.btn.btn-mini.btn-info.details details
-                    div.span1
-                        div.btn-group.status
-                            a.btn.btn-mini.btn-primary
-                                - if (task.status == "A"){
-                                    font Active
-                                - }else if (task.status == 'N'){
-                                    font Not Started
-                                - }else if (task.status == 'C'){
-                                    font Completed
-                                - }
-                            a.btn.btn-mini.btn-primary.dropdown-toggle(data-toggle="dropdown")
-                                span.caret
-                            ul.dropdown-menu(role = "menu")
-                                li(role = "presentation")
-                                    a(role = "menuitem", data-status="A") Active
-                                li(role = "presentation")
-                                    a(role = "menuitem", data-status="N") Not Started
-                                li.divider
-                                li(role = "presentation")
-                                    a(role = "menuitem", data-status="C") Completed
-    - }
-
 block au_content
     div.row-fluid
         div.span6
@@ -65,8 +12,6 @@ block au_content
                     a(href="#invoicing", alt="invoicing") Invoicing
     div.row-fluid
         div.span12
-            ul
-                - each phase in phases
-                    mixin phases(phase)
+            ul.details-container
 
     script(type='text/javascript', src='/javascripts/client/12_project_details.js')

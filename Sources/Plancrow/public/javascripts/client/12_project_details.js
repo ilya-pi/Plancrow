@@ -12,19 +12,18 @@
     var TaskView = Backbone.View.extend({
 //        template: jade.compile('div.row-fluid\n\tdiv.span1\n\t\ti.icon-tasks.pull-right\n\tdiv.name.span5 Task: #{name}\n\tdiv.span6 \n\t\tp [est.: #{estimate}, posted: #{posted}]'),
         template: jade.compile('div.row-fluid.task(id ="#{id}", data-taskid="#{id}", data-taskname = "#{name}", data-tasknotes = "#{notes}")' +
-            '\n\tdiv.name.span1' +
+            '\n\tdiv.span1' +
             '\n\t\ti.icon-tasks.pull-right' +
-            '\n\tdiv.name.span5 Task: #{name}' +
+            '\n\tdiv.name.span4 Task: #{name}' +
             '\n\t\tdiv.notes(style="display:none;")= notes' +
             '\n\tdiv.span3' +
             '\n\t\tp [est.: #{estimate}, posted: #{posted}]' +
-            '\n\tdiv.span1' +
-            '\n\t\tbutton.btn.btn-mini.btn-danger.delete delete' +
-            '\n\tdiv.span1' +
-            '\n\t\tbutton.btn.btn-mini.btn-info.details details' +
+            '\n\tdiv.span2.input-prepend.input-append' +
+            '\n\t\tbutton.btn.btn-mini.delete delete' +
+            '\n\t\tbutton.btn.btn-mini.details details' +
             '\n\tdiv.span1' +
             '\n\t\tdiv.btn-group.status' +
-            '\n\t\t\ta.btn.btn-mini.btn-primary' +
+            '\n\t\t\ta.btn.btn-mini' +
             '\n\t\t\t\t- if (status == "A"){' +
             '\n\t\t\t\t\tfont Active' +
             '\n\t\t\t\t- }else if (status == "N"){' +
@@ -32,7 +31,7 @@
             '\n\t\t\t\t- }else if (status == "C"){' +
             '\n\t\t\t\t\tfont Completed' +
             '\n\t\t\t\t- }' +
-            '\n\t\t\ta.btn.btn-mini.btn-primary.dropdown-toggle(data-toggle="dropdown")' +
+            '\n\t\t\ta.btn.btn-mini.dropdown-toggle(data-toggle="dropdown")' +
             '\n\t\t\t\tspan.caret' +
             '\n\t\t\tul.dropdown-menu(role = "menu")' +
             '\n\t\t\t\tli(role = "presentation")' +
@@ -45,14 +44,13 @@
         ),
 
 
-
         editTemplate: jade.compile('div.row-fluid\n\tdiv.span1\n\t\ti.icon-tasks.pull-right\n\tdiv.span4 Task:&nbsp;\n\t\tinput.editname(type="text", value=name)'),
 
         events: {
             "click .name": "rename",
             "blur": "saveRenamed",
-            "click button.delete" : "deleteTask",
-            "click button.details" : "details",
+            "click button.delete": "deleteTask",
+            "click button.details": "details",
             "click .status a[role = 'menuitem']": "changeStatus"
         },
 
@@ -86,12 +84,10 @@
         },
         /* } Draggable kitchen */
 
-        render:function () {
-            $(this.el).addClass("task").attr("data-taskid", this.model.attributes.id);
-//            $.data(this.el, "taskid", this.model.attributes.id);
-//            $(this.el).data("taskid") = this.model.attributes.id;
-//                (id = "#{id}, data-taskid = "#{id}").task
-            return $(this.el).html(this.template(this.model.attributes));
+        render: function () {
+            this.$el.addClass("task").attr("data-taskid", this.model.attributes.id);
+            this.$el.html(this.template(this.model.attributes))
+            return this;
         },
 
         rename: function () {
@@ -100,37 +96,37 @@
             this.el.addEventListener('blur', this.saveRenamed, true);
         },
 
-        saveRenamed: function(){
+        saveRenamed: function () {
             var that = this
             //and jquery-coin "saved" notification
             var newName = $(this.el).find(".editname").val();
             this.model.attributes.name = newName;
-            AjaxRequests.updateTask(this.model.attributes, function(task){
+            AjaxRequests.updateTask(this.model.attributes, function (task) {
                 $.extend(that.model.attributes, task);
                 that.render();
             })
         },
 
-        deleteTask: function(){
+        deleteTask: function () {
             var that = this;
-            AjaxRequests.deleteTask(this.model.attributes, function(response){
-                if (response.status !== "undefined" && response.status === "error"){
+            AjaxRequests.deleteTask(this.model.attributes, function (response) {
+                if (response.status !== "undefined" && response.status === "error") {
                     window.alert(response.message);
-                }else{
+                } else {
                     that.$el.remove();
                 }
             })
         },
 
-        details: function(){
+        details: function () {
             this.$el.find(".notes").toggle();
         },
 
-        changeStatus: function(src){
+        changeStatus: function (src) {
             var that = this
             //and jquery-coin "saved" notification
             this.model.attributes.status = $(src.target).data("status");
-            AjaxRequests.updateTask(this.model.attributes, function(task){
+            AjaxRequests.updateTask(this.model.attributes, function (task) {
                 $.extend(that.model.attributes, task);
                 that.render();
             })
@@ -152,12 +148,12 @@
 
         template: jade.compile('font Phase: #{name}\n' +
             'div.row-fluid\n' +
-            '\tdiv.name.span2.droppable(data-phase-id=id) drag here [   ]\n' +
-            '\tdiv.name.span2\n' +
-            '\t\tbutton.btn.btn-primary.addphase(type="button", data-phase-id=id) + phase\n' +
-            '\tdiv.name.span2\n' +
-            '\t\tbutton.btn.btn-primary.addtask(type="button", data-phase-id=id) + task\n' +
-            'ul'),
+            '\tdiv.span2.droppable(data-phase-id=id) [ drag here ]\n' +
+            '\tdiv.span2.input-prepend.input-append\n' +
+            '\t\tbutton.btn.btn-mini.addphase(type="button", data-phase-id=id) + phase\n' +
+            '\t\tbutton.btn.btn-mini.addtask(type="button", data-phase-id=id) + task\n' +
+            'ul.children\n' +
+            'ul.tasks'),
 
         events: {
             "click .addtask": "addTask",
@@ -168,27 +164,60 @@
             _.bindAll(this, 'addTask', 'addPhase', 'render');
         },
 
-        addTask: function(target){
-           var phase_id = $(target.toElement).data("phase-id");
-            AjaxRequests.addTask({phase_id: phase_id}, function(task){
-                $("li.phase[id=" + phase_id + "]").append(
-                    new TaskView({model: new Task(task)}).render()
-                );
-            })
+        addTask: function (target) {
+            var that = this;
+            var phaseId = $(target.toElement).data("phase-id");
+            if (phaseId == this.model.attributes.id) {
+                AjaxRequests.addTask({phase_id: phaseId}, function (task) {
+                    that.taskPlace.prepend(
+                        new TaskView({model: new Task(task)}).render().el
+                    );
+                });
+            } else {
+                return;
+            }
         },
 
-        addPhase: function(target){
-            var phase_id = $(target.toElement).data("phase-id");
-            AjaxRequests.addPhase({parent_phase_id: phase_id}, function(phase){
-                $("li.phase[id=" + phase_id + "] ul").prepend(
-                    new PhaseView({model: new Phase(phase)}).render()
-                );
-            });
+        addPhase: function (target) {
+            var that = this;
+            var phaseId = $(target.toElement).data("phase-id");
+            if (phaseId == this.model.attributes.id) {
+                AjaxRequests.addPhase({parent_phase_id: phaseId}, function (phase) {
+                    that.kidPlace.append(
+                        new PhaseView({model: new Phase(phase)}).render().el
+                    );
+                });
+            } else {
+                return;
+            }
         },
 
-        render:function () {
-            $(this.el).addClass("phase").attr("phase-id", this.model.attributes.id);
-            return $(this.el).html(this.template(this.model.attributes));
+        render: function () {
+            this.$el.addClass("phase").attr("phase-id", this.model.attributes.id);
+            this.$el.html(this.template(this.model.attributes));
+            this.kidPlace = this.$el.find(".children");
+            this.taskPlace = this.$el.find(".tasks");
+
+            if (this.model.attributes.tasks != undefined) {
+                var tasks = this.model.attributes.tasks;
+                for (var i = 0; i < tasks.length; i++) {
+                    this.taskPlace.append(new TaskView({model: new Task(tasks[i])}).render().el);
+                }
+            }
+
+            if (this.model.attributes.children != undefined) {
+                var kids = this.model.attributes.children;
+                var kiddies = new Array();
+                for (var i = 0; i < kids.length; i++) {
+                    kiddies[i] = new PhaseView({model: new Phase(kids[i])});
+                }
+                for (var i = 0; i < kids.length; i++) {
+                    this.kidPlace.append(kiddies[i].render().el);
+                }
+
+                this.model.attributes.children = undefined;
+            }
+            return this;
         }
     });
 
@@ -254,7 +283,7 @@
         drop: function (data, dataTransfer, e) {
             console.info(data);
             var to_phase = $(e.toElement).data("phase-id");
-            AjaxRequests.moveTask({task_id: data.id, to_phase: to_phase}, function(task){
+            AjaxRequests.moveTask({task_id: data.id, to_phase: to_phase}, function (task) {
                 $("div[data-taskid=" + data.id + "]").remove();
                 $("li.phase[id=" + to_phase + "]").append(
                     new TaskView({model: new Task(task)}).render()
@@ -269,7 +298,7 @@
         }, // overide me!  if the draggable class returned some data on 'dragStart' it will be the first argument
         //     /* } Draggable kitchen */
 
-        render:function () {
+        render: function () {
             return $(this.$el).html(this.template(this.model.attributes));
         }
     });
@@ -279,41 +308,46 @@
         initialize: function () {
             _.bindAll(this, 'render');
 
-            var renderedTasks = $(".task");
-            for (var k = 0; k < renderedTasks.size(); k++) {
-                var task = $(renderedTasks[k]);
-//                console.info(task.data("taskid"));
-//                console.info(task.data("taskname"));
-                new TaskView({el: renderedTasks[k], model: new Task({id: task.data("taskid"), name: task.data("taskname"),
-                    notes: task.data("tasknotes")})});
-            }
-
-            var renderedDroppables = $(".droppable");
-            for (var k = 0; k < renderedDroppables.size(); k++) {
-                var droppable = $(renderedDroppables[k]);
-                new DroppableView({el: renderedDroppables[k]});
-            }
-
-            var phases = $(".phase");
-            for (var k = 0; k < phases.size(); k++) {
-                var phase = $(phases[k]);
-                new PhaseView({el: phase[k]});
-            }
+//            var renderedTasks = $(".task");
+//            for (var k = 0; k < renderedTasks.size(); k++) {
+//                var task = $(renderedTasks[k]);
+//                new TaskView({el: renderedTasks[k], model: new Task({id: task.data("taskid"), name: task.data("taskname"),
+//                    notes: task.data("tasknotes")})});
+//            }
+//
+//            var renderedDroppables = $(".droppable");
+//            for (var k = 0; k < renderedDroppables.size(); k++) {
+//                var droppable = $(renderedDroppables[k]);
+//                new DroppableView({el: renderedDroppables[k]});
+//            }
+//
+//            var phases = $(".phase");
+//            for (var k = 0; k < phases.size(); k++) {
+//                var phase = $(phases[k]);
+//                new PhaseView({el: phase[k]});
+//            }
 
             //DroppableView
 
 //            this.render();
 
-            $(".assignment").select2();
+//            $(".assignment").select2();
 
-            this.$el.find(".notes").toggle();
-//            $('.dropdown-toggle').dropdown();
+//            this.$el.find(".notes").toggle();
+
         },
         render: function () {
-//            $(this.el).append("<button id='add'>Add list item</button>");
+            AjaxRequests.allTasks({}, function (data) {
+                for (var i = 0; i < data.root.length; i++) {
+                    $(".details-container").append(
+                        new PhaseView({model: new Phase(data.root[i])}).render().el
+                    );
+                }
+            });
         }
     });
 
     var ProjectDetailsScreen = new ProjectDetailsScreen();
+    ProjectDetailsScreen.render();
 
 })(jQuery);

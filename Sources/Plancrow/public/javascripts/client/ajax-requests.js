@@ -6,6 +6,12 @@
  */
 var AjaxRequests = {
 
+    allTasks:function (params, callback) {
+        $.ajax({type:'GET', url:'/json/task/all', data: {data: JSON.stringify(params)}, success:function (data) {
+            callback(data);
+        }, dataType:"json"});
+    },
+
     addPhase:function (params, callback) {
         $.ajax({type:'POST', url:'/json/phase/add', data: {data: JSON.stringify(params)}, success:function (data) {
             callback(data);
