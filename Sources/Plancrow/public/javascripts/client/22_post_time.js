@@ -14,8 +14,9 @@
 
         template: jade.compile(
             'td= name\n' +
-            'td\n' +
-            '\tinput.posttime(type="text", value=posted)\n'),
+            'td.input-append(style="display: table-cell;")\n' +
+            '\tinput.posttime(type="text", value=posted)\n' +
+            '\tbutton.btn(type="button") Post'),
 
         events: {
             "blur": "postTime"
