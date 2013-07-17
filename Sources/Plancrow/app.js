@@ -41,23 +41,24 @@ orm.connect(conf.mysqlConnectionString(), function (err, db) {
 app.use(orm.express(conf.mysqlConnectionString(), {
     define: function (db, models) {
         models.assignment = db.define("ASSIGNMENT", {
-            id: Number,
-            company_id: Number,
-            amnd_date: Date,
-            amnd_user: Number,
-            project_id: Number,
-            userlink_id: Number,
-            task_id: Number,
-            type: String,
-            notes: String
-        });
+                id: Number,
+                company_id: Number,
+                amnd_date: Date,
+                amnd_user: Number,
+                project_id: Number,
+                userlink_id: Number,
+                task_id: Number,
+                type: String,
+                notes: String
+            },
+            {cache: false}
+        );
 
         models.appUser = db.define("APP_USER", {
             id: Number,
             login: String,
             pwd: Boolean,
             first_name: String,
-            last_name: String,
             second_name: String,
             salutation: String,
             created_at: Date,
@@ -83,18 +84,20 @@ app.use(orm.express(conf.mysqlConnectionString(), {
         });
 
         models.task = db.define("TASK", {
-            id: Number,
-            company_id: Number,
-            amnd_date: Date,
-            amnd_user: Number,
-            project_phase_id: Number,
-            project_id: Number,
-            name: String,
-            notes: String,
-            estimate: Number,
-            posted: Number,
-            status: String
-        });
+                id: Number,
+                company_id: Number,
+                amnd_date: Date,
+                amnd_user: Number,
+                project_phase_id: Number,
+                project_id: Number,
+                name: String,
+                notes: String,
+                estimate: Number,
+                posted: Number,
+                status: String
+            },
+            {cache: false} /* nb!: otherwise assignments are not picked up quick enough */
+        );
 
         models.userlink = db.define("USERLINK", {
             id: Number,
@@ -120,8 +123,14 @@ app.use(orm.express(conf.mysqlConnectionString(), {
             this.find({ project_id: projectId}, callback);
         };
 
-        models.project_phase.hasOne("project", models.project);
-        models.project.hasMany("phases", models.project_phase);
+        models.assignment.hasOne("task", models.task, { required: true, reverse: "assignments", autoFetch: true });
+        //the follow up line might be required, though not sure
+//        models.assignment.hasOne("userlink", models.userlink, { required: true,  autoFetch: true }); //column 'userlink_id' in 'assignment' table
+
+        models.userlink.hasOne("user", models.appUser, { required: true, autoFetch: true }); //column 'userlink_id' in 'assignment' table
+
+//        models.project_phase.hasOne("project", models.project);
+//        models.project.hasMany("phases", models.project_phase);
 
         models.project_phase.hasOne("parent", models.project_phase, {
             reverse: "children"
@@ -188,7 +197,7 @@ function check_auth(req, res, next) {
     if (req.user == undefined) {
         console.info(user);
         res.redirect("/pages/04_sign_in_page");
-    }else{
+    } else {
         next();
     }
 }
@@ -231,6 +240,9 @@ app.get('/pages/23_public_project_registration', screens.screen23_public_project
 app.get('/pages/24_public_projects', screens.screen24_public_projects);
 
 
+app.post('/json/assignment/sync', crowapi.syncAssignment);
+
+app.get('/json/userlinks/all', crowapi.allUserlinks);
 app.get('/json/task/assigned', crowapi.assignedTasks);
 app.get('/json/task/all', crowapi.allTasks);
 

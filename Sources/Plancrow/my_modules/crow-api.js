@@ -1,16 +1,68 @@
-var conf = require('../my_modules/crow-conf.js');
+var orm = require('orm'),
+    conf = require('../my_modules/crow-conf.js');
+
+exports.syncAssignment = function (req, res) {
+    var projectId = conf.currentlyAuthorized().project_id;
+    var companyId = conf.currentlyAuthorized().company_id;
+    var customerId = conf.currentlyAuthorized().customer_id;
+
+    var data = JSON.parse(req.body.data)
+    var task_id = data.task_id;
+    var userlinks = data.userlinks;
+    req.models.assignment.find({task_id: task_id}, function (err, assignments) {
+        for (var i = 0; i < assignments.length; i++) {
+
+            //delete those not found any longer
+            var found = userlinks.indexOf(assignments[i].userlink_id);
+            if (found == -1) {
+                assignments[i].remove(function (err) {
+                    /* ignore for now, todo: nice error handling in future */
+                    console.error(err);
+                });
+            } else {
+                userlinks[found] = undefined;
+            }
+        }
+
+        //add the new ones
+        var toCreate = new Array();
+        for (var k = 0; k < userlinks.length; k++) {
+            if (userlinks[k] != undefined) {
+                toCreate.push({
+                    company_id: companyId,
+                    amnd_date: new Date(),
+                    amnd_user: customerId,
+                    project_id: projectId,
+                    userlink_id: userlinks[k],
+                    task_id: task_id
+                });
+            }
+        }
+
+        req.models.assignment.create(toCreate, function (err, items) {
+            toCreate = new Array();
+            res.json({created: toCreate.length});
+        });
+    });
+}
+
+exports.allUserlinks = function (req, res) {
+    var companyId = conf.currentlyAuthorized().company_id;
+    req.models.userlink.find({company_id: companyId}, function (err, userlinks) {
+        res.json({userlinks: userlinks});
+    });
+}
 
 exports.assignedTasks = function (req, res) {
     var customerId = conf.currentlyAuthorized().customer_id;
-//    req.models.project_phase.phases(projectId, function (err, phases) {
-//        user_id
-//        is_active == Y
-//        req.models.task.tasksByProject(projectId, function (err, tasks) {
-//            res.json({root: tree_from_list(phases, tasks)});
-            res.json({assignments: [{name: "Screen 22 markup", posted: 666},
-                {name: "Screen 12a javascripts", posted: 100500}]});
-//        });
-//    });
+    req.models.userlink.find({user_id: customerId}, function (err, userlinks) {
+        var userlinksIds = userlinks.map(function (v) {
+            return v.id;
+        })
+        req.models.assignment.find({userlink_id: userlinksIds}, function (err, assignments) {
+            res.json({assignments: assignments});
+        })
+    });
 }
 
 var tree_from_list = function (list, tasks) {
@@ -56,9 +108,14 @@ var tree_from_list = function (list, tasks) {
 
 exports.allTasks = function (req, res) {
     var projectId = conf.currentlyAuthorized().project_id;
+    var companyId = conf.currentlyAuthorized().company_id;
     req.models.project_phase.phases(projectId, function (err, phases) {
         req.models.task.tasksByProject(projectId, function (err, tasks) {
-            res.json({root: tree_from_list(phases, tasks)});
+            req.models.userlink.find({company_id: companyId}, function (err, userlinks) {
+                res.json({
+                    root: tree_from_list(phases, tasks),
+                    userlinks: userlinks});
+            });
         });
     });
 }

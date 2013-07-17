@@ -6,6 +6,13 @@
  */
 var AjaxRequests = {
 
+    syncAssignment: function (params, callback) {
+        console.info(params);
+        $.ajax({type: 'POST', url: '/json/assignment/sync', data: {data: JSON.stringify(params)}, success: function (data) {
+            callback(data);
+        }, dataType: "json"});
+    },
+
     assignedTasks: function (params, callback) {
         $.ajax({type: 'GET', url: '/json/task/assigned', data: {data: JSON.stringify(params)}, success: function (data) {
             callback(data);

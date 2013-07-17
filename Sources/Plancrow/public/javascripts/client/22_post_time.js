@@ -13,9 +13,9 @@
         tagName: "tr",
 
         template: jade.compile(
-            'td= name\n' +
+            'td= task.name\n' +
             'td.input-append(style="display: table-cell;")\n' +
-            '\tinput.posttime(type="text", value=posted)\n' +
+            '\tinput.posttime(type="text", value=task.posted)\n' +
             '\tbutton.btn(type="button") Post'),
 
         events: {

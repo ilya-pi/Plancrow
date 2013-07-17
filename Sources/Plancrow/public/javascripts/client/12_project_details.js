@@ -11,24 +11,32 @@
 
     var TaskView = Backbone.View.extend({
 //        template: jade.compile('div.row-fluid\n\tdiv.span1\n\t\ti.icon-tasks.pull-right\n\tdiv.name.span5 Task: #{name}\n\tdiv.span6 \n\t\tp [est.: #{estimate}, posted: #{posted}]'),
-        template: jade.compile('div.row-fluid.task(id ="#{id}", data-taskid="#{id}", data-taskname = "#{name}", data-tasknotes = "#{notes}")' +
+        template: jade.compile('div.row-fluid.task(id ="#{t.id}", data-taskid="#{t.id}", data-taskname = "#{t.name}", data-tasknotes = "#{t.notes}")' +
             '\n\tdiv.span1' +
             '\n\t\ti.icon-tasks.pull-right' +
-            '\n\tdiv.name.span4 Task: #{name}' +
-            '\n\t\tdiv.notes(style="display:none;")= notes' +
-            '\n\tdiv.span3' +
-            '\n\t\tp [est.: #{estimate}, posted: #{posted}]' +
+            '\n\tdiv.name.span2 Task: #{t.name}' +
+            '\n\t\tdiv.notes(style="display:none;")= t.notes' +
+            '\n\tdiv.span2' +
+            '\n\t\tp [est.: #{t.estimate}, posted: #{t.posted}]' +
+
+            '\n\tdiv.span3\n' +
+            '\t\tselect.assignment(style="width: 100%;", multiple)\n' +
+            '\t\t\t- for (var i = 0; i < u.length; i++) {\n' +
+            '\t\t\t\t- var if_selected = ""; for (var k = 0; k < t.assignments.length; k++) { if (t.assignments[k].userlink_id == u[i].id){if_selected = "true";}} \n' +
+            '\t\t\t\toption(value=u[i].id, selected=if_selected) #{u[i].user.first_name} #{u[i].user.second_name}\n' +
+            '\t\t\t- }\n' +
+
             '\n\tdiv.span2.input-prepend.input-append' +
             '\n\t\tbutton.btn.btn-mini.delete delete' +
             '\n\t\tbutton.btn.btn-mini.details details' +
             '\n\tdiv.span1' +
             '\n\t\tdiv.btn-group.status' +
             '\n\t\t\ta.btn.btn-mini' +
-            '\n\t\t\t\t- if (status == "A"){' +
+            '\n\t\t\t\t- if (t.status == "A"){' +
             '\n\t\t\t\t\tfont Active' +
-            '\n\t\t\t\t- }else if (status == "N"){' +
+            '\n\t\t\t\t- }else if (t.status == "N"){' +
             '\n\t\t\t\t\tfont Not Started' +
-            '\n\t\t\t\t- }else if (status == "C"){' +
+            '\n\t\t\t\t- }else if (t.status == "C"){' +
             '\n\t\t\t\t\tfont Completed' +
             '\n\t\t\t\t- }' +
             '\n\t\t\ta.btn.btn-mini.dropdown-toggle(data-toggle="dropdown")' +
@@ -51,11 +59,12 @@
             "blur": "saveRenamed",
             "click button.delete": "deleteTask",
             "click button.details": "details",
-            "click .status a[role = 'menuitem']": "changeStatus"
+            "click .status a[role = 'menuitem']": "changeStatus",
+            "change .assignment": "syncAssignment"
         },
 
         initialize: function () {
-            _.bindAll(this, 'render', 'rename', 'saveRenamed', 'deleteTask', 'details', 'changeStatus', '_dragStartEvent');
+            _.bindAll(this, 'render', 'rename', 'saveRenamed', 'syncAssignment', 'deleteTask', 'details', 'changeStatus', '_dragStartEvent');
 
             //draggable kitchen
             this.$el.attr("draggable", "true")
@@ -86,7 +95,8 @@
 
         render: function () {
             this.$el.addClass("task").attr("data-taskid", this.model.attributes.id);
-            this.$el.html(this.template(this.model.attributes))
+            this.$el.html(this.template({t: this.model.attributes, u: projectDetailsScreen.userlinks}));
+            this.$el.find(".assignment").select2();
             return this;
         },
 
@@ -104,6 +114,15 @@
             AjaxRequests.updateTask(this.model.attributes, function (task) {
                 $.extend(that.model.attributes, task);
                 that.render();
+            })
+        },
+
+        syncAssignment: function (e){
+            console.info("Task " + this.model.attributes.id + " changed assignment to " + e.val);
+            AjaxRequests.syncAssignment({task_id: this.model.attributes.id, userlinks: e.val}, function (resp) {
+                console.info(resp);
+                console.info("Task " + this.model.attributes.id + " changed assignment to " + e.val);
+                //todo: show here that tasks were synced
             })
         },
 
@@ -337,8 +356,12 @@
 
         },
         render: function () {
+            var that = this;
             AjaxRequests.allTasks({}, function (data) {
                 for (var i = 0; i < data.root.length; i++) {
+                    /* store userlinks for later use */
+                    that.userlinks = data.userlinks;
+
                     $(".details-container").append(
                         new PhaseView({model: new Phase(data.root[i])}).render().el
                     );
@@ -347,7 +370,7 @@
         }
     });
 
-    var ProjectDetailsScreen = new ProjectDetailsScreen();
-    ProjectDetailsScreen.render();
+    var projectDetailsScreen = new ProjectDetailsScreen();
+    projectDetailsScreen.render();
 
 })(jQuery);
