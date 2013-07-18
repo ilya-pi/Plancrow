@@ -1,6 +1,48 @@
 var orm = require('orm'),
     conf = require('../my_modules/crow-conf.js');
 
+exports.postTime = function (req, res) {
+    var projectId = conf.currentlyAuthorized().project_id;
+    var companyId = conf.currentlyAuthorized().company_id;
+    var customerId = conf.currentlyAuthorized().customer_id;
+
+    var data = JSON.parse(req.body.data)
+    var task_id = data.task_id;
+    var time_inc = data.time_inc;
+    var timing_date = data.timing_date;
+    var userlink_id = data.userlink_id;
+
+//    req.db.transaction(function (err, t) {
+    req.models.task.get(task_id, function (err, fromdb) {
+
+        //todo require transactions here!
+        fromdb.posted = fromdb.posted + parseInt(time_inc);
+        fromdb.save(function (err) {
+            req.models.timing.create([
+                {
+                    company_id: companyId,
+                    amnd_date: new Date(),
+                    amnd_user: customerId,
+                    task_id: task_id,
+                    value: parseInt(time_inc),
+                    timing_date: new Date(timing_date),
+                    userlink_id: userlink_id,
+                    project_id: projectId
+                }
+            ], function (err) {
+                if (err == undefined) {
+//                        t.commit();
+                    res.json({status: "success", error: err});
+                } else {
+                    res.json({status: "error", error: err});
+                }
+            });
+        })
+    });
+//    });
+
+}
+
 exports.syncAssignment = function (req, res) {
     var projectId = conf.currentlyAuthorized().project_id;
     var companyId = conf.currentlyAuthorized().company_id;
@@ -65,7 +107,7 @@ exports.assignedTasks = function (req, res) {
     });
 }
 
-var tree_from_list = function (list, tasks) {
+var tree_from_list = function (list, tasks, cb) {
     var map = new Array();
     var result = new Array();
     var missed = new Array();
@@ -89,8 +131,11 @@ var tree_from_list = function (list, tasks) {
             }
         }
     }
+
+    var taskIds = new Array();
     for (i in tasks) {
         var task = tasks[i];
+        taskIds.push(task.id);
         task.completed = task.posted / task.estimate * 100;
         if (task.completed > 100) {
             task.overdue = task.completed - 100;
@@ -100,10 +145,29 @@ var tree_from_list = function (list, tasks) {
             if (phase.tasks == undefined) {
                 phase.tasks = new Array();
             }
+//            task.assignments = new Array(); //hack
             phase.tasks.push(task);
         }
     }
-    return result;
+    cb(result, taskIds, tasks);
+//    return result;
+}
+
+var attachAss = function(req, tree, tasks, ids, cb){
+    req.models.assignment.find({task_id: ids}, function (err, asses) {
+        for (var i = 0; i < tasks.length; i++) {
+            var task = tasks[i];
+            task.assignments = new Array();
+            for (var l = 0; l < asses.length; l++){
+                var ass = asses[l];
+                if (ass.task_id == task.id){
+                    task.assignments.push(ass);
+                }
+            }
+        }
+
+        cb(tree);
+    });
 }
 
 exports.allTasks = function (req, res) {
@@ -112,9 +176,15 @@ exports.allTasks = function (req, res) {
     req.models.project_phase.phases(projectId, function (err, phases) {
         req.models.task.tasksByProject(projectId, function (err, tasks) {
             req.models.userlink.find({company_id: companyId}, function (err, userlinks) {
-                res.json({
-                    root: tree_from_list(phases, tasks),
-                    userlinks: userlinks});
+                tree_from_list(phases, tasks, function(tree, ids, task){
+                    attachAss(req, tree, tasks, ids, function(tree){
+                        res.json({
+                            root: tree,
+                            userlinks: userlinks});
+                    });
+                });
+
+
             });
         });
     });
@@ -136,18 +206,32 @@ exports.addPhase = function (req, res) {
 };
 
 exports.addTask = function (req, res) {
+    var projectId = conf.currentlyAuthorized().project_id;
+    var companyId = conf.currentlyAuthorized().company_id;
+    var customerId = conf.currentlyAuthorized().customer_id;
     var data = JSON.parse(req.body.data)
-//    data.phase_id
-    req.models.task.create([
-        {
-            company_id: 1,
+
+    var dummy = {};
+    dummy.isInstance = false;
+    req.models.task.create(
+        [{
+            company_id: companyId,
             project_phase_id: data.phase_id,
-            project_id: 1,
+            project_id: projectId,
+            amnd_date: new Date(),
+            amnd_user: customerId,
             name: "New Task",
             notes: "New Notes",
-            status: "N"
-        }
-    ], function (err, items) {
+            estimate: 0,
+            posted: 0,
+            status: "N",
+//            assignments: null,
+            completed: 'N'
+        }]
+    , function (err, items) {
+            //hack for now
+        items[0].assignments = new Array();
+            console.info(items[0]);
         res.json(items[0]);
     });
 };
@@ -156,11 +240,12 @@ exports.updateTask = function (req, res) {
     var task = JSON.parse(req.body.data)
     req.models.task.get(task.id, function (err, fromdb) {
         for (i in task) {
-            if (i != "id") {
+            if (i != "id" && i != "amnd_date") {
                 fromdb[i] = task[i]
             }
         }
         fromdb.save(function (err) {
+            console.info(err);
             res.json(fromdb);
         })
     });

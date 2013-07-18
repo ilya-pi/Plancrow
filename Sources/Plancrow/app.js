@@ -11,6 +11,7 @@ var express = require('express')
     , conf = require('./my_modules/crow-conf.js')
     , crowapi = require('./my_modules/crow-api.js')
     , orm = require('orm')
+//    , transaction = require("orm-transaction")
     , passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
 
@@ -40,6 +41,10 @@ orm.connect(conf.mysqlConnectionString(), function (err, db) {
 //orm
 app.use(orm.express(conf.mysqlConnectionString(), {
     define: function (db, models) {
+
+//        db.use(transaction);
+        db.settings.set('instance.cache', false);
+
         models.assignment = db.define("ASSIGNMENT", {
                 id: Number,
                 company_id: Number,
@@ -95,6 +100,22 @@ app.use(orm.express(conf.mysqlConnectionString(), {
                 estimate: Number,
                 posted: Number,
                 status: String
+            }
+            ,
+            {cache: false} /* nb!: otherwise assignments are not picked up quick enough */
+        );
+
+        models.timing = db.define("TIMING", {
+                id: Number,
+                company_id: Number,
+                amnd_date: Date,
+                amnd_user: Number,
+                task_id: Number,
+                value: Number,
+                timing_date: Date,
+                userlink_id: Number,
+                rate_id: Number,
+                project_id: Number
             },
             {cache: false} /* nb!: otherwise assignments are not picked up quick enough */
         );
@@ -123,7 +144,8 @@ app.use(orm.express(conf.mysqlConnectionString(), {
             this.find({ project_id: projectId}, callback);
         };
 
-        models.assignment.hasOne("task", models.task, { required: true, reverse: "assignments", autoFetch: true });
+        models.assignment.hasOne("task", models.task, { //reverse: "assignments", -- doesn't work for some reason on save
+            autoFetch: true});
         //the follow up line might be required, though not sure
 //        models.assignment.hasOne("userlink", models.userlink, { required: true,  autoFetch: true }); //column 'userlink_id' in 'assignment' table
 
@@ -243,6 +265,7 @@ app.get('/pages/24_public_projects', screens.screen24_public_projects);
 app.post('/json/assignment/sync', crowapi.syncAssignment);
 
 app.get('/json/userlinks/all', crowapi.allUserlinks);
+app.post('/json/task/posttime', crowapi.postTime);
 app.get('/json/task/assigned', crowapi.assignedTasks);
 app.get('/json/task/all', crowapi.allTasks);
 

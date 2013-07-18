@@ -14,16 +14,17 @@
 
         template: jade.compile(
             'td= task.name\n' +
-            'td.input-append(style="display: table-cell;")\n' +
-            '\tinput.posttime(type="text", value=task.posted)\n' +
-            '\tbutton.btn(type="button") Post'),
+                'td.input-append(style="display: table-cell;")\n' +
+                '\tinput.posttime_val(type="text", value=task.posted)\n' +
+                '\tbutton.btn.posttime(type="button") Post'),
 
         events: {
-            "blur": "postTime"
+            "focus input.posttime_val": "clearPosttimeVal",
+            "click .posttime": "postTime"
         },
 
         initialize: function () {
-            _.bindAll(this, 'render', 'postTime');
+            _.bindAll(this, 'render', 'postTime', 'clearPosttimeVal');
         },
 
         render: function () {
@@ -31,8 +32,20 @@
             return this;
         },
 
-        postTime: function () {
-            console.info("called post time");
+        clearPosttimeVal: function() {
+            this.$el.find('.posttime_val').val('')
+        },
+
+        postTime: function (src) {
+            var that = this;
+            var time_inc = this.$el.find('.posttime_val').val();
+            AjaxRequests.postTime({
+                task_id: this.model.attributes.task_id,
+                time_inc: time_inc,
+                timing_date: new Date(),
+                userlink_id: this.model.attributes.userlink_id}, function (data) {
+                that.$el.find('.posttime_val').val(data.status);
+            });
         }
     });
 

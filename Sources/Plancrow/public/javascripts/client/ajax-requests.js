@@ -13,6 +13,12 @@ var AjaxRequests = {
         }, dataType: "json"});
     },
 
+    postTime: function (params, callback) {
+        $.ajax({type: 'POST', url: '/json/task/posttime', data: {data: JSON.stringify(params)}, success: function (data) {
+            callback(data);
+        }, dataType: "json"});
+    },
+
     assignedTasks: function (params, callback) {
         $.ajax({type: 'GET', url: '/json/task/assigned', data: {data: JSON.stringify(params)}, success: function (data) {
             callback(data);
