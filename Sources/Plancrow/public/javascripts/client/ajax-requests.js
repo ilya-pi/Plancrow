@@ -31,6 +31,12 @@ var AjaxRequests = {
         }, dataType: "json"});
     },
 
+    rmPhase: function (params, callback) {
+        $.ajax({type: 'POST', url: '/json/phase/rm', data: {data: JSON.stringify(params)}, success: function (data) {
+            callback(data);
+        }, dataType: "json"});
+    },
+
     addPhase: function (params, callback) {
         $.ajax({type: 'POST', url: '/json/phase/add', data: {data: JSON.stringify(params)}, success: function (data) {
             callback(data);

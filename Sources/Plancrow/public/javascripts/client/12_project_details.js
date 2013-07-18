@@ -128,7 +128,7 @@
 
         deleteTask: function () {
             var that = this;
-            AjaxRequests.deleteTask(this.model.attributes, function (response) {
+            AjaxRequests.deleteTask({task_id: that.model.attributes.id}, function (response) {
                 if (response.status !== "undefined" && response.status === "error") {
                     window.alert(response.message);
                 } else {
@@ -169,18 +169,22 @@
             'div.row-fluid\n' +
             '\tdiv.span2.droppable(data-phase-id=id) [ drag here ]\n' +
             '\tdiv.span2.input-prepend.input-append\n' +
-            '\t\tbutton.btn.btn-mini.addphase(type="button", data-phase-id=id) + phase\n' +
+            '\t\t- if (canrm) {\n' +
+            '\t\t\tbutton.btn.btn-mini.rmphase(type="button", data-phase-id=id) - phase\n' +
+            '\t\t- }\n' +
+            '\t\tbutton.btn.btn-mini.addphase(type="button", data-phase-id=id) + subphase\n' +
             '\t\tbutton.btn.btn-mini.addtask(type="button", data-phase-id=id) + task\n' +
             'ul.children\n' +
             'ul.tasks'),
 
         events: {
             "click .addtask": "addTask",
-            "click .addphase": "addPhase"
+            "click .addphase": "addPhase",
+            "click .rmphase": "rmPhase"
         },
 
         initialize: function () {
-            _.bindAll(this, 'addTask', 'addPhase', 'render');
+            _.bindAll(this, 'addTask', 'addPhase', 'rmPhase', 'render');
         },
 
         addTask: function (target) {
@@ -211,8 +215,27 @@
             }
         },
 
+        rmPhase: function(target){
+            var that = this;
+            var phaseId = $(target.toElement).data("phase-id");
+            if (phaseId == this.model.attributes.id) {
+                AjaxRequests.rmPhase({phase_id: phaseId}, function (phase) {
+                    that.$el.remove();
+                });
+            } else {
+                return;
+            }
+        },
+
         render: function () {
             this.$el.addClass("phase").attr("phase-id", this.model.attributes.id);
+
+            if (this.model.attributes.tasks == undefined && this.model.attributes.children == undefined){
+                this.model.attributes.canrm = true;
+            }else{
+                this.model.attributes.canrm = false;
+            }
+
             this.$el.html(this.template(this.model.attributes));
             this.kidPlace = this.$el.find(".children");
             this.taskPlace = this.$el.find(".tasks");

@@ -205,6 +205,14 @@ exports.addPhase = function (req, res) {
     });
 };
 
+exports.rmPhase = function (req, res) {
+    var data = JSON.parse(req.body.data)
+    var projectId = conf.currentlyAuthorized().project_id;
+    req.models.project_phase.find({id: data.phase_id, project_id: projectId}).remove(function (err) {
+        res.json({status: err});
+    });
+};
+
 exports.addTask = function (req, res) {
     var projectId = conf.currentlyAuthorized().project_id;
     var companyId = conf.currentlyAuthorized().company_id;
@@ -266,23 +274,15 @@ exports.moveTask = function (req, res) {
 
 exports.deleteTask = function (req, res) {
     var data = JSON.parse(req.body.data)
-//    data.task_id
-//    data.from_phase
-//    data.to_phse
-    req.models.task.get(data.task_id, function (err, fromdb) {
+    //todo: check that no time was posted!
 
-//        res.json({
-//            status: "error",
-//            message: "Cannot delete task with time posted"
-//        });
+    var projectId = conf.currentlyAuthorized().project_id;
+    req.models.task.find({id: data.task_id, project_id: projectId}).remove(function (err) {
+        console.info(err);
         res.json({
             satus: "success",
             message: "Task was deleted successfully",
-            body: fromdb
+            body: err
         });
-        //todo delete the task here with the check that there is no time posted on it
-//        fromdb.save(function (err) {
-//            res.json(fromdb);
-//        })
     });
 };

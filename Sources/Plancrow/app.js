@@ -270,6 +270,7 @@ app.get('/json/task/assigned', crowapi.assignedTasks);
 app.get('/json/task/all', crowapi.allTasks);
 
 app.post('/json/phase/add', crowapi.addPhase);
+app.post('/json/phase/rm', crowapi.rmPhase);
 
 app.post('/json/task/add', crowapi.addTask);
 app.post('/json/task/update', crowapi.updateTask);
