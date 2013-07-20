@@ -2,5 +2,45 @@ extends ../authed_layout
 
 block au_content
     div.row-fluid
-        div.span12
-            h1 not started
+        div.span6.offset3
+            h1 New project
+            form.form-horizontal
+                fieldset
+                    legend Project details
+                    div.control-group
+                        label.control-label(for='inputName') Name
+                        div.controls
+                            input#inputName(type='text', placeholder='')
+                    div.control-group
+                        label.control-label(for='inputBudget') Budget
+                        div.controls
+                            input#inputBudget(type='number', placeholder='')
+                    div.control-group
+                        label.control-label(for='inputEstimate') Estimate
+                        div.controls
+                            input#inputEstimate(type='number', placeholder='')
+                    div.control-group
+                        div.controls
+                            label.checkbox
+                                input(type='checkbox')
+                                | Override default rate
+                    div.control-group
+                        label.control-label(for='inputRate') Project rate
+                        div.controls
+                            input#inputRate(type='number', placeholder='')
+                    div.control-group
+                        label.control-label(for='selectCustomer') Customer
+                        div.controls
+                            select#selectCustomer
+                                option
+                                option Customer 1
+                                option Customer 2
+                    label Project team
+                    select.assignment(style="width: 100%;", multiple)
+                        option(value=1, selected=true) Maxim Korotkov
+
+
+                    label
+                    div.control-group
+                        div.controls
+                            button.btn(type='submit') Create
