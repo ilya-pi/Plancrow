@@ -275,6 +275,7 @@ CREATE TABLE `PROJECT` (
   `IS_ACTIVE` varchar(1) COLLATE utf16_unicode_ci DEFAULT 'Y' COMMENT 'For not active projects no active tasks are allowed',
   `CUSTOMER_ID` int(11) DEFAULT NULL,
   `INVOICE_NAME` varchar(45) default NULL,
+  `ORDER_NUM` int(11) default null COMMENT 'ascending, null is ordered by ID',
   PRIMARY KEY (`id`),
   KEY `FK_COMPANY_idx` (`COMPANY_ID`),
   KEY `FK_CLIENT_idx` (`CUSTOMER_ID`),
@@ -291,9 +292,9 @@ CREATE TABLE `PROJECT` (
 
 LOCK TABLES `PROJECT` WRITE;
 /*!40000 ALTER TABLE `PROJECT` DISABLE KEYS */;
-INSERT INTO `PROJECT` VALUES (1,1,'2013-05-19 01:10:31',1,'Plancrow',NULL,NULL,8640000000,0.00,0,'Y',1,NULL),
-(2,1,'2013-05-19 09:51:51',1,'Mega-project',NULL,NULL,6912000000,0.00,0,'Y',1,'MPR'),
-(3,1,'2013-05-19 09:51:52',1,'Internal',NULL,NULL,10368000000,0.00,0,'Y',1,NULL);
+INSERT INTO `PROJECT` VALUES (1,1,'2013-05-19 01:10:31',1,'Plancrow',NULL,NULL,8640000000,0.00,0,'Y',1,NULL,NULL),
+(2,1,'2013-05-19 09:51:51',1,'Mega-project',NULL,NULL,6912000000,0.00,0,'Y',1,'MPR',NULL),
+(3,1,'2013-05-19 09:51:52',1,'Internal',NULL,NULL,10368000000,0.00,0,'Y',1,NULL,NULL);
 /*!40000 ALTER TABLE `PROJECT` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -314,6 +315,7 @@ CREATE TABLE `PROJECT_PHASE` (
   `NAME` varchar(45) COLLATE utf16_unicode_ci NOT NULL,
   `NOTES` varchar(4096) COLLATE utf16_unicode_ci DEFAULT NULL,
   `SHORT_NAME` varchar(45) COLLATE utf16_unicode_ci DEFAULT NULL,	
+  `ORDER_NUM` int(11) default null COMMENT 'ascending, null is ordered by ID',	
   PRIMARY KEY (`id`),
   KEY `FK_COMPANY_idx` (`COMPANY_ID`),
   KEY `FK_PROJECT_idx` (`PROJECT_ID`),
@@ -332,22 +334,22 @@ CREATE TABLE `PROJECT_PHASE` (
 
 LOCK TABLES `PROJECT_PHASE` WRITE;
 /*!40000 ALTER TABLE `PROJECT_PHASE` DISABLE KEYS */;
-INSERT INTO `PROJECT_PHASE` VALUES (1,NULL,NULL,1,1,NULL,'Initiation',NULL,NULL),
-(2,NULL,NULL,1,1,NULL,'Business-Analysis',NULL,'BA'),
-(3,NULL,NULL,1,1,1,'Mobilization',NULL,NULL),
-(4,NULL,NULL,1,1,1,'Pre-Discovery',NULL,NULL),
-(5,NULL,NULL,1,1,4,'Stage 1',NULL,NULL),
-(6,NULL,NULL,1,1,4,'Stage 2',NULL,NULL),
-(7,NULL,NULL,NULL,1,3,'New Phase','Some Notes',NULL),
-(11,NULL,NULL,NULL,1,3,'New Phase','Some Notes',NULL),
-(12,NULL,NULL,NULL,1,6,'New Phase','Some Notes',NULL),
-(21,NULL,NULL,NULL,1,6,'New Phase','Some Notes',NULL),(22,NULL,NULL,NULL,1,12,'New Phase','Some Notes',NULL),
-(23,NULL,NULL,NULL,1,22,'New Phase','Some Notes',NULL),(24,NULL,NULL,NULL,1,22,'New Phase','Some Notes',NULL),
-(34,NULL,NULL,NULL,1,24,'New Phase','Some Notes',NULL),(45,NULL,NULL,NULL,1,7,'New Phase','Some Notes',NULL),
-(51,NULL,NULL,NULL,1,2,'New Phase','Some Notes',NULL),(53,NULL,NULL,NULL,1,2,'New Phase','Some Notes',NULL),
-(54,NULL,NULL,NULL,1,51,'New Phase','Some Notes',NULL),(56,NULL,NULL,NULL,1,54,'New Phase','Some Notes',NULL),
-(57,NULL,NULL,NULL,1,56,'New Phase','Some Notes',NULL),(59,NULL,NULL,NULL,1,3,'New Phase','Some Notes',NULL),
-(62,NULL,NULL,NULL,1,53,'New Phase','Some Notes',NULL);
+INSERT INTO `PROJECT_PHASE` VALUES (1,NULL,NULL,1,1,NULL,'Initiation',NULL,NULL,NULL),
+(2,NULL,NULL,1,1,NULL,'Business-Analysis',NULL,'BA',NULL),
+(3,NULL,NULL,1,1,1,'Mobilization',NULL,NULL,NULL),
+(4,NULL,NULL,1,1,1,'Pre-Discovery',NULL,NULL,NULL),
+(5,NULL,NULL,1,1,4,'Stage 1',NULL,NULL,NULL),
+(6,NULL,NULL,1,1,4,'Stage 2',NULL,NULL,NULL),
+(7,NULL,NULL,NULL,1,3,'New Phase','Some Notes',NULL,NULL),
+(11,NULL,NULL,NULL,1,3,'New Phase','Some Notes',NULL,NULL),
+(12,NULL,NULL,NULL,1,6,'New Phase','Some Notes',NULL,NULL),
+(21,NULL,NULL,NULL,1,6,'New Phase','Some Notes',NULL,NULL),(22,NULL,NULL,NULL,1,12,'New Phase','Some Notes',NULL,NULL),
+(23,NULL,NULL,NULL,1,22,'New Phase','Some Notes',NULL,NULL),(24,NULL,NULL,NULL,1,22,'New Phase','Some Notes',NULL,NULL),
+(34,NULL,NULL,NULL,1,24,'New Phase','Some Notes',NULL,NULL),(45,NULL,NULL,NULL,1,7,'New Phase','Some Notes',NULL,NULL),
+(51,NULL,NULL,NULL,1,2,'New Phase','Some Notes',NULL,NULL),(53,NULL,NULL,NULL,1,2,'New Phase','Some Notes',NULL,NULL),
+(54,NULL,NULL,NULL,1,51,'New Phase','Some Notes',NULL,NULL),(56,NULL,NULL,NULL,1,54,'New Phase','Some Notes',NULL,NULL),
+(57,NULL,NULL,NULL,1,56,'New Phase','Some Notes',NULL,NULL),(59,NULL,NULL,NULL,1,3,'New Phase','Some Notes',NULL,NULL),
+(62,NULL,NULL,NULL,1,53,'New Phase','Some Notes',NULL,NULL);
 /*!40000 ALTER TABLE `PROJECT_PHASE` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -410,6 +412,7 @@ CREATE TABLE `TASK` (
   `ESTIMATE` bigint(20) DEFAULT NULL,
   `POSTED` bigint(20) DEFAULT '0',
   `STATUS` varchar(1) COLLATE utf16_unicode_ci DEFAULT 'N' COMMENT 'A - active; C - completed; N - not started',
+  `ORDER_NUM` int(11) default null COMMENT 'ascending, null is ordered by ID',	
   PRIMARY KEY (`id`),
   KEY `FK_COMPANY_idx` (`COMPANY_ID`),
   KEY `FK_PROJECT_idx` (`PROJECT_ID`),
@@ -428,7 +431,46 @@ CREATE TABLE `TASK` (
 
 LOCK TABLES `TASK` WRITE;
 /*!40000 ALTER TABLE `TASK` DISABLE KEYS */;
-INSERT INTO `TASK` VALUES (1,NULL,NULL,1,6,1,'PM','Project Manager on this task is still to be assigned on',172800000,0,'N'),(2,NULL,NULL,1,5,1,'Prepare report','Max will prepare report on this',432000000,10000,'A'),(3,NULL,NULL,1,6,1,'Introduce actual posting of time','You should start somewhere sooner or later, why not here?',86400000,0,'A'),(4,NULL,NULL,1,2,1,'Assign Team',NULL,864000000,0,'A'),(5,NULL,NULL,1,2,1,'Assign PM',NULL,86400000,0,'A'),(6,NULL,NULL,1,1,1,'Finalize Report Yes',NULL,86400000,0,'C'),(7,NULL,NULL,1,1,1,'Confirm Project Plan',NULL,86400000,0,'N'),(8,1,NULL,NULL,5,1,'New Task','New Notes',NULL,NULL,'N'),(9,1,NULL,NULL,3,1,'Hey! I\'m new','New Notes',NULL,NULL,'C'),(11,1,NULL,NULL,3,1,'New Task','New Notes',NULL,NULL,'N'),(12,1,NULL,NULL,7,1,'Hey-Hey','New Notes',NULL,NULL,'N'),(18,1,NULL,NULL,11,1,'This is a let\'s go task!','New Notes',NULL,NULL,'N'),(19,1,NULL,NULL,3,1,'New Task','New Notes',NULL,NULL,'N'),(20,1,NULL,NULL,3,1,'New Task','New Notes',NULL,NULL,'N'),(21,1,NULL,NULL,21,1,'Check Task 1','New Notes',NULL,NULL,'N'),(22,1,NULL,NULL,21,1,'Check Task 2','New Notes',NULL,NULL,'N'),(23,1,NULL,NULL,12,1,'Hey-ho!','New Notes',NULL,NULL,'N'),(34,1,NULL,NULL,23,1,'e1','New Notes',NULL,NULL,'N'),(35,1,NULL,NULL,22,1,'e2','New Notes',NULL,NULL,'N'),(37,1,NULL,NULL,34,1,'New Task','New Notes',NULL,NULL,'N'),(38,1,NULL,NULL,34,1,'New Task','New Notes',NULL,NULL,'N'),(39,1,NULL,NULL,34,1,'New Task','New Notes',NULL,NULL,'N'),(40,1,NULL,NULL,34,1,'New Task','New Notes',NULL,NULL,'N'),(41,1,NULL,NULL,34,1,'New Task','New Notes',NULL,NULL,'N'),(42,1,NULL,NULL,34,1,'New Task','New Notes',NULL,NULL,'N'),(49,1,NULL,NULL,7,1,'Chekk2','New Notes',NULL,NULL,'N'),(50,1,NULL,NULL,7,1,'New Task','New Notes',NULL,NULL,'N'),(54,1,NULL,NULL,45,1,'New Task 2','New Notes',NULL,NULL,'N'),(55,1,NULL,NULL,45,1,'New Task','New Notes',NULL,NULL,'N'),(56,1,NULL,NULL,45,1,'New Task','New Notes',NULL,NULL,'N'),(57,1,NULL,NULL,45,1,'New Task 1','New Notes',NULL,NULL,'N'),(58,1,NULL,NULL,45,1,'New Task','New Notes',NULL,NULL,'N'),(59,1,NULL,NULL,45,1,'New Task','New Notes',NULL,NULL,'N'),(62,1,NULL,NULL,56,1,'Almost final test!','New Notes',NULL,NULL,'N'),(63,1,NULL,NULL,57,1,'And this is final!','New Notes',NULL,NULL,'N'),(71,1,NULL,NULL,59,1,'New Task','New Notes',NULL,NULL,'N'),(72,1,NULL,NULL,59,1,'New Task','New Notes',NULL,NULL,'N'),(76,1,NULL,NULL,45,1,'New Task','New Notes',NULL,NULL,'N'),(80,1,'2013-07-18 22:12:22',1,53,1,'New Task','New Notes',0,0,'N'),(81,1,'2013-07-18 22:12:28',1,62,1,'Yah','New Notes',0,100,'N');
+INSERT INTO `TASK` VALUES (1,NULL,NULL,1,6,1,'PM','Project Manager on this task is still to be assigned on',172800000,0,'N',NULL),
+(2,NULL,NULL,1,5,1,'Prepare report','Max will prepare report on this',432000000,10000,'A',NULL),
+(3,NULL,NULL,1,6,1,'Introduce actual posting of time','You should start somewhere sooner or later, why not here?',86400000,0,'A',NULL),
+(4,NULL,NULL,1,2,1,'Assign Team',NULL,864000000,0,'A',NULL),
+(5,NULL,NULL,1,2,1,'Assign PM',NULL,86400000,0,'A',NULL),
+(6,NULL,NULL,1,1,1,'Finalize Report Yes',NULL,86400000,0,'C',NULL),
+(7,NULL,NULL,1,1,1,'Confirm Project Plan',NULL,86400000,0,'N',NULL),
+(8,1,NULL,NULL,5,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(9,1,NULL,NULL,3,1,'Hey! I\'m new','New Notes',NULL,NULL,'C',NULL),
+(11,1,NULL,NULL,3,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(12,1,NULL,NULL,7,1,'Hey-Hey','New Notes',NULL,NULL,'N',NULL),
+(18,1,NULL,NULL,11,1,'This is a let\'s go task!','New Notes',NULL,NULL,'N',NULL),
+(19,1,NULL,NULL,3,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(20,1,NULL,NULL,3,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(21,1,NULL,NULL,21,1,'Check Task 1','New Notes',NULL,NULL,'N',NULL),
+(22,1,NULL,NULL,21,1,'Check Task 2','New Notes',NULL,NULL,'N',NULL),
+(23,1,NULL,NULL,12,1,'Hey-ho!','New Notes',NULL,NULL,'N',NULL),
+(34,1,NULL,NULL,23,1,'e1','New Notes',NULL,NULL,'N',NULL),
+(35,1,NULL,NULL,22,1,'e2','New Notes',NULL,NULL,'N',NULL),
+(37,1,NULL,NULL,34,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(38,1,NULL,NULL,34,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(39,1,NULL,NULL,34,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(40,1,NULL,NULL,34,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(41,1,NULL,NULL,34,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(42,1,NULL,NULL,34,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(49,1,NULL,NULL,7,1,'Chekk2','New Notes',NULL,NULL,'N',NULL),
+(50,1,NULL,NULL,7,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(54,1,NULL,NULL,45,1,'New Task 2','New Notes',NULL,NULL,'N',NULL),
+(55,1,NULL,NULL,45,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(56,1,NULL,NULL,45,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(57,1,NULL,NULL,45,1,'New Task 1','New Notes',NULL,NULL,'N',NULL),
+(58,1,NULL,NULL,45,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(59,1,NULL,NULL,45,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(62,1,NULL,NULL,56,1,'Almost final test!','New Notes',NULL,NULL,'N',NULL),
+(63,1,NULL,NULL,57,1,'And this is final!','New Notes',NULL,NULL,'N',NULL),
+(71,1,NULL,NULL,59,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(72,1,NULL,NULL,59,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(76,1,NULL,NULL,45,1,'New Task','New Notes',NULL,NULL,'N',NULL),
+(80,1,'2013-07-18 22:12:22',1,53,1,'New Task','New Notes',0,0,'N',NULL),
+(81,1,'2013-07-18 22:12:28',1,62,1,'Yah','New Notes',0,100,'N',NULL);
 /*!40000 ALTER TABLE `TASK` ENABLE KEYS */;
 UNLOCK TABLES;
 
