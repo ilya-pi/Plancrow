@@ -4,6 +4,29 @@
 
 var conf = require('../my_modules/crow-conf.js');
 
+exports.wireIn = function(app, auth){
+    app.get('/pages/05_company_admin', exports.screen05_company_admin);
+    app.get('/pages/06_user_settings', exports.screen06_user_settings);
+    app.get('/pages/07_user_list', exports.screen07_user_list);
+    app.get('/pages/08_invitation', exports.screen08_invitation);
+    app.get('/pages/09_project_list', auth, exports.screen09_project_list);
+    app.get('/pages/10_project_creation', exports.screen10_project_creation);
+    app.get('/pages/11_project_settings', exports.screen11_project_settings);
+    app.get('/pages/12_project_details', exports.screen12_project_details);
+    app.get('/pages/13_customer', exports.screen13_customers);
+    app.get('/pages/14_edit_customer', exports.screen14_edit_customer);
+    app.get('/pages/15_invoicing_for_project', exports.screen15_invocing_for_project);
+    app.get('/pages/16_invoices_history', exports.screen16_invoices_history);
+    app.get('/pages/17_invoice_saving', exports.screen17_invoice_saving);
+    app.get('/pages/18_reports_page', exports.screen18_reports_page);
+    app.get('/pages/19_management_report_screen', exports.screen19_management_report_screen);
+    app.get('/pages/20_project_chart', exports.screen20_project_chart);
+    app.get('/pages/21_user_timing_history', exports.screen21_user_timing_history);
+    app.get('/pages/22_post_time', exports.screen22_post_time);
+    app.get('/pages/23_public_project_registration', exports.screen23_public_project_registration);
+    app.get('/pages/24_public_projects', exports.screen24_public_projects);
+}
+
 exports.screen01_welcome_page = function (req, res) {
     res.render('screens/01_welcome_page', { title: 'Plancrow', screen_name: '01 Welcome Page'});
 };

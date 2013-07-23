@@ -1,6 +1,23 @@
 var orm = require('orm'),
     conf = require('../my_modules/crow-conf.js');
 
+exports.wireIn = function(app){
+    app.post('/json/assignment/sync', exports.syncAssignment);
+
+    app.get('/json/userlinks/all', exports.allUserlinks);
+    app.post('/json/task/posttime', exports.postTime);
+    app.get('/json/task/assigned', exports.assignedTasks);
+    app.get('/json/task/all', exports.allTasks);
+
+    app.post('/json/phase/add', exports.addPhase);
+    app.post('/json/phase/rm', exports.rmPhase);
+
+    app.post('/json/task/add', exports.addTask);
+    app.post('/json/task/update', exports.updateTask);
+    app.post('/json/task/move', exports.moveTask);
+    app.post('/json/task/delete', exports.deleteTask);
+}
+
 exports.postTime = function (req, res) {
     var projectId = conf.currentlyAuthorized().project_id;
     var companyId = conf.currentlyAuthorized().company_id;

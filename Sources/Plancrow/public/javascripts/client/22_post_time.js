@@ -12,11 +12,7 @@
     var AssigmentView = Backbone.View.extend({
         tagName: "tr",
 
-        template: jade.compile(
-            'td= task.name\n' +
-                'td.input-append(style="display: table-cell;")\n' +
-                '\tinput.posttime_val(type="text", value=task.posted)\n' +
-                '\tbutton.btn.posttime(type="button") Post'),
+        template: jade.compile(templates.AssignmentView), /* defined in template.coffe */
 
         events: {
             "focus input.posttime_val": "clearPosttimeVal",

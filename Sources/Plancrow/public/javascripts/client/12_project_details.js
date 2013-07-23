@@ -2,12 +2,7 @@
 
     var jade = require("jade");
 
-    var Task = Backbone.Model.extend({
-        defaults: {
-            id: -1,
-            name: 'n/a'
-        }
-    });
+    var Task = Backbone.Model.extend({});
 
     var TaskView = Backbone.View.extend({
 //        template: jade.compile('div.row-fluid\n\tdiv.span1\n\t\ti.icon-tasks.pull-right\n\tdiv.name.span5 Task: #{name}\n\tdiv.span6 \n\t\tp [est.: #{estimate}, posted: #{posted}]'),
@@ -117,7 +112,7 @@
             })
         },
 
-        syncAssignment: function (e){
+        syncAssignment: function (e) {
             var that = this;
             console.info("Task " + this.model.attributes.id + " changed assignment to " + e.val);
             AjaxRequests.syncAssignment({task_id: this.model.attributes.id, userlinks: e.val}, function (resp) {
@@ -163,20 +158,8 @@
     });
 
     var PhaseView = Backbone.View.extend({
-
         tagName: 'li',
-
-        template: jade.compile('font Phase: #{name}\n' +
-            'div.row-fluid\n' +
-            '\tdiv.span2.droppable(data-phase-id=id) [ drag here ]\n' +
-            '\tdiv.span2.input-prepend.input-append\n' +
-            '\t\t- if (canrm) {\n' +
-            '\t\t\tbutton.btn.btn-mini.rmphase(type="button", data-phase-id=id) - phase\n' +
-            '\t\t- }\n' +
-            '\t\tbutton.btn.btn-mini.addphase(type="button", data-phase-id=id) + subphase\n' +
-            '\t\tbutton.btn.btn-mini.addtask(type="button", data-phase-id=id) + task\n' +
-            'ul.children\n' +
-            'ul.tasks'),
+        template: jade.compile(templates.PhaseView),
 
         events: {
             "click .addtask": "addTask",
@@ -216,7 +199,7 @@
             }
         },
 
-        rmPhase: function(target){
+        rmPhase: function (target) {
             var that = this;
             var phaseId = $(target.toElement).data("phase-id");
             if (phaseId == this.model.attributes.id) {
@@ -231,9 +214,9 @@
         render: function () {
             this.$el.addClass("phase").attr("phase-id", this.model.attributes.id);
 
-            if (this.model.attributes.tasks == undefined && this.model.attributes.children == undefined){
+            if (this.model.attributes.tasks == undefined && this.model.attributes.children == undefined) {
                 this.model.attributes.canrm = true;
-            }else{
+            } else {
                 this.model.attributes.canrm = false;
             }
 
