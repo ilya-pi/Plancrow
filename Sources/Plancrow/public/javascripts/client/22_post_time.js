@@ -44,6 +44,7 @@
                 time_inc: time_inc,
                 timing_date: new Date(),
                 userlink_id: this.model.attributes.userlink_id}, function (data) {
+                console.info(data);
                 that.$el.find('.posttime_val').val(data.status);
             });
         }

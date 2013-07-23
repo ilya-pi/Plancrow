@@ -25,9 +25,11 @@ exports.postTime = function (req, res) {
                     amnd_user: customerId,
                     task_id: task_id,
                     value: parseInt(time_inc),
-                    timing_date: new Date(timing_date),
+                    timing_date: new Date(timing_date).getTime() / (24 * 60 * 60 * 1000), //todo ilya: refactor this to utils
                     userlink_id: userlink_id,
-                    project_id: projectId
+//                    rate_id: 1, //todo ilya: fill in correct rate here
+                    project_id: projectId,
+                    notes: ""
                 }
             ], function (err) {
                 if (err == undefined) {

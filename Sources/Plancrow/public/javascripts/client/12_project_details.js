@@ -118,10 +118,11 @@
         },
 
         syncAssignment: function (e){
+            var that = this;
             console.info("Task " + this.model.attributes.id + " changed assignment to " + e.val);
             AjaxRequests.syncAssignment({task_id: this.model.attributes.id, userlinks: e.val}, function (resp) {
                 console.info(resp);
-                console.info("Task " + this.model.attributes.id + " changed assignment to " + e.val);
+                console.info("Task " + that.model.attributes.id + " changed assignment to " + e.val);
                 //todo: show here that tasks were synced
             })
         },

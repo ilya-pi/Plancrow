@@ -75,7 +75,9 @@ app.use(orm.express(conf.mysqlConnectionString(), {
             id: Number,
             name: String,
             is_active: Boolean,
-            estimate: Number
+            estimate: Number,
+            invoice_name: String,
+            order_num: Number
         });
 
         models.project_phase = db.define("PROJECT_PHASE", {
@@ -85,7 +87,9 @@ app.use(orm.express(conf.mysqlConnectionString(), {
             project_id: Number,
             parent_id: Number,
             name: String,
-            notes: String
+            notes: String,
+            short_name: String,
+            order_num: Number
         });
 
         models.task = db.define("TASK", {
@@ -99,7 +103,8 @@ app.use(orm.express(conf.mysqlConnectionString(), {
                 notes: String,
                 estimate: Number,
                 posted: Number,
-                status: String
+                status: String,
+                order_num: Number
             }
             ,
             {cache: false} /* nb!: otherwise assignments are not picked up quick enough */
@@ -112,10 +117,11 @@ app.use(orm.express(conf.mysqlConnectionString(), {
                 amnd_user: Number,
                 task_id: Number,
                 value: Number,
-                timing_date: Date,
+                timing_date: Number,
                 userlink_id: Number,
                 rate_id: Number,
-                project_id: Number
+                project_id: Number,
+                notes: String
             },
             {cache: false} /* nb!: otherwise assignments are not picked up quick enough */
         );
