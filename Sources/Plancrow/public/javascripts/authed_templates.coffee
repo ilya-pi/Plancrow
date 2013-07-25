@@ -7,7 +7,7 @@ templates.TaskView =
     '''
     div.row-fluid.task.node(id="#{t.id}", data-taskid="#{t.id}", data-taskname = "#{t.name}", data-tasknotes = "#{t.notes}")
         div.span3
-            span.name Task: &nbsp;#{t.name}
+            span.name Task:&nbsp;#{t.name}
             div.notes(style="display:none;")= t.notes
         div.span2
             p [est.: #{t.estimate}, posted: #{t.posted}]
@@ -54,7 +54,10 @@ templates.PhaseView =
   '''
   div.row-fluid.node
     div.span2
-        span.name #{name}
+        span.name
+            i.toggle.icon-minus-sign(title='Collapse this branch')
+            &nbsp; #{name}
+
     div.span2.droppable(data-phase-id=id) [ drag here ]
     div.span2.input-prepend.input-append
       - if (canrm) {

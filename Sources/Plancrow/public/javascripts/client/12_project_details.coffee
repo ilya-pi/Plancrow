@@ -107,7 +107,7 @@
             "click .rmphase": "rmPhase"
 
         initialize: ->
-            _.bindAll this, "addTask", "addPhase", "rmPhase", "render"
+            _.bindAll this, 'addTask', 'addPhase', 'rmPhase', 'render', 'toggle'
 
         addTask: (target) ->
             that = this
@@ -116,7 +116,7 @@
                 AjaxRequests.addTask
                     phase_id: phaseId
                 , (task) ->
-                    that.taskPlace.prepend new TaskView(model: new Task(task)).render().el
+                    that.subTaskPhasePlace.prepend new TaskView(model: new Task(task)).render().el
 
             else
                 return
@@ -128,7 +128,7 @@
                 AjaxRequests.addPhase
                     parent_phase_id: phaseId
                 , (phase) ->
-                    that.kidPlace.append new PhaseView(model: new Phase(phase)).render().el
+                    that.subTaskPhasePlace.prepend new PhaseView(model: new Phase(phase)).render().el
 
             else
                 return
@@ -146,20 +146,22 @@
 
         render: ->
             @$el.addClass("phase prj-node").attr "phase-id", @model.attributes.id
-            if @model.attributes.tasks is `undefined` and @model.attributes.children is `undefined`
-                @model.attributes.canrm = true
-            else
+            if @model.attributes.children or @model.attributes.tasks
                 @model.attributes.canrm = false
+            else
+                @model.attributes.canrm = true
             @$el.html @template(@model.attributes)
-            @kidPlace = @$el.find(".subtasksnphases")
-            @taskPlace = @kidPlace
-#            @kidPlace = @$el.find(".children")
-#            @taskPlace = @$el.find(".tasks")
+            if @model.attributes.children or @model.attributes.tasks
+                @$el.find('i.toggle').click(@toggle)
+            else
+                @$el.find('i.toggle').removeClass('icon-minus-sign')
+            @subTaskPhasePlace = @$el.find(".subtasksnphases")
+            @subTaskPhasePlace = @subTaskPhasePlace
             if @model.attributes.tasks
                 tasks = @model.attributes.tasks
                 i = 0
                 while i < tasks.length
-                    @taskPlace.append new TaskView(model: new Task(tasks[i])).render().el
+                    @subTaskPhasePlace.append new TaskView(model: new Task(tasks[i])).render().el
                     i++
             if @model.attributes.children
                 kids = @model.attributes.children
@@ -172,10 +174,20 @@
                 i = 0
 
                 while i < kids.length
-                    @kidPlace.append kiddies[i].render().el
+                    @subTaskPhasePlace.append kiddies[i].render().el
                     i++
                 @model.attributes.children = `undefined`
             this
+
+        toggle: (e) ->
+            children = @$el.find(' > ul > li')
+            if children.is(':visible')
+                children.hide('fast')
+                @$el.find('i.toggle').first().attr('title', 'Expand this branch').addClass('icon-plus-sign').removeClass('icon-minus-sign')
+            else
+                children.show('fast')
+                @$el.find('i.toggle').first().attr('title', 'Collapse this branch').addClass('icon-minus-sign').removeClass('icon-plus-sign')
+            e.stopPropagation
     )
     DroppableView = Backbone.View.extend(
         template: jade.compile("div.row-fluid.droppable\n\tdiv.name.span2 drag here [   ]")
