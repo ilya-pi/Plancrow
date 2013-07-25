@@ -2,16 +2,12 @@ extends ../authed_layout
 
 block au_content
     div.row-fluid
-        div.span6
-            h4 Project: #{project.name}
-        div.span6
-            ul.nav.nav-pills
-                li
-                    a(href="#edit", alt="edit") Edit settings
-                li
-                    a(href="#invoicing", alt="invoicing") Invoicing
-    div.row-fluid
         div.span12
-            ul.details-container
+            div.tree
+                ul
+                    li.prj-node
+                        h4
+                            span.name Project: #{project.name}
+                        ul.details-container
 
     script(type='text/javascript', src='/javascripts/client/12_project_details.js')
