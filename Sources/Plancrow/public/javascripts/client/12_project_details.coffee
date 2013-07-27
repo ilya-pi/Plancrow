@@ -79,10 +79,10 @@
             AjaxRequests.deleteTask
                 task_id: that.model.attributes.id
             , (response) ->
-                if response.status isnt "undefined" and response.status is "error"
+                if response.status? and response.status is "error"
                     window.alert response.message
                 else
-                    that.$el.remove()
+                    that.$el.hide('fast', -> that.$el.remove())
 
         details: ->
             @$el.find(".notes").toggle()
@@ -125,13 +125,33 @@
     PhaseView = Backbone.View.extend(
         tagName: "li"
         template: jade.compile(templates.PhaseView)
+        editTemplate: jade.compile(templates.PhaseEditView)
+        doneEditingTemplate: jade.compile(templates.PhaseDoneEditingView)
         events:
+            "click .editarea": "edit"
+            "click .save": "save"
             "click .addtask": "addTask"
             "click .addphase": "addPhase"
             "click .rmphase": "rmPhase"
 
         initialize: ->
-            _.bindAll this, 'addTask', 'addPhase', 'rmPhase', 'render', 'toggle'
+            _.bindAll this, 'edit', 'save', 'addTask', 'addPhase', 'rmPhase', 'render', 'toggle'
+
+        edit: ->
+            $(@$el.find('.editable')[0]).html @editTemplate(@model.attributes)
+            $(@el).find(".editname").focus()
+
+        save: (target) ->
+            that = this
+            console.info(target.toElement)
+            phaseId = $(target.toElement).data('phase-id')
+            if phaseId is @model.attributes.id
+                #todo: and jquery-coin "saved" notification
+                @model.attributes.name = @$el.find(".editname").val()
+                @model.attributes.notes = @$el.find(".editnotes").val()
+                AjaxRequests.updatePhase @model.attributes, (phase) ->
+                    $.extend that.model.attributes, phase
+                    $(that.$el.find('.editable')[0]).html that.doneEditingTemplate(that.model.attributes)
 
         addTask: (target) ->
             that = this
@@ -140,7 +160,10 @@
                 AjaxRequests.addTask
                     phase_id: phaseId
                 , (task) ->
-                    that.subTaskPhasePlace.prepend new TaskView(model: new Task(task)).render().el
+                    $el = $ new TaskView(model: new Task(task)).render().el
+                    $el.hide()
+                    that.subTaskPhasePlace.prepend $el
+                    $el.show('fast')
 
             else
                 return

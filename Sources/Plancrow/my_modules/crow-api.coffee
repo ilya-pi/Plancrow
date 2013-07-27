@@ -6,6 +6,7 @@ exports.wireIn = (app) ->
     app.post "/json/task/posttime", exports.postTime
     app.get "/json/task/assigned", exports.assignedTasks
     app.get "/json/task/all", exports.allTasks
+    app.post "/json/phase/update", exports.updatePhase
     app.post "/json/phase/add", exports.addPhase
     app.post "/json/phase/rm", exports.rmPhase
     app.post "/json/task/add", exports.addTask
@@ -188,6 +189,17 @@ exports.allTasks = (req, res) ->
                             root: tree
                             userlinks: userlinks
 
+exports.updatePhase = (req, res) ->
+    console.info(req.body.data)
+    console.info(req.body)
+#    console.info(req)
+    phase = JSON.parse(req.body.data)
+    req.models.project_phase.get phase.id, (err, fromdb) ->
+        for i of phase
+            fromdb[i] = phase[i]  if i isnt "id" and i isnt "amnd_date"
+        fromdb.save (err) ->
+            console.info err
+            res.json fromdb
 
 exports.addPhase = (req, res) ->
     data = JSON.parse(req.body.data)

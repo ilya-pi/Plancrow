@@ -53,11 +53,11 @@ templates.TaskEditView =
 templates.PhaseView =
   '''
   div.row-fluid.node
-    div.span2
+    div.span4
         span.name
             i.toggle.icon-minus-sign(title='Collapse this branch')
-            &nbsp; #{name}
-
+            span.editable
+                span.editarea &nbsp; #{name}
     div.span2.droppable(data-phase-id=id) [ drag here ]
     div.span2.input-prepend.input-append
       - if (canrm) {
@@ -67,6 +67,24 @@ templates.PhaseView =
       button.btn.btn-mini.addtask(type="button", data-phase-id=id) + task
   ul.subtasksnphases
   '''
+
+templates.PhaseEditView =
+    '''
+    form
+        fieldset
+            .form-group
+                label Name
+                input.editname.form-control(type='text', value=name)
+            .form-group
+                label Notes
+                textarea.editnotes.form-control(type='text')= notes
+            button.btn.btn-success.save(type="button", data-phase-id=id) Save
+    '''
+
+templates.PhaseDoneEditingView =
+    '''
+    span.editarea &nbsp; #{name}
+    '''
 
 templates.AssignmentView =
   '''
