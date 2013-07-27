@@ -81,7 +81,6 @@ body {
   display: inline-block;
   border: 1px solid #ccc;
   padding: 5px 10px;
-  text-decoration: none;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -95,4 +94,20 @@ body {
   /*Remove connectors after last child*/
 .tree li.prj-node:last-child::before {
   height: 30px;
+}
+
+/* task colors by status */
+.name{
+//  color: purple;
+  &.N{
+    color: black;
+  }
+  &.A {
+    color: green;
+//    font-weight: bold;
+  }
+  &.C {
+    color: gray;
+    text-decoration: line-through;
+  }
 }

@@ -7,7 +7,7 @@ templates.TaskView =
     '''
     div.row-fluid.task.node(id="#{t.id}", data-taskid="#{t.id}", data-taskname = "#{t.name}", data-tasknotes = "#{t.notes}")
         div.span3
-            span.name Task:&nbsp;#{t.name}
+            span.name(class=t.status) Task:&nbsp;#{t.name}
             div.notes(style="display:none;")= t.notes
         div.span2
             p [est.: #{t.estimate}, posted: #{t.posted}]
