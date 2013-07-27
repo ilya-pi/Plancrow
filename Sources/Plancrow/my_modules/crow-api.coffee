@@ -230,8 +230,6 @@ exports.addTask = (req, res) ->
         estimate: 0
         posted: 0
         status: "N"
-
-        #            assignments: null,
         completed: "N"
     ], (err, items) ->
 
