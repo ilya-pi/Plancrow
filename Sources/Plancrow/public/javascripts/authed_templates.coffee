@@ -22,7 +22,7 @@ templates.TaskView =
             button.btn.btn-mini.details details
         div.span1
             div.btn-group.status
-                a.btn.btn-mini
+                a.btn.btn-mini.status
                     - if (t.status == "A"){
                         font Active
                     - }else if (t.status == "N"){

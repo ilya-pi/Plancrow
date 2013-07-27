@@ -13,9 +13,11 @@
             "click button.details": "details"
             "click .status a[role = 'menuitem']": "changeStatus"
             "change .assignment": "syncAssignment"
+            "click a.status": "rollStatus"
 
         initialize: ->
             _.bindAll this, "render", "rename", "saveRenamed", "syncAssignment", "deleteTask", "details", "changeStatus", "_dragStartEvent"
+            _.bindAll this, "rollStatus", "updateTask1"
 
             #draggable kitchen
             @$el.attr "draggable", "true"
@@ -85,13 +87,35 @@
         details: ->
             @$el.find(".notes").toggle()
 
+        rollStatus: ->
+            that = this
+            if @model.attributes.status?
+                switch @model.attributes.status
+                    when 'N'
+                        @model.attributes.status = 'A'
+                        @updateTask1()
+                    when 'A'
+                        @model.attributes.status = 'C'
+                        @updateTask1()
+                    when 'C' then new window.app.CrowModalView(model : new window.app.CrowModal(
+                        title: 'Sir,'
+                        message: 'Do you want to reopen task?'
+                        cb: (answ) ->
+                            if answ
+                                that.model.attributes.status = 'A'
+                                that.updateTask1())).show()
+
         changeStatus: (src) ->
             that = this
-            #and jquery-coin "saved" notification
             @model.attributes.status = $(src.target).data("status")
+            @updateTask1()
+
+        updateTask1: () ->
+            that = this
             AjaxRequests.updateTask @model.attributes, (task) ->
                 $.extend that.model.attributes, task
                 that.render()
+        #and jquery-coin "saved" notification
     )
 
     Phase = Backbone.Model.extend(defaults:
@@ -183,10 +207,12 @@
             children = @$el.find(' > ul > li')
             if children.is(':visible')
                 children.hide('fast')
-                @$el.find('i.toggle').first().attr('title', 'Expand this branch').addClass('icon-plus-sign').removeClass('icon-minus-sign')
+                @$el.find('i.toggle').first().attr('title',
+                    'Expand this branch').addClass('icon-plus-sign').removeClass('icon-minus-sign')
             else
                 children.show('fast')
-                @$el.find('i.toggle').first().attr('title', 'Collapse this branch').addClass('icon-minus-sign').removeClass('icon-plus-sign')
+                @$el.find('i.toggle').first().attr('title',
+                    'Collapse this branch').addClass('icon-minus-sign').removeClass('icon-plus-sign')
             e.stopPropagation
     )
     DroppableView = Backbone.View.extend(
