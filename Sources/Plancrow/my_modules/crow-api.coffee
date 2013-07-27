@@ -96,8 +96,9 @@ exports.syncAssignment = (req, res) ->
 
             k++
         req.models.assignment.create toCreate, (err, items) ->
-            toCreate = new Array()
-            res.json created: toCreate.length
+            result = new Array()
+            result.push({userlink_id: ulink_id}) for ulink_id in userlinks
+            res.json assignments: result
 
 
 exports.allUserlinks = (req, res) ->
@@ -192,7 +193,7 @@ exports.allTasks = (req, res) ->
 exports.updatePhase = (req, res) ->
     console.info(req.body.data)
     console.info(req.body)
-#    console.info(req)
+    #    console.info(req)
     phase = JSON.parse(req.body.data)
     req.models.project_phase.get phase.id, (err, fromdb) ->
         for i of phase
@@ -275,16 +276,22 @@ exports.moveTask = (req, res) ->
 
 exports.deleteTask = (req, res) ->
     data = JSON.parse(req.body.data)
-
-    #todo: check that no time was posted!
     projectId = conf.currentlyAuthorized().project_id
-    req.models.task.find(
-        id: data.task_id
+    req.models.timing.find(
+        task_id: data.task_id
         project_id: projectId
-    ).remove (err) ->
-        console.info err
-        res.json
-            satus: "success"
-            message: "Task was deleted successfully"
-            body: err
+    ).remove((err)->
+        if not err?
+            req.models.task.find(
+                id: data.task_id
+                project_id: projectId
+            ).remove (err) ->
+                res.json
+                    status: (if err? then 'error' else 'success')
+                    message: (if err? then err else 'OK')
+        else
+            res.json
+                status: 'error'
+                message: err
+    )
 

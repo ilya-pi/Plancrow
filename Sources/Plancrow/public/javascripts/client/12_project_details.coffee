@@ -65,22 +65,41 @@
 
         syncAssignment: (e) ->
             that = this
-            console.info "Task " + @model.attributes.id + " changed assignment to " + e.val
+#            console.info "Task " + @model.attributes.id + " changed assignment to " + e.val
             AjaxRequests.syncAssignment
                 task_id: @model.attributes.id
                 userlinks: e.val
             , (resp) ->
-                console.info resp
-                console.info "Task " + that.model.attributes.id + " changed assignment to " + e.val
+                that.model.attributes.assignments = resp.assignments
+                console.info(that.model.attributes)
+#                console.info resp
+#                console.info "Task " + that.model.attributes.id + " changed assignment to " + e.val
 
-        #todo: show here that tasks were synced
         deleteTask: ->
+            that = this
+            posted = @model.attributes.posted
+            if posted? and posted isnt 0
+                new window.app.CrowModalView(model : new window.app.CrowModal(
+                    title: 'Sir,'
+                    message: 'There is time posted (' + posted + ') for this task. Do you want to delete task with all time posted?'
+                    cb: (answ) ->
+                        if answ
+                            that.deleteTask1())).show()
+            else
+                @deleteTask1()
+
+        deleteTask1: ->
             that = this
             AjaxRequests.deleteTask
                 task_id: that.model.attributes.id
             , (response) ->
                 if response.status? and response.status is "error"
-                    window.alert response.message
+                    console.info(response.status)
+                    new window.app.CrowInfoModalView(model : new window.app.CrowInfoModal(
+                        title: 'Sir,'
+                        message: 'Cannot delete a task with assigned people.'
+                        cb: () ->
+                    )).show()
                 else
                     that.$el.hide('fast', -> that.$el.remove())
 

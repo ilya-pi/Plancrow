@@ -6,7 +6,6 @@
 # 
 AjaxRequests =
     syncAssignment: (params, callback) ->
-        console.info params
         $.ajax
             type: "POST"
             url: "/json/assignment/sync"
