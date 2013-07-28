@@ -128,7 +128,7 @@ tree_from_list = (list, tasks, cb) ->
     result = new Array()
     missed = new Array()
     for i of list
-        list[i].children = `undefined`
+        list[i].subphases = `undefined`
         list[i].tasks = `undefined`
     for i of list
         node = list[i]
@@ -137,8 +137,8 @@ tree_from_list = (list, tasks, cb) ->
             result.push node
         else
             unless map[node.parent_id] is `undefined`
-                map[node.parent_id].children = new Array()  if map[node.parent_id].children is `undefined`
-                map[node.parent_id].children.push node
+                map[node.parent_id].subphases = new Array()  if map[node.parent_id].subphases is `undefined`
+                map[node.parent_id].subphases.push node
             else
                 missed.push node
     taskIds = new Array()
@@ -205,29 +205,31 @@ exports.allTasks = (req, res) ->
                                 userlinks: userlinks
 
 exports.updatePhase = (req, res) ->
-    console.info(req.body.data)
-    console.info(req.body)
-    #    console.info(req)
     phase = JSON.parse(req.body.data)
     req.models.project_phase.get phase.id, (err, fromdb) ->
         for i of phase
             fromdb[i] = phase[i]  if i isnt "id" and i isnt "amnd_date"
+        fromdb.amnd_date = new Date()
         fromdb.save (err) ->
-            console.info err
+            if err?
+                console.info err
             res.json fromdb
 
 exports.addPhase = (req, res) ->
     data = JSON.parse(req.body.data)
-
-    #    data.parent_phase_id
+    projectId = conf.currentlyAuthorized().project_id
+    now = new Date();
+    curr_date = now.getDate();
+    curr_month = now.getMonth() + 1; # months are zero based
+    curr_year = now.getFullYear();
     req.models.project_phase.create [
-        project_id: 1 #nb!: harcoded
+        project_id: projectId
         parent_id: data.parent_phase_id
+        amnd_date: now
         name: "New Phase"
-        notes: "Some Notes"
+        notes: 'Created on ' + curr_date + "-" + curr_month + "-" + curr_year
     ], (err, items) ->
         res.json items[0]
-
 
 exports.rmPhase = (req, res) ->
     data = JSON.parse(req.body.data)

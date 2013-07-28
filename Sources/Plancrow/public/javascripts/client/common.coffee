@@ -23,7 +23,6 @@
             _.bindAll this, "render", "show", "yes", "no", "close"
 
         render: ->
-            console.info(@model.attributes)
             @$el.addClass "modal"
             @$el.html @template(@model.attributes)
             this

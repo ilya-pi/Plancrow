@@ -156,6 +156,7 @@
 
         initialize: ->
             _.bindAll this, 'edit', 'save', 'addTask', 'addPhase', 'rmPhase', 'rmPhase1', 'render', 'toggle'
+            _.bindAll this, 'deletedSubPhase'
 
         edit: ->
             $(@$el.find('.editable')[0]).html @editTemplate(@model.attributes)
@@ -172,7 +173,7 @@
                 @model.attributes.notes = @$el.find(".editnotes").val()
                 @model.attributes.short_name = @$el.find(".editshort_name").val()
                 AjaxRequests.updatePhase @model.attributes, (phase) ->
-                    $.extend that.model.attributes, phase
+                    that.model.set(phase)
                     $(that.$el.find('.editable')[0]).html that.doneEditingTemplate(that.model.attributes)
 
         addTask: (target) ->
@@ -183,10 +184,11 @@
                 AjaxRequests.addTask
                     phase_id: phaseId
                 , (task) ->
-                    if not that.model.attributes.tasks?
-                        that.model.attributes.tasks = new Array()
-                    that.model.attributes.tasks.push task
-                    $el = $ new TaskView(model: new Task(task)).render().el
+                    if not that.model.subtasks?
+                        that.model.subtasks = new Array()
+                    taskModel = new Task(task)
+                    that.model.subtasks.push taskModel
+                    $el = $ new TaskView(model: taskModel).render().el
                     $el.hide()
                     that.subTaskPhasePlace.prepend $el
                     $el.show('fast')
@@ -202,24 +204,30 @@
                 AjaxRequests.addPhase
                     parent_phase_id: phaseId
                 , (phase) ->
-                    if not that.model.attributes.children?
-                        that.model.attributes.children = new Array()
-                    that.model.attributes.children.push phase
-                    that.subTaskPhasePlace.prepend new PhaseView(model: new Phase(phase)).render().el
-
+                    if not that.model.subphases?
+                        that.model.subphases = new Array()
+                    phaseModel = new Phase(phase)
+                    subPhaseView = new PhaseView(model: phaseModel)
+                    that.model.subphases.push phaseModel
+                    that.listenTo(phaseModel, 'deleted', that.deletedSubPhase)
+                    that.subTaskPhasePlace.prepend subPhaseView.render().el
+                    subPhaseView.edit()
             else
                 return
+
+        deletedSubPhase: (target) ->
+            console.info "boo"
 
         rmPhase: (target) ->
             that = this
             phase_id = $(target.toElement).data("phase-id")
             if phase_id is @model.attributes.id
-                if @model.attributes.children? or @model.attributes.tasks?
+                if @model.subphases? or @model.subtasks?
                     kiddies = new Array()
-                    if @model.attributes.tasks?
-                        kiddies.push task.name for task in @model.attributes.tasks
-                    if @model.attributes.children?
-                        kiddies.push phase.name for phase in @model.attributes.children
+                    if @model.subtasks?
+                        kiddies.push task.attributes.name for task in @model.subtasks
+                    if @model.subphases?
+                        kiddies.push phase.attributes.name for phase in @model.subphases
                     kiddies_str = kiddies.join ', '
                     new window.app.CrowModalView(model: new window.app.CrowModal(
                         title: 'Sir,'
@@ -242,6 +250,7 @@
                 , (resp) ->
                     if resp.status and resp.status isnt 'error'
                         that.$el.hide('fast', ->
+                            that.model.trigger('deleted', that)
                             that.$el.remove())
                     else
                         new window.app.CrowInfoModalView(model: new window.app.CrowInfoModal(
@@ -255,32 +264,39 @@
         render: ->
             @$el.addClass("phase prj-node").attr "phase-id", @model.attributes.id
             @$el.html @template(@model.attributes)
-            if @model.attributes.children or @model.attributes.tasks
+            if @model.attributes.subphases or @model.attributes.tasks
                 @$el.find('i.toggle').click(@toggle)
             else
                 @$el.find('i.toggle').removeClass('icon-minus-sign')
             @subTaskPhasePlace = @$el.find(".subtasksnphases")
             @subTaskPhasePlace = @subTaskPhasePlace
             if @model.attributes.tasks
+                @model.subtasks = new Array()
                 tasks = @model.attributes.tasks
                 i = 0
                 while i < tasks.length
-                    @subTaskPhasePlace.append new TaskView(model: new Task(tasks[i])).render().el
+                    taskModel  = new Task(tasks[i])
+                    @model.subtasks.push taskModel
+                    @subTaskPhasePlace.append new TaskView(model: taskModel).render().el
                     i++
-            if @model.attributes.children
-                kids = @model.attributes.children
+                @model.attributes.tasks = undefined
+            if @model.attributes.subphases
+                @model.subphases = new Array()
+                kids = @model.attributes.subphases
                 kiddies = new Array()
                 i = 0
 
                 while i < kids.length
-                    kiddies[i] = new PhaseView(model: new Phase(kids[i]))
+                    subPhaseModel = new Phase(kids[i])
+                    @model.subphases.push subPhaseModel
+                    kiddies[i] = new PhaseView(model: subPhaseModel)
                     i++
                 i = 0
 
                 while i < kids.length
                     @subTaskPhasePlace.append kiddies[i].render().el
                     i++
-            #                @model.attributes.children = `undefined`
+                @model.attributes.subphases = undefined
             this
 
         toggle: (e) ->
