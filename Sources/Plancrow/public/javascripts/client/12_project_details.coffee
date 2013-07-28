@@ -66,7 +66,7 @@
 
         syncAssignment: (e) ->
             that = this
-#            console.info "Task " + @model.attributes.id + " changed assignment to " + e.val
+            #            console.info "Task " + @model.attributes.id + " changed assignment to " + e.val
             AjaxRequests.syncAssignment
                 task_id: @model.attributes.id
                 userlinks: e.val
@@ -80,7 +80,7 @@
             that = this
             posted = @model.attributes.posted
             if posted? and posted isnt 0
-                new window.app.CrowModalView(model : new window.app.CrowModal(
+                new window.app.CrowModalView(model: new window.app.CrowModal(
                     title: 'Sir,'
                     message: 'There is time posted (' + @model.attributes.posted_str + ') for this task. Do you want to delete task with all time posted?'
                     cb: (answ) ->
@@ -95,14 +95,14 @@
                 task_id: that.model.attributes.id
             , (response) ->
                 if response.status? and response.status is "error"
-                    console.info(response.status)
-                    new window.app.CrowInfoModalView(model : new window.app.CrowInfoModal(
+                    new window.app.CrowInfoModalView(model: new window.app.CrowInfoModal(
                         title: 'Sir,'
                         message: 'Cannot delete a task with assigned people.'
                         cb: () ->
                     )).show()
                 else
-                    that.$el.hide('fast', -> that.$el.remove())
+                    that.$el.hide('fast', ->
+                        that.$el.remove())
 
         details: ->
             @$el.find(".notes").toggle()
@@ -117,7 +117,7 @@
                     when 'A'
                         @model.attributes.status = 'C'
                         @updateTask1()
-                    when 'C' then new window.app.CrowModalView(model : new window.app.CrowModal(
+                    when 'C' then new window.app.CrowModalView(model: new window.app.CrowModal(
                         title: 'Sir,'
                         message: 'Do you want to reopen task?'
                         cb: (answ) ->
@@ -155,7 +155,7 @@
             "click .rmphase": "rmPhase"
 
         initialize: ->
-            _.bindAll this, 'edit', 'save', 'addTask', 'addPhase', 'rmPhase', 'render', 'toggle'
+            _.bindAll this, 'edit', 'save', 'addTask', 'addPhase', 'rmPhase', 'rmPhase1', 'render', 'toggle'
 
         edit: ->
             $(@$el.find('.editable')[0]).html @editTemplate(@model.attributes)
@@ -163,9 +163,9 @@
 
         save: (target) ->
             that = this
-            console.info(target.toElement)
             phaseId = $(target.toElement).data('phase-id')
             if phaseId is @model.attributes.id
+                target.stopPropagation()
                 #todo: and jquery-coin "saved" notification
                 @model.attributes.name = @$el.find(".editname").val()
                 @model.attributes.notes = @$el.find(".editnotes").val()
@@ -177,6 +177,7 @@
             that = this
             phaseId = $(target.toElement).data("phase-id")
             if phaseId is @model.attributes.id
+                target.stopPropagation()
                 AjaxRequests.addTask
                     phase_id: phaseId
                 , (task) ->
@@ -192,6 +193,7 @@
             that = this
             phaseId = $(target.toElement).data("phase-id")
             if phaseId is @model.attributes.id
+                target.stopPropagation()
                 AjaxRequests.addPhase
                     parent_phase_id: phaseId
                 , (phase) ->
@@ -202,21 +204,48 @@
 
         rmPhase: (target) ->
             that = this
+            phase_id = $(target.toElement).data("phase-id")
+            if phase_id is @model.attributes.id
+                if @model.attributes.children? or @model.attributes.tasks?
+                    kiddies = new Array()
+                    if @model.attributes.tasks?
+                        kiddies.push task.name for task in @model.attributes.tasks
+                    if @model.attributes.children?
+                        kiddies.push phase.name for phase in @model.attributes.children
+                    kiddies_str = kiddies.join ', '
+                    new window.app.CrowModalView(model: new window.app.CrowModal(
+                        title: 'Sir,'
+                        message: 'There are subtasks and phases (' + kiddies_str + ') under current phase. Do you want to delete this phase?'
+                        severe: true
+                        cb: (answ) ->
+                            if answ
+                                that.rmPhase1(target))).show()
+                else
+                    @rmPhase1(target)
+
+
+        rmPhase1: (target) ->
+            that = this
             phaseId = $(target.toElement).data("phase-id")
             if phaseId is @model.attributes.id
+                target.stopPropagation()
                 AjaxRequests.rmPhase
                     phase_id: phaseId
-                , (phase) ->
-                    that.$el.remove()
+                , (resp) ->
+                    if resp.status and resp.status isnt 'error'
+                        that.$el.hide('fast', ->
+                            that.$el.remove())
+                    else
+                        new window.app.CrowInfoModalView(model: new window.app.CrowInfoModal(
+                            title: resp.status
+                            message: 'Something went wrong: ' + JSON.stringify(resp.message, null, 2)
+                            cb: () ->
+                        )).show()
             else
                 return
 
         render: ->
             @$el.addClass("phase prj-node").attr "phase-id", @model.attributes.id
-            if @model.attributes.children or @model.attributes.tasks
-                @model.attributes.canrm = false
-            else
-                @model.attributes.canrm = true
             @$el.html @template(@model.attributes)
             if @model.attributes.children or @model.attributes.tasks
                 @$el.find('i.toggle').click(@toggle)
@@ -243,7 +272,7 @@
                 while i < kids.length
                     @subTaskPhasePlace.append kiddies[i].render().el
                     i++
-                @model.attributes.children = `undefined`
+            #                @model.attributes.children = `undefined`
             this
 
         toggle: (e) ->

@@ -11,8 +11,14 @@ common_templates.CrowModalView =
             .modal-body
                 p= message
             .modal-footer
-                button.btn.btn-default.yes(type='button', data-dismiss='modal') Yes
-                button.btn.btn-primary.no(type='button') No
+                - if (typeof severe !== "undefined" && severe !== null && severe) {
+                    button.btn.btn-danger.btn-mini.yes(type='button', data-dismiss='modal') Yes
+                    button.btn.btn-primary.no(type='button') No
+                    button.btn.btn-primary.btn-large.no(type='button') No
+                - }else {
+                    button.btn.btn-default.yes(type='button', data-dismiss='modal') Yes
+                    button.btn.btn-primary.no(type='button') No
+                - }
     '''
 
 common_templates.CrowInfoModalView =

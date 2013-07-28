@@ -66,8 +66,6 @@ AjaxRequests =
             dataType: "json"
 
     updatePhase: (params, callback) ->
-        console.info("update")
-        console.info(params)
         $.ajax
             type: "POST"
             url: "/json/phase/update"

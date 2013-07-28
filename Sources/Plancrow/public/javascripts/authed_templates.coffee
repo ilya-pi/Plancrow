@@ -60,9 +60,7 @@ templates.PhaseView =
                 span.editarea &nbsp; #{name}
     div.span2.droppable(data-phase-id=id) [ drag here ]
     div.span2.input-prepend.input-append
-      - if (canrm) {
-        button.btn.btn-mini.rmphase(type="button", data-phase-id=id) - phase
-      - }
+      button.btn.btn-mini.rmphase(type="button", data-phase-id=id) delete
       button.btn.btn-mini.addphase(type="button", data-phase-id=id) + subphase
       button.btn.btn-mini.addtask(type="button", data-phase-id=id) + task
   ul.subtasksnphases

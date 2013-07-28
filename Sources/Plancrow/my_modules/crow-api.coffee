@@ -236,8 +236,11 @@ exports.rmPhase = (req, res) ->
         id: data.phase_id
         project_id: projectId
     ).remove (err) ->
-        res.json status: err
-
+        if err?
+            console.info(err)
+        res.json
+            status: (if err? then 'error' else 'success')
+            message: (if err? then err else 'OK')
 
 exports.addTask = (req, res) ->
     projectId = conf.currentlyAuthorized().project_id

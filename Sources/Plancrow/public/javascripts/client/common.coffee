@@ -6,10 +6,11 @@
             {}
 
     window.app.CrowModal = Backbone.Model.extend({
-    title: "Crow Modal Window",
-    message: "Crow modal window question"
-    cb: ->
-        console.info "empty callback"
+        title: "Crow Modal Window",
+        message: "Crow modal window question"
+        severe: false
+        cb: ->
+            console.info "empty callback"
     })
 
     window.app.CrowModalView = Backbone.View.extend(
@@ -22,6 +23,7 @@
             _.bindAll this, "render", "show", "yes", "no", "close"
 
         render: ->
+            console.info(@model.attributes)
             @$el.addClass "modal"
             @$el.html @template(@model.attributes)
             this
