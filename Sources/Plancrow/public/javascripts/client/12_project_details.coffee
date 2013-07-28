@@ -159,6 +159,7 @@
 
         edit: ->
             $(@$el.find('.editable')[0]).html @editTemplate(@model.attributes)
+            @$el.find("[rel='tooltip']").tooltip()
             $(@el).find(".editname").focus()
 
         save: (target) ->
@@ -169,6 +170,7 @@
                 #todo: and jquery-coin "saved" notification
                 @model.attributes.name = @$el.find(".editname").val()
                 @model.attributes.notes = @$el.find(".editnotes").val()
+                @model.attributes.short_name = @$el.find(".editshort_name").val()
                 AjaxRequests.updatePhase @model.attributes, (phase) ->
                     $.extend that.model.attributes, phase
                     $(that.$el.find('.editable')[0]).html that.doneEditingTemplate(that.model.attributes)
@@ -181,6 +183,9 @@
                 AjaxRequests.addTask
                     phase_id: phaseId
                 , (task) ->
+                    if not that.model.attributes.tasks?
+                        that.model.attributes.tasks = new Array()
+                    that.model.attributes.tasks.push task
                     $el = $ new TaskView(model: new Task(task)).render().el
                     $el.hide()
                     that.subTaskPhasePlace.prepend $el
@@ -197,6 +202,9 @@
                 AjaxRequests.addPhase
                     parent_phase_id: phaseId
                 , (phase) ->
+                    if not that.model.attributes.children?
+                        that.model.attributes.children = new Array()
+                    that.model.attributes.children.push phase
                     that.subTaskPhasePlace.prepend new PhaseView(model: new Phase(phase)).render().el
 
             else
@@ -276,6 +284,7 @@
             this
 
         toggle: (e) ->
+            e.stopPropagation
             children = @$el.find(' > ul > li')
             if children.is(':visible')
                 children.hide('fast')
@@ -285,7 +294,7 @@
                 children.show('fast')
                 @$el.find('i.toggle').first().attr('title',
                     'Collapse this branch').addClass('icon-minus-sign').removeClass('icon-plus-sign')
-            e.stopPropagation
+#            e.stopPropagation
     )
     DroppableView = Backbone.View.extend(
         template: jade.compile("div.row-fluid.droppable\n\tdiv.name.span2 drag here [   ]")

@@ -73,6 +73,9 @@ templates.PhaseEditView =
             .form-group
                 label Name
                 input.editname.form-control(type='text', value=name)
+            .form-group(rel='tooltip', data-toggle='tooltip', data-placement='right', title='Short name is always visible when posting time. This differentiates tasks with same names in different phases')
+                label Short name
+                input.editshort_name.form-control(type='text', value=short_name)
             .form-group
                 label Notes
                 textarea.editnotes.form-control(type='text')= notes
