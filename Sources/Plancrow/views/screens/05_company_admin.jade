@@ -2,5 +2,51 @@ extends ../authed_layout
 
 block au_content
     div.row-fluid
-        div.span12
-            h1 not started
+        div.span6.offset3
+            h3 Company settings
+            form.form-horizontal
+                fieldset
+                    div.control-group
+                        label.control-label(for='inputCName') Company Name
+                        div.controls
+                            input#inputCName(type='text', placeholder='')
+                    div.control-group
+                        label.control-label(for='selectCurrency') Currency
+                        div.controls
+                            select#selectCurrency
+                                option EUR
+                                option USD
+                                option GBP
+                                option RUR
+                                option AUD
+                    div.control-group
+                        label.control-label(for='selectNotifDay') Day to send notifications
+                        div.controls
+                            select#selectNotifDay
+                                option None
+                                option Monday
+                                option Tueday
+                                option Wednesday
+                                option Thursday
+                                option Friday
+                                option Suturday
+                                option Sunday
+                    div.control-group
+                        label.control-label(for='inputRate') Default daily rate
+                        div.controls
+                            input#inputRate(type='number', placeholder='')
+                    div.control-group
+                        label.control-label(for='selectTUnit') Default time unit for reports
+                        div.controls
+                            select#selectCurrency
+                                option Day
+                                option Hour
+                    li
+                        a(href="/pages/07_user_list") Page 7: User List
+                    li
+                        a(href="/pages/09_project_list") Page 9: Project List
+                    li
+                        a(href="/pages/13_customers") Page 13: Customers
+                    div.control-group
+                        div.controls
+                            button.btn.btn-primary(type='submit') Save changes
