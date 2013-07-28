@@ -55,7 +55,7 @@ block au_content
                     div.control-group
                         label.control-label(for='selectPlan') Subscriptions
                         div.controls
-                            select#selectCustomer
+                            select#selectPlan
                                 option Users (up to 5)
                                 option Users (up to 10)
                                 option Users (up to 50)
@@ -67,9 +67,9 @@ block au_content
                                 option Projects (up to 30)
                                 option Projects (30+)
                     div.control-group
-                        label.control-label(for='inputNumber') Number of projects/users for maximum subscription
+                        label.control-label(for='inputNUnits') Number of projects/users for maximum subscription
                         div.controls
-                            input#inputEstimate(type='number', placeholder='')
+                            input#inputNUNits(type='number', placeholder='')
                     div.control-group
                         div.controls
                             button.btn.btn-primary(type='submit') Register
