@@ -3,4 +3,58 @@ extends ../authed_layout
 block au_content
     div.row-fluid
         div.span12
-            h1 not started
+            h1 Edit project settings
+            form.form-horizontal
+                fieldset
+                    legend Project details
+                    div.control-group
+                        label.control-label(for='inputName') Name
+                        div.controls
+                            input#inputName(type='text', placeholder='')
+                    div.control-group
+                        label.control-label(for='inputInvName') Invoice Name
+                        div.controls
+                            input#inputInvName(type='text', placeholder='')
+                    div.control-group
+                        label.control-label(for='inputBudget') Budget
+                        div.controls
+                            input#inputBudget(type='number', placeholder='')
+                    div.control-group
+                        label.control-label(for='inputEstimate') Estimate
+                        div.controls
+                            input#inputEstimate(type='number', placeholder='')
+                    div.control-group
+                        div.controls
+                            label.checkbox
+                                input(type='checkbox')
+                                | Override default rate
+                    div.control-group
+                        label.control-label(for='inputRate') Project rate
+                        div.controls
+                            input#inputRate(type='number', placeholder='')
+                    table.table-bordered
+                        tbody
+                            tr
+                                td User (Name+Surname)
+                                td email
+                                td
+                                    label.checkbox
+                                        input(type='checkbox', name='PM1')
+                                        | Project Manager
+                                td
+                                    label.checkbox
+                                        input(type='checkbox', name='Override1', checked='checked')
+                                        | Use default rate
+                                td
+                                    label.control-label(for='inputRate1') Project-user Rate
+                                    div.controls
+                                        input#inputRate1(type='number', placeholder='')
+                    div.control-group
+                        div.controls
+                            label.checkbox
+                                input(type='checkbox', checked='checked')
+                                | Active project
+                    label
+                    div.control-group
+                        div.controls
+                            button.btn(type='submit') Save changed
