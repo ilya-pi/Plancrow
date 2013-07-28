@@ -3,4 +3,17 @@ extends ../authed_layout
 block au_content
     div.row-fluid
         div.span12
-            h1 not started
+            h3 Invoices list for PROJECT
+            table.table-bordered(width=400)
+                caption Invoices
+                thead
+                    tr
+                        th From
+                        th To
+                        th download
+                tbody
+                    tr
+                        td Date1
+                        td Date2
+                        td
+                            a(href="dynamic") Invoice
