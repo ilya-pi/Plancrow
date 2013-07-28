@@ -21,6 +21,19 @@ exports.wireInModels = (app) ->
             ,
                 cache: false
             )
+            models.company = db.define("COMPANY",
+                id: Number
+                name: String
+                url_ext: String
+                currency_id: Number
+                plan: String
+                plan_expires: Date
+                limit_projects: Number
+                limit_users: Number
+                notiff_day: Number
+                time_unit: String
+                created_at: Date
+            )
             models.appUser = db.define("APP_USER",
                 id: Number
                 login: String

@@ -155,16 +155,29 @@ tree_from_list = (list, tasks, cb) ->
             phase.tasks.push task
     cb result, taskIds, tasks
 
+formatFloat = (val) ->
+    Math.round(val * 100) / 100
 
-#    return result;
-attachAss = (req, tree, tasks, ids, cb) ->
+enrichTask = (task, company) ->
+    if not task.assignments?
+        task.assignments = new Array()
+    switch company.time_unit
+        when 'D', 'd'
+            task.estimate_str = '' + formatFloat(task.estimate / (8 * 60 * 60 * 1000)) + 'd'
+            task.posted_str = '' + formatFloat(task.posted / (8 * 60 * 60 * 1000)) + 'd'
+        when 'H', 'h'
+            task.estimate_str = '' + formatFloat(task.estimate / (60 * 60 * 1000)) + 'h'
+            task.posted_str = '' + formatFloat(task.posted / (60 * 60 * 1000)) + 'h'
+    return task
+
+attachAss = (req, tree, tasks, ids, company, cb) ->
     req.models.assignment.find
         task_id: ids
     , (err, asses) ->
         i = 0
 
         while i < tasks.length
-            task = tasks[i]
+            task = enrichTask(tasks[i], company)
             task.assignments = new Array()
             l = 0
 
@@ -179,16 +192,17 @@ attachAss = (req, tree, tasks, ids, cb) ->
 exports.allTasks = (req, res) ->
     projectId = conf.currentlyAuthorized().project_id
     companyId = conf.currentlyAuthorized().company_id
-    req.models.project_phase.phases projectId, (err, phases) ->
-        req.models.task.tasksByProject projectId, (err, tasks) ->
-            req.models.userlink.find
-                company_id: companyId
-            , (err, userlinks) ->
-                tree_from_list phases, tasks, (tree, ids, task) ->
-                    attachAss req, tree, tasks, ids, (tree) ->
-                        res.json
-                            root: tree
-                            userlinks: userlinks
+    conf.withCompany req, (company)->
+        req.models.project_phase.phases projectId, (err, phases) ->
+            req.models.task.tasksByProject projectId, (err, tasks) ->
+                req.models.userlink.find
+                    company_id: companyId
+                , (err, userlinks) ->
+                    tree_from_list phases, tasks, (tree, ids, task) ->
+                        attachAss req, tree, tasks, ids, company, (tree) ->
+                            res.json
+                                root: tree
+                                userlinks: userlinks
 
 exports.updatePhase = (req, res) ->
     console.info(req.body.data)
@@ -245,11 +259,8 @@ exports.addTask = (req, res) ->
         status: "N"
         completed: "N"
     ], (err, items) ->
-
-        #hack for now
-        items[0].assignments = new Array()
-        console.info items[0]
-        res.json items[0]
+        conf.withCompany req, (company) ->
+            res.json enrichTask(items[0], company)
 
 
 exports.updateTask = (req, res) ->

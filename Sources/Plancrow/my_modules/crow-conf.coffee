@@ -16,3 +16,10 @@ exports.currentlyAuthorized = ->
     customer_id: 1
     company_id: 1
     project_id: 1
+
+#todo ilya: NB cache company data!!!
+exports.withCompany = (req, cb)->
+    req.models.company.get exports.currentlyAuthorized().company_id, (err, fromdb) ->
+        console.info(fromdb)
+        cb(fromdb)
+

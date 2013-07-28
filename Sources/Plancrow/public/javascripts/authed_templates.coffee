@@ -10,7 +10,7 @@ templates.TaskView =
             span.name(class=t.status) Task:&nbsp;#{t.name}
             div.notes(style="display:none;")= t.notes
         div.span2
-            p [est.: #{t.estimate}, posted: #{t.posted}]
+            span(rel='tooltip', data-toggle='tooltip', title='posted / estimate') #{t.posted_str} /&nbsp;#{t.estimate_str}
         div.span3
             select.assignment(style="width: 100%;", multiple)
                 - for (var i = 0; i < u.length; i++) {

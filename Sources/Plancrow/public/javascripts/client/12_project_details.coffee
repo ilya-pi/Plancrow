@@ -47,6 +47,7 @@
                 u: projectDetailsScreen.userlinks
             )
             @$el.find(".assignment").select2()
+            @$el.find("[rel='tooltip']").tooltip()
             this
 
         rename: ->
@@ -81,7 +82,7 @@
             if posted? and posted isnt 0
                 new window.app.CrowModalView(model : new window.app.CrowModal(
                     title: 'Sir,'
-                    message: 'There is time posted (' + posted + ') for this task. Do you want to delete task with all time posted?'
+                    message: 'There is time posted (' + @model.attributes.posted_str + ') for this task. Do you want to delete task with all time posted?'
                     cb: (answ) ->
                         if answ
                             that.deleteTask1())).show()
