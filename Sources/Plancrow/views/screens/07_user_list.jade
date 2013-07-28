@@ -3,4 +3,42 @@ extends ../authed_layout
 block au_content
     div.row-fluid
         div.span12
-            h1 not started
+            h3 Company users
+            table.table-bordered
+                tbody
+                    tr
+                        td User (Name+Surname)
+                        td email
+                        td
+                            div.control-group
+                                div.controls
+                                    label.checkbox
+                                        input(type='checkbox', name='Active1', checked='checked')
+                                        | Active
+                        td
+                            div.control-group
+                                div.controls
+                                    label.checkbox
+                                        input(type='checkbox', name='Override1', checked='checked')
+                                        | Use default rate
+                        td
+                            div.control-group
+                                label.control-label(for='inputRate1') User Rate
+                                div.controls
+                                    input#inputRate1(type='number', placeholder='')
+                        td
+                            div.control-group
+                                label.control-label(for='inputMinD1') Min days posted per month
+                                div.controls
+                                    input#inputRate1(type='number', placeholder='')
+            div.control-group
+                div.controls
+                    button.btn.btn-primary(type='submit') Save changes
+            h3 Add user
+            div.control-group
+                label.control-label(for='inputEmail') Email address
+                div.controls
+                    input#inputEmail(type='email', placeholder='')
+            div.control-group
+                div.controls
+                    button.btn.btn-primary(type='submit') Send invitation
