@@ -3,4 +3,57 @@ extends ../authed_layout
 block au_content
     div.row-fluid
         div.span12
-            h1 not started
+            h3 Management reporting
+            form.form-horizontal
+                fieldset
+                    table
+                        tr
+                            td
+                                label.control-label(for='dateFrom') From
+                                div.controls
+                                    input#dateFrom(type="date", name="dateFrom")
+                            td
+                                label.control-label(for='dateTo') To
+                                div.controls
+                                    input#dateTo(type="date", name="dateTo")
+            table
+                thead
+                    tr
+                        th
+                            label.badge-info Projects list
+                        th
+                            label.badge-info Users List
+                tbody
+                    tr
+                        td
+                            table.table-bordered
+                                thead
+                                    tr
+                                        th Project
+                                        th Posted
+                                        th Effort remains
+                                        th Spent
+                                        th Budget left
+                                tbody
+                                    tr
+                                        td
+                                            a(href="/pages/20_project_chart") Project
+                                        td Posted1
+                                        td Remains1
+                                        td Spent1
+                                        td Left 1
+                        td
+                            table.table-bordered
+                                thead
+                                    tr
+                                        th User
+                                        th Posted
+                                tbody
+                                    tr
+                                        td
+                                            a(href="/pages/21_user_timing_history") User
+                                        td Posted1
+
+
+
+
