@@ -2,5 +2,29 @@ extends ../authed_layout
 
 block au_content
     div.row-fluid
-        div.span12
-            h1 not started
+        div.span6.offset3
+            h3 Select report
+            form.form-horizontal
+                a(href="/pages/19_management_report_screen") Page 19: Management Report Screen
+            form
+                fieldset
+                    div.control-group
+                        label.control-label(for='selectProject') Project
+                        div.controls
+                            select#selectProject
+                                option Project1
+                                option Project2
+                    div.control-group
+                        div.controls
+                            button.btn.btn-primary(type='submit') Go
+            form
+                fieldset
+                    div.control-group
+                        label.control-label(for='selectProject') User
+                        div.controls
+                            select#selectProject
+                                option User1
+                                option User2
+                    div.control-group
+                        div.controls
+                            button.btn.btn-primary(type='submit') Go
