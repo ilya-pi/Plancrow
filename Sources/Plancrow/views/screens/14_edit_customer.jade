@@ -2,5 +2,40 @@ extends ../authed_layout
 
 block au_content
     div.row-fluid
-        div.span12
-            h1 not started
+        div.span6.offset3
+            h1 Edit customer settings
+            form.form-horizontal
+                fieldset
+                    div.control-group
+                        label.control-label(for='inputName') Name
+                        div.controls
+                            input#inputName(type='text', placeholder='')
+                    div.control-group
+                        label.control-label(for='inputAddress') Billing address
+                        div.controls
+                            input#inputAddress(type='text', placeholder='')
+                    div.control-group
+                        label.control-label(for='inputPerson') Contact person
+                        div.controls
+                            input#inputPerson(type='text', placeholder='')
+                    div.control-group
+                        div.controls
+                            label.checkbox
+                                input(type='checkbox', checked='checked')
+                                | Use default invoice template
+                    div.control-group
+                        div.controls
+                            label.form-inline Upload new template
+                            form(action='/upload', enctype='multipart/form-data', method='post')
+                                input(type='file', name='upload')
+                                input(type='submit')
+                    label
+                    a(href="/dynamic") Download current invoice template
+                    label
+                    a(href="/dynamic") Download default invoice template
+                    label
+                    a(href="/static") Invoice template manual
+                    label
+                    div.control-group
+                        div.controls
+                            button.btn(type='submit') Save changes
