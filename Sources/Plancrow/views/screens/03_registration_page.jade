@@ -2,5 +2,79 @@ extends ../anon_layout
 
 block au_content
     div.row-fluid
-        div.span12
-            h1 not started
+        div.span6.offset3
+            h3 Register
+            form.form-horizontal
+                fieldset
+                    legend User details
+                    div.control-group
+                        label.control-label(for='inputName') Name
+                        div.controls
+                            input#inputName(type='text', placeholder='')
+                    div.control-group
+                        label.control-label(for='inputSurname') Surname
+                        div.controls
+                            input#inputSurname(type='text', placeholder='')
+                    div.control-group
+                        label.control-label(for='inputLogin') Login
+                        div.controls
+                            input#inputLogin(type='text', placeholder='')
+                    div.control-group
+                        label.control-label(for='inputPwd') Password
+                        div.controls
+                            input#inputPwd(type='password', placeholder='')
+                    div.control-group
+                        label.control-label(for='inputPwd2') Repeat Password
+                        div.controls
+                            input#inputPwd2(type='password', placeholder='')
+                    div.control-group
+                        label.control-label(for='inputEmail') Email address
+                        div.controls
+                            input#inputEmail(type='email', placeholder='')
+                    legend Company details
+                    div.control-group
+                        label.control-label(for='inputCName') Company Name
+                        div.controls
+                            input#inputCName(type='text', placeholder='')
+                    div.control-group
+                        label.control-label(for='inputUName') Name for URL extention
+                        div.controls
+                            input#inputUName(type='text', placeholder='')
+                            span.help-block Will be used in address like http://plancrow.com/COMPANY_NAME
+                    div.control-group
+                        label.control-label(for='planTypes') Subscription type
+                        div.controls
+                            label.radio Use for free (1 user, up to 5 projects)
+                                input#plantTypes1(type='radio', name='planTypes', value='free', checked='checked')
+                            label.radio Project-based
+                                input#plantTypes2(type='radio', name='planTypes', value='project')
+                            label.radio User-based
+                                input#plantTypes3(type='radio', name='planTypes', value='user')
+                            label.radio Public project (all information is open)
+                                input#plantTypes4(type='radio', name='planTypes', value='public')
+                    div.control-group
+                        label.control-label(for='selectPlan') Subscriptions
+                        div.controls
+                            select#selectCustomer
+                                option Users (up to 5)
+                                option Users (up to 10)
+                                option Users (up to 50)
+                                option Users (up to 100)
+                                option Users (100+)
+                                option Projects (1 project)
+                                option Projects (up to 3)
+                                option Projects (up to 15)
+                                option Projects (up to 30)
+                                option Projects (30+)
+                    div.control-group
+                        label.control-label(for='inputNumber') Number of projects/users for maximum subscription
+                        div.controls
+                            input#inputEstimate(type='number', placeholder='')
+                    div.control-group
+                        div.controls
+                            button.btn.btn-primary(type='submit') Register
+        h3 Already a user?
+            label
+                div.control-group
+                    div.controls
+                        button.btn.btn-primary(type='submit') Sign in
