@@ -2,5 +2,37 @@ extends ../authed_layout
 
 block au_content
     div.row-fluid
-        div.span12
-            h1 not started
+        div.span6.offset3
+            h3 Issue invoice for PROJECT
+            form.form-horizontal
+                fieldset
+                    div.control-group
+                        label.control-label(for='selectTemplate') Template
+                        div.controls
+                            select#selectTemplate
+                                option Template1.doc
+                                option Template2.doc
+                    div.control-group
+                        label.control-label(for='selectFormat') Format
+                        div.controls
+                            select#selectFormat
+                                option PDF
+                                option DOCX
+                    div.control-group
+                        label.control-label(for='dateFrom') From date
+                        div.controls
+                            input#dateFrom(type="date", name="dateFrom")
+                    div.control-group
+                        label.control-label(for='dateTo') To date
+                        div.controls
+                            input#dateTo(type="date", name="dateTo")
+                    div.control-group
+                        div.controls
+                            label.checkbox
+                                input(type='checkbox', checked='checked')
+                                | Preview only
+                    div.control-group
+                        div.controls
+                            button.btn(type='submit') Generate
+            label
+            a(href="/pages/16_invoices_history") Invoices history
