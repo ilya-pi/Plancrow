@@ -58,6 +58,7 @@ templates.PhaseView =
             i.toggle.icon-minus-sign(title='Collapse this branch')
             span.editable
                 span.editarea &nbsp; #{name}
+    div.span2.estimate
     div.span2.droppable(data-phase-id=id) [ drag here ]
     div.span2.input-prepend.input-append
       button.btn.btn-mini.rmphase(type="button", data-phase-id=id) delete

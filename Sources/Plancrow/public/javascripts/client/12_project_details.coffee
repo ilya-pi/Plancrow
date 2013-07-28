@@ -155,8 +155,21 @@
             "click .rmphase": "rmPhase"
 
         initialize: ->
-            _.bindAll this, 'edit', 'save', 'addTask', 'addPhase', 'rmPhase', 'rmPhase1', 'render', 'toggle'
-            _.bindAll this, 'deletedSubPhase'
+            _.bindAll this, 'edit', 'save', 'render', 'toggle'
+            _.bindAll this, 'addTask', 'addTask1', 'addPhase', 'addPhase1', 'rmPhase', 'rmPhase1'
+            _.bindAll this, 'listener_deletedSubPhase', 'listen_estimateUpdate'
+            _.bindAll this, 'view_setEstimate'
+            @model.on({
+                "change:estimate": @view_setEstimate
+            });
+
+        view_setEstimate: ->
+            niceFloat = (val) ->
+                Math.round(val * 100) / 100
+            est = niceFloat(@model.attributes.estimate / (8 * 60 * 60 * 1000))
+            pst = niceFloat(@model.attributes.posted / (8 * 60 * 60 * 1000))
+            $(@$el.find('.estimate')[0]).html('' + pst + 'd / ' + est + 'd')
+#            console.info('will update')
 
         edit: ->
             $(@$el.find('.editable')[0]).html @editTemplate(@model.attributes)
@@ -184,17 +197,43 @@
                 AjaxRequests.addTask
                     phase_id: phaseId
                 , (task) ->
-                    if not that.model.subtasks?
-                        that.model.subtasks = new Array()
-                    taskModel = new Task(task)
-                    that.model.subtasks.push taskModel
-                    $el = $ new TaskView(model: taskModel).render().el
-                    $el.hide()
-                    that.subTaskPhasePlace.prepend $el
-                    $el.show('fast')
-
+                    that.addTask1 task, true
             else
                 return
+
+        addTask1: (task_json, anim) ->
+            if not @model.subtasks?
+                @model.subtasks = new Array()
+            task_model = new Task(task_json)
+            @model.subtasks.push task_model
+            $task_el = $ new TaskView(model: task_model).render().el
+            if anim?
+                $task_el.hide()
+                @subTaskPhasePlace.prepend $task_el
+                $task_el.show('fast')
+            else
+                @subTaskPhasePlace.prepend $task_el
+            @listenTo(task_model, 'estimate_update', @listen_estimateUpdate)
+            task_model.trigger('estimate_update', 'add', task_model.attributes.estimate, task_model.attributes.posted)
+            return task_model
+
+        listen_estimateUpdate: (op, inc_est, inc_pst)->
+            if not @model.attributes.estimate?
+                @model.attributes.estimate = 0
+                @model.attributes.posted = 0
+            cur_est = @model.attributes.estimate
+            cur_pst = @model.attributes.posted
+
+            switch op
+                when 'del'
+                    cur_est -= inc_est
+                    cur_pst -= inc_pst
+                when 'add'
+                    cur_est += inc_est
+                    cur_pst += inc_pst
+            @model.set({estimate: cur_est, posted: cur_pst})
+            console.info(cur_est + ' ' + cur_pst)
+            @model.trigger('estimate_update', op, inc_est, inc_pst)
 
         addPhase: (target) ->
             that = this
@@ -204,18 +243,24 @@
                 AjaxRequests.addPhase
                     parent_phase_id: phaseId
                 , (phase) ->
-                    if not that.model.subphases?
-                        that.model.subphases = new Array()
-                    phaseModel = new Phase(phase)
-                    subPhaseView = new PhaseView(model: phaseModel)
-                    that.model.subphases.push phaseModel
-                    that.listenTo(phaseModel, 'deleted', that.deletedSubPhase)
-                    that.subTaskPhasePlace.prepend subPhaseView.render().el
-                    subPhaseView.edit()
+                    that.addPhase1 phase, true
             else
                 return
 
-        deletedSubPhase: (target) ->
+        addPhase1: (phase_json, focus) ->
+            if not @model.subphases?
+                @model.subphases = new Array()
+            phase_model = new Phase(phase_json)
+            sub_phase_view = new PhaseView(model: phase_model)
+            @model.subphases.push phase_model
+            @listenTo(phase_model, 'deleted', @listener_deletedSubPhase)
+            @listenTo(phase_model, 'estimate_update', @listen_estimateUpdate)
+            @subTaskPhasePlace.prepend sub_phase_view.render().el
+            if focus? && focus
+                sub_phase_view.edit()
+            return phase_model
+
+        listener_deletedSubPhase: (target) ->
             console.info "boo"
 
         rmPhase: (target) ->
@@ -238,7 +283,6 @@
                                 that.rmPhase1(target))).show()
                 else
                     @rmPhase1(target)
-
 
         rmPhase1: (target) ->
             that = this
@@ -269,38 +313,15 @@
             else
                 @$el.find('i.toggle').removeClass('icon-minus-sign')
             @subTaskPhasePlace = @$el.find(".subtasksnphases")
-            @subTaskPhasePlace = @subTaskPhasePlace
             if @model.attributes.tasks
-                @model.subtasks = new Array()
-                tasks = @model.attributes.tasks
-                i = 0
-                while i < tasks.length
-                    taskModel  = new Task(tasks[i])
-                    @model.subtasks.push taskModel
-                    @subTaskPhasePlace.append new TaskView(model: taskModel).render().el
-                    i++
+                @addTask1(task, false) for task in @model.attributes.tasks
                 @model.attributes.tasks = undefined
             if @model.attributes.subphases
-                @model.subphases = new Array()
-                kids = @model.attributes.subphases
-                kiddies = new Array()
-                i = 0
-
-                while i < kids.length
-                    subPhaseModel = new Phase(kids[i])
-                    @model.subphases.push subPhaseModel
-                    kiddies[i] = new PhaseView(model: subPhaseModel)
-                    i++
-                i = 0
-
-                while i < kids.length
-                    @subTaskPhasePlace.append kiddies[i].render().el
-                    i++
+                @addPhase1(phase, false) for phase in @model.attributes.subphases
                 @model.attributes.subphases = undefined
             this
 
         toggle: (e) ->
-            e.stopPropagation
             children = @$el.find(' > ul > li')
             if children.is(':visible')
                 children.hide('fast')
@@ -310,7 +331,7 @@
                 children.show('fast')
                 @$el.find('i.toggle').first().attr('title',
                     'Collapse this branch').addClass('icon-minus-sign').removeClass('icon-plus-sign')
-#            e.stopPropagation
+            e.stopPropagation
     )
     DroppableView = Backbone.View.extend(
         template: jade.compile("div.row-fluid.droppable\n\tdiv.name.span2 drag here [   ]")
