@@ -123,7 +123,7 @@ tree_from_list = (list, tasks) ->
     result
 
 exports.screen12_project_details = (req, res) ->
-    req.models.project.get conf.currentlyAuthorized().project_id, (err, project) ->
+    req.models.project.get conf.currentlyAuthorized(req).project_id, (err, project) ->
         req.models.project_phase.phases project.id, (err, phases) ->
             req.models.task.tasksByProject project.id, (err, tasks) ->
                 res.render "screens/12_project_details",

@@ -15,9 +15,9 @@ exports.wireIn = (app) ->
     app.post "/json/task/delete", exports.deleteTask
 
 exports.postTime = (req, res) ->
-    projectId = conf.currentlyAuthorized().project_id
-    companyId = conf.currentlyAuthorized().company_id
-    customerId = conf.currentlyAuthorized().customer_id
+    projectId = conf.currentlyAuthorized(req).project_id
+    companyId = conf.currentlyAuthorized(req).company_id
+    customerId = conf.currentlyAuthorized(req).customer_id
     data = JSON.parse(req.body.data)
     task_id = data.task_id
     time_inc = data.time_inc
@@ -55,9 +55,9 @@ exports.postTime = (req, res) ->
 
 #    });
 exports.syncAssignment = (req, res) ->
-    projectId = conf.currentlyAuthorized().project_id
-    companyId = conf.currentlyAuthorized().company_id
-    customerId = conf.currentlyAuthorized().customer_id
+    projectId = conf.currentlyAuthorized(req).project_id
+    companyId = conf.currentlyAuthorized(req).company_id
+    customerId = conf.currentlyAuthorized(req).customer_id
     data = JSON.parse(req.body.data)
     task_id = data.task_id
     userlinks = data.userlinks
@@ -102,7 +102,7 @@ exports.syncAssignment = (req, res) ->
 
 
 exports.allUserlinks = (req, res) ->
-    companyId = conf.currentlyAuthorized().company_id
+    companyId = conf.currentlyAuthorized(req).company_id
     req.models.userlink.find
         company_id: companyId
     , (err, userlinks) ->
@@ -110,7 +110,7 @@ exports.allUserlinks = (req, res) ->
 
 
 exports.assignedTasks = (req, res) ->
-    customerId = conf.currentlyAuthorized().customer_id
+    customerId = conf.currentlyAuthorized(req).customer_id
     req.models.userlink.find
         user_id: customerId
     , (err, userlinks) ->
@@ -190,8 +190,8 @@ attachAss = (req, tree, tasks, ids, company, cb) ->
 
 
 exports.allTasks = (req, res) ->
-    projectId = conf.currentlyAuthorized().project_id
-    companyId = conf.currentlyAuthorized().company_id
+    projectId = conf.currentlyAuthorized(req).project_id
+    companyId = conf.currentlyAuthorized(req).company_id
     conf.withCompany req, (company)->
         req.models.project_phase.phases projectId, (err, phases) ->
             req.models.task.tasksByProject projectId, (err, tasks) ->
@@ -217,7 +217,7 @@ exports.updatePhase = (req, res) ->
 
 exports.addPhase = (req, res) ->
     data = JSON.parse(req.body.data)
-    projectId = conf.currentlyAuthorized().project_id
+    projectId = conf.currentlyAuthorized(req).project_id
     now = new Date();
     curr_date = now.getDate();
     curr_month = now.getMonth() + 1; # months are zero based
@@ -233,7 +233,7 @@ exports.addPhase = (req, res) ->
 
 exports.rmPhase = (req, res) ->
     data = JSON.parse(req.body.data)
-    projectId = conf.currentlyAuthorized().project_id
+    projectId = conf.currentlyAuthorized(req).project_id
     req.models.project_phase.find(
         id: data.phase_id
         project_id: projectId
@@ -245,9 +245,9 @@ exports.rmPhase = (req, res) ->
             message: (if err? then err else 'OK')
 
 exports.addTask = (req, res) ->
-    projectId = conf.currentlyAuthorized().project_id
-    companyId = conf.currentlyAuthorized().company_id
-    customerId = conf.currentlyAuthorized().customer_id
+    projectId = conf.currentlyAuthorized(req).project_id
+    companyId = conf.currentlyAuthorized(req).company_id
+    customerId = conf.currentlyAuthorized(req).customer_id
     data = JSON.parse(req.body.data)
     dummy = {}
     dummy.isInstance = false
@@ -292,7 +292,7 @@ exports.moveTask = (req, res) ->
 
 exports.deleteTask = (req, res) ->
     data = JSON.parse(req.body.data)
-    projectId = conf.currentlyAuthorized().project_id
+    projectId = conf.currentlyAuthorized(req).project_id
     req.models.timing.find(
         task_id: data.task_id
         project_id: projectId

@@ -14,6 +14,8 @@ models = require("./my_modules/models")
 passport = require("passport")
 LocalStrategy = require("passport-local").Strategy
 app = express()
+
+AppUser = undefined
 orm.connect conf.mysqlConnectionString(), (err, db) ->
     throw err  if err
     AppUser = db.define("APP_USER",
@@ -96,11 +98,14 @@ app.post "/pages/04_sign_in_page", passport.authenticate("local",
     failureRedirect: "/pages/04_sign_in_page"
 )
 
-#        ,
-#        failureFlash: 'Invalid username or password.'
-#screens.wireIn app, check_auth
-screens.wireIn app, (req, res, next) ->
-    next()
+ensureAuthenticated = (req, res, next) ->
+    if req.isAuthenticated()
+        return next()
+    res.redirect('/login')
+
+screens.wireIn app, ensureAuthenticated
+#screens.wireIn app, (req, res, next) ->
+#    next()
 crowapi.wireIn app
 http.createServer(app).listen app.get("port"), ->
     console.log "Express server listening on port " + app.get("port")
