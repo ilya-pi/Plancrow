@@ -101,7 +101,7 @@ app.post "/pages/04_sign_in_page", passport.authenticate("local",
 ensureAuthenticated = (req, res, next) ->
     if req.isAuthenticated()
         return next()
-    res.redirect('/login')
+    res.redirect('/pages/04_sign_in_page')
 
 screens.wireIn app, ensureAuthenticated
 #screens.wireIn app, (req, res, next) ->

@@ -3,23 +3,19 @@ extends layout
 block content
     div.container
         div.masthead
-            h3.muted Plancrow
-            h4 #{screen_name}
-            div.navbar
-                div.navbar-inner
-                    div.container
-                        ul.nav
-                            li.active
-                                a(href="#") What is Plancrow?
-                            li
-                                a(href="#") Our Customers
-                            li
-                                a(href="#") Pricing
-                            li
-                                a(href="#") Public Projects
-                        ul.nav.pull-right
-                            li
-                                a(href="#") Sign In
+            h3.text-muted Plancrow
+            ul.nav.navbar-nav
+                li.active
+                    a(href="#") What is Plancrow?
+                li
+                    a(href="#") Our Customers
+                li
+                    a(href="#") Pricing
+                li
+                    a(href="#") Public Projects
+            ul.nav.pull-right
+                li
+                    a(href="#") Sign In
 
         block au_content
 

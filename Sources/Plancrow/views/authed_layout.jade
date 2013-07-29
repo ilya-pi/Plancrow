@@ -3,63 +3,61 @@ extends layout
 block content
     div.container
         div.masthead
-            div.row-fluid
-                div.span8
+            div.row
+                div.col-lg-8
                     p project:&nbsp;
                         i A
                     p company:&nbsp;
                         i B
                     h4= screen_name
-                div.span4
-                    h3.muted.pull-right
-                        a(href="/")
-                            img(src="/images/crow-logo.png", width="100px", alt="Plancrow Home")
-            div.navbar
-                div.navbar-inner
-                    div.container
-                        ul.nav
-                            - if (screen_name == '06 User Settings') {
-                            li.active
-                                a(href="/pages/06_user_settings") User Settings
-                            - }else{
-                            li
-                                a(href="/pages/06_user_settings") User Settings
-                            - }
-                            - if (screen_name == '05 Company Admin') {
-                            li.active
-                                a(href="/pages/05_company_admin") Company Settings
-                            - }else{
-                            li
-                                a(href="/pages/05_company_admin") Company Settings
-                            - }
-                            - if (screen_name == '09 Project List') {
-                            li.active
-                                a(href="/pages/09_project_list") My Projects
-                            - }else{
-                            li
-                                a(href="/pages/09_project_list") My Projects
-                            - }
-                            - if (screen_name == '18 Reports Page   ') {
-                            li.active
-                                a(href="/pages/18_reports") Reports
-                            - }else{
-                            li
-                                a(href="/pages/18_reports_page") Reports
-                            - }
-                        ul.nav.pull-right
-                            - if (screen_name == '22 Post Time') {
-                            li.active
-                                a(href="/pages/22_post_time") Post Time
-                            - }else{
-                            li
-                                a(href="/pages/22_post_time") Post Time
-                            - }
+                div.col-lg-4
+                    a.pull-right(href="/")
+                        img(src="/images/crow-logo.png", width="100px", alt="Plancrow Home")
+            div.row
+                div.col-lg-12
+                    ul.nav.navbar-nav
+                        - if (screen_name == '06 User Settings') {
+                        li.active
+                            a(href="/pages/06_user_settings") User Settings
+                        - }else{
+                        li
+                            a(href="/pages/06_user_settings") User Settings
+                        - }
+                        - if (screen_name == '05 Company Admin') {
+                        li.active
+                            a(href="/pages/05_company_admin") Company Settings
+                        - }else{
+                        li
+                            a(href="/pages/05_company_admin") Company Settings
+                        - }
+                        - if (screen_name == '09 Project List') {
+                        li.active
+                            a(href="/pages/09_project_list") My Projects
+                        - }else{
+                        li
+                            a(href="/pages/09_project_list") My Projects
+                        - }
+                        - if (screen_name == '18 Reports Page   ') {
+                        li.active
+                            a(href="/pages/18_reports") Reports
+                        - }else{
+                        li
+                            a(href="/pages/18_reports_page") Reports
+                        - }
+                    ul.nav.pull-right
+                        - if (screen_name == '22 Post Time') {
+                        li.active
+                            a(href="/pages/22_post_time") Post Time
+                        - }else{
+                        li
+                            a(href="/pages/22_post_time") Post Time
+                        - }
 
         // used on page render
-        script(type='text/javascript', src='/javascripts/client/ajax-requests.js')
-        script(type='text/javascript', src='/javascripts/authed_templates.js')
-        script(type='text/javascript', src='/javascripts/common_templates.js')
-        script(type='text/javascript', src='/javascripts/client/common.js')
+        script(type='text/javascript', src='/scripts/client/ajax-requests.js')
+        script(type='text/javascript', src='/scripts/client/authed_templates.js')
+        script(type='text/javascript', src='/scripts/client/common_templates.js')
+        script(type='text/javascript', src='/scripts/client/common.js')
 
         block au_content
 

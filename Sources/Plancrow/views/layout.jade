@@ -2,22 +2,22 @@ doctype 5
 html
   head
     title= title
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+
     link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
-    link(rel='stylesheet', href='/bootstrap/css/bootstrap-responsive.min.css')
+    link(rel='stylesheet', href='/scripts/vendor/bootstrap/dist/css/bootstrap.min.css')
 
-    script(type='text/javascript', src='/javascripts/ext/jquery-latest.min.js')
-    script(type='text/javascript', src='/javascripts/ext/underscore-min.js')
-    script(type='text/javascript', src='/javascripts/ext/backbone-min.js')
-    script(type='text/javascript', src='/javascripts/ext/browser-jade.js')
-    script(type='text/javascript', src='/javascripts/ext/jade-shim.js')
-    script(type='text/javascript', src='/bootstrap/js/bootstrap.min.js')
+    script(type='text/javascript', src='/scripts/vendor/jquery/jquery.min.js')
+    script(type='text/javascript', src='/scripts/vendor/underscore/underscore-min.js')
+    script(type='text/javascript', src='/scripts/vendor/backbone/backbone-min.js')
+    script(type='text/javascript', src='/scripts/vendor/bootstrap/dist/js/bootstrap.min.js')
+    script(type='text/javascript', src='/scripts/vendor/select2/select2.min.js')
+    link(rel='stylesheet', href='/scripts/vendor/select2/select2.css')
+    link(rel='stylesheet', href='/scripts/vendor/select2-bootstrap-css/select2-bootstrap.css')
+    link(rel='stylesheet', href='/scripts/vendor/font-awesome/css/font-awesome.min.css')
 
-    link(rel='stylesheet', href='/javascripts/ext/select2-3.4.1/select2.css')
-    script(type='text/javascript', src='/javascripts/ext/select2-3.4.1/select2.min.js')
-    link(rel='stylesheet', href='/stylesheets/ext/select2-bootstrap.css')
-
-
+    script(type='text/javascript', src='/scripts/jade-hack/browser-jade.js')
+    script(type='text/javascript', src='/scripts/jade-hack/jade-shim.js')
 
   body
     block content
