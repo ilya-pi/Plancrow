@@ -7,7 +7,9 @@ templates.TaskView =
     '''
     div.row.task.node(id="#{t.id}", data-taskid="#{t.id}", data-taskname = "#{t.name}", data-tasknotes = "#{t.notes}")
         div.col-lg-3
-            span.name(class=t.status) Task:&nbsp;#{t.name}
+            span.name(class=t.status)
+                i.icon-tasks
+                &nbsp;#{t.name}
             div.notes(style="display:none;")= t.notes
         div.col-lg-1
             small(rel='tooltip', data-toggle='tooltip', title='posted / estimate') #{t.posted_str} /&nbsp;#{t.estimate_str}
@@ -62,8 +64,12 @@ templates.PhaseView =
     div.col-lg-2.droppable(data-phase-id=id) [ drag here ]
     div.col-lg-4.btn-group
         button.btn.btn-default.btn-small.rmphase(type="button", data-phase-id=id) delete
-        button.btn.btn-default.btn-small.addphase(type="button", data-phase-id=id) + subphase
-        button.btn.btn-default.btn-small.addtask(type="button", data-phase-id=id) + task
+        button.btn.btn-default.btn-small.addphase(type="button", data-phase-id=id)
+            i.icon-plus
+            &nbsp;sub-phase
+        button.btn.btn-default.btn-small.addtask(type="button", data-phase-id=id)
+            i.icon-plus
+            &nbsp;task
   ul.subtasksnphases
   '''
 
