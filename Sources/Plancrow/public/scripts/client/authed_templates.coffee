@@ -55,7 +55,7 @@ templates.TaskEditView =
             .form-group
                 label Notes
                 textarea.editnotes.form-control(type='text')= notes
-            button.btn.btn-success.save(type="button") Save
+            button.pull-right.btn.btn-success.save(type="button") Save
     '''
 
 templates.PhaseView =
@@ -92,7 +92,7 @@ templates.PhaseEditView =
             .form-group
                 label Notes
                 textarea.editnotes.form-control(type='text')= notes
-            button.btn.btn-success.save(type="button", data-phase-id=id) Save
+            button.pull-right.btn.btn-success.save(type="button", data-phase-id=id) Save
     '''
 
 templates.PhaseDoneEditingView =

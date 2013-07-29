@@ -53,7 +53,8 @@
 
 
         edit: (e) ->
-            e.stopPropagation()
+            if e?
+                e.stopPropagation()
             $(@$el.find(".name")[0]).css("width", "100%")
             $(@$el.find('.editable')[0]).html @editTemplate(@model.attributes)
             $(@el).find(".editname").focus()
@@ -194,22 +195,25 @@
                 AjaxRequests.addTask
                     phase_id: phaseId
                 , (task) ->
-                    that.addTask1 task, true
+                    that.addTask1 task, true, true
             else
                 return
 
-        addTask1: (task_json, anim) ->
+        addTask1: (task_json, focus, anim) ->
             if not @model.subtasks?
                 @model.subtasks = new Array()
             task_model = new Task(task_json)
             @model.subtasks.push task_model
-            $task_el = $ new TaskView(model: task_model).render().el
+            task_view = new TaskView(model: task_model)
+            $task_el = $ task_view.render().el
             if anim?
                 $task_el.hide()
                 @subTaskPhasePlace.prepend $task_el
-                $task_el.show('fast')
+                $task_el.show('fast', ->
+                    if focus? && focus then task_view.edit())
             else
                 @subTaskPhasePlace.prepend $task_el
+                if focus? && focus then task_view.edit()
             @listenTo(task_model, 'estimate_update', @listen_estimateUpdate)
             task_model.trigger('estimate_update', 'add', task_model.attributes.estimate, task_model.attributes.posted)
             return task_model
@@ -316,10 +320,10 @@
                 @$el.find('i.toggle').removeClass('icon-minus-sign')
             @subTaskPhasePlace = @$el.find(".subtasksnphases")
             if @model.attributes.tasks
-                @addTask1(task, false) for task in @model.attributes.tasks
+                @addTask1(task) for task in @model.attributes.tasks
                 @model.attributes.tasks = undefined
             if @model.attributes.subphases
-                @addPhase1(phase, false) for phase in @model.attributes.subphases
+                @addPhase1(phase) for phase in @model.attributes.subphases
                 @model.attributes.subphases = undefined
             this
 
