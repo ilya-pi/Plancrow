@@ -7,17 +7,18 @@
         template: jade.compile(templates.TaskView) # defined in template.coffe
         editTemplate: jade.compile(templates.TaskEditView)
         events:
-            "click .name": "rename"
-            "blur": "saveRenamed"
+            "click .editarea": "edit"
+            "click .save": "save"
             "click button.delete": "deleteTask"
-            "click button.details": "details"
             "click .status a[role = 'menuitem']": "changeStatus"
             "change .assignment": "syncAssignment"
-            "click button.status": "rollStatus"
+            "click button.status": "rollStatus",
+            "click i.status" : "rollStatus"
 
         initialize: ->
-            _.bindAll this, "render", "rename", "saveRenamed", "syncAssignment", "deleteTask", "details", "changeStatus", "_dragStartEvent"
-            _.bindAll this, "rollStatus", "updateTask1"
+            _.bindAll this, 'render', 'syncAssignment', 'deleteTask', 'changeStatus', '_dragStartEvent'
+            _.bindAll this, 'edit', 'save'
+            _.bindAll this, 'rollStatus', 'updateTask1'
 
             #draggable kitchen
             @$el.attr "draggable", "true"
@@ -50,31 +51,29 @@
             @$el.find("[rel='tooltip']").tooltip()
             this
 
-        rename: ->
-            $(@el).html @editTemplate(@model.attributes)
-            $(@el).find(".editname").focus()
-            @el.addEventListener "blur", @saveRenamed, true
 
-        saveRenamed: ->
+        edit: (e) ->
+            e.stopPropagation()
+            $(@$el.find(".name")[0]).css("width", "100%")
+            $(@$el.find('.editable')[0]).html @editTemplate(@model.attributes)
+            $(@el).find(".editname").focus()
+
+        save: (target) ->
             that = this
-            #and jquery-coin "saved" notification
-            newName = $(@el).find(".editname").val()
-            @model.attributes.name = newName
-            AjaxRequests.updateTask @model.attributes, (task) ->
-                $.extend that.model.attributes, task
-                that.render()
+            target.stopPropagation()
+            #todo: and jquery-coin "saved" notification
+            @model.attributes.name = @$el.find(".editname").val()
+            @model.attributes.notes = @$el.find(".editnotes").val()
+            $(that.$el.find(".name")[0]).css("width", "auto")
+            @updateTask1()
 
         syncAssignment: (e) ->
             that = this
-            #            console.info "Task " + @model.attributes.id + " changed assignment to " + e.val
             AjaxRequests.syncAssignment
                 task_id: @model.attributes.id
                 userlinks: e.val
             , (resp) ->
                 that.model.attributes.assignments = resp.assignments
-                console.info(that.model.attributes)
-#                console.info resp
-#                console.info "Task " + that.model.attributes.id + " changed assignment to " + e.val
 
         deleteTask: ->
             that = this
@@ -102,11 +101,9 @@
                     )).show()
                 else
                     that.$el.hide('fast', ->
-                        that.model.trigger('estimate_update', 'del', that.model.attributes.estimate, that.model.attributes.posted)
+                        that.model.trigger('estimate_update', 'del', that.model.attributes.estimate,
+                            that.model.attributes.posted)
                         that.$el.remove())
-
-        details: ->
-            @$el.find(".notes").toggle()
 
         rollStatus: ->
             that = this
@@ -127,14 +124,13 @@
                                 that.updateTask1())).show()
 
         changeStatus: (src) ->
-            that = this
             @model.attributes.status = $(src.target).data("status")
             @updateTask1()
 
         updateTask1: () ->
             that = this
             AjaxRequests.updateTask @model.attributes, (task) ->
-                $.extend that.model.attributes, task
+                that.model.set(task)
                 that.render()
         #and jquery-coin "saved" notification
     )
@@ -161,7 +157,7 @@
             _.bindAll this, 'listener_deletedSubPhase', 'listen_estimateUpdate'
             _.bindAll this, 'view_setEstimatePosted'
             @model.on({
-                "change:estimate change:posted": @view_setEstimatePosted
+            "change:estimate change:posted": @view_setEstimatePosted
             });
 
         view_setEstimatePosted: ->

@@ -6,11 +6,13 @@ templates =
 templates.TaskView =
     '''
     div.row.task.node(id="#{t.id}", data-taskid="#{t.id}", data-taskname = "#{t.name}", data-tasknotes = "#{t.notes}")
-        div.col-lg-3
-            span.name(class=t.status)
-                i.icon-tasks
-                &nbsp;#{t.name}
-            div.notes(style="display:none;")= t.notes
+        div.col-lg-4
+            span.name
+                - var task_icon = (t.status == 'C' ? 'icon-check' : 'icon-check-empty')
+                span(class=t.status)
+                    i.status.icon-large(class=task_icon)
+                span.editable
+                    span.editarea(class=t.status) &nbsp;#{t.name}
         div.col-lg-1
             small(rel='tooltip', data-toggle='tooltip', title='posted / estimate') #{t.posted_str} /&nbsp;#{t.estimate_str}
         div.col-lg-3
@@ -22,7 +24,6 @@ templates.TaskView =
         div.col-lg-4.btn-toolbar
             div.btn-group
                 button.btn.btn-default.btn-small.delete delete
-                button.btn.btn-default.btn-small.details details
             div.btn-group.status
                 button.btn.btn-default.btn-small.status
                     - if (t.status == "A"){
@@ -46,10 +47,15 @@ templates.TaskView =
 
 templates.TaskEditView =
     '''
-    div.row.node
-        div.col-lg-4
-            span.name Task:&nbsp;
-                input.editname(type="text", value=name)
+    form
+        fieldset
+            .form-group
+                label Name
+                input.editname.form-control(type='text', value=name)
+            .form-group
+                label Notes
+                textarea.editnotes.form-control(type='text')= notes
+            button.btn.btn-success.save(type="button") Save
     '''
 
 templates.PhaseView =
