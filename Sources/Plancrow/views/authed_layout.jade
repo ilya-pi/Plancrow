@@ -53,6 +53,11 @@ block content
                             a(href="/pages/22_post_time") Post Time
                         - }
 
+        - if (typeof cur_config !== "undefined" && cur_config !== null) {
+            script(type="text/javascript")
+                var glob = !{JSON.stringify(cur_config)};
+        - }
+
         // used on page render
         script(type='text/javascript', src='/scripts/client/ajax-requests.js')
         script(type='text/javascript', src='/scripts/client/authed_templates.js')

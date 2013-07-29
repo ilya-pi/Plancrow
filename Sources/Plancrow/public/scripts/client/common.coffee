@@ -81,4 +81,16 @@
             @$el.modal('hide')
             @remove()
     )
+
+    formatFloat = (val) ->
+        Math.round(val * 100) / 100
+
+    window.app._formatEstimate = (millis) ->
+        #glob is set up in the page earlier
+        switch glob.time_unit
+            when 'D', 'd'
+                return '' + formatFloat(millis/ (8 * 60 * 60 * 1000)) + 'd'
+            when 'H', 'h'
+                return '' + formatFloat(millis / (60 * 60 * 1000)) + 'h'
+        return 'n/a d'
 ) jQuery

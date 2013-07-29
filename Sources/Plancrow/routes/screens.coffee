@@ -123,14 +123,16 @@ tree_from_list = (list, tasks) ->
     result
 
 exports.screen12_project_details = (req, res) ->
-    req.models.project.get conf.currentlyAuthorized(req).project_id, (err, project) ->
-        req.models.project_phase.phases project.id, (err, phases) ->
-            req.models.task.tasksByProject project.id, (err, tasks) ->
-                res.render "screens/12_project_details",
-                    title: "Plancrow"
-                    screen_name: "12 Project Details"
-                    project: project
-                    phases: tree_from_list(phases, tasks)
+    conf.withCompany req, (company) ->
+        req.models.project.get conf.currentlyAuthorized(req).project_id, (err, project) ->
+            req.models.project_phase.phases project.id, (err, phases) ->
+                req.models.task.tasksByProject project.id, (err, tasks) ->
+                    res.render "screens/12_project_details",
+                        title: "Plancrow"
+                        screen_name: "12 Project Details"
+                        project: project
+                        phases: tree_from_list(phases, tasks)
+                        cur_config: company
 
 
 

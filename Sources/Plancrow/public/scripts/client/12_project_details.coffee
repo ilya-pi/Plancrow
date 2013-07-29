@@ -102,6 +102,7 @@
                     )).show()
                 else
                     that.$el.hide('fast', ->
+                        that.model.trigger('estimate_update', 'del', that.model.attributes.estimate, that.model.attributes.posted)
                         that.$el.remove())
 
         details: ->
@@ -158,24 +159,21 @@
             _.bindAll this, 'edit', 'save', 'render', 'toggle'
             _.bindAll this, 'addTask', 'addTask1', 'addPhase', 'addPhase1', 'rmPhase', 'rmPhase1'
             _.bindAll this, 'listener_deletedSubPhase', 'listen_estimateUpdate'
-            _.bindAll this, 'view_setEstimate'
+            _.bindAll this, 'view_setEstimatePosted'
             @model.on({
-                "change:estimate": @view_setEstimate
+                "change:estimate change:posted": @view_setEstimatePosted
             });
 
-        view_setEstimate: ->
-            niceFloat = (val) ->
-                Math.round(val * 100) / 100
-            est = niceFloat(@model.attributes.estimate / (8 * 60 * 60 * 1000))
-            pst = niceFloat(@model.attributes.posted / (8 * 60 * 60 * 1000))
-            $(@$el.find('.estimate')[0]).html('' + pst + 'd / ' + est + 'd')
-#            console.info('will update')
+        view_setEstimatePosted: ->
+            est_str = window.app._formatEstimate(@model.attributes.estimate)
+            pst_str = window.app._formatEstimate(@model.attributes.posted)
+            $(@$el.find('.estimate')[0]).html("<small rel='tooltip' data-toggle='tooltip' title='subtree posted/estimate'>" + pst_str + ' / ' + est_str + '</small>')
+            $(@$el.find('.estimate')[0]).find("[rel='tooltip']").tooltip()
 
         edit: ->
             $(@$el.find(".name")[0]).css("width", "100%")
             $(@$el.find('.editable')[0]).html @editTemplate(@model.attributes)
             @$el.find("[rel='tooltip']").tooltip()
-            @$el.find("[rel='popover']").popover()
             $(@el).find(".editname").focus()
 
         save: (target) ->
@@ -235,7 +233,6 @@
                     cur_est += inc_est
                     cur_pst += inc_pst
             @model.set({estimate: cur_est, posted: cur_pst})
-            console.info(cur_est + ' ' + cur_pst)
             @model.trigger('estimate_update', op, inc_est, inc_pst)
 
         addPhase: (target) ->
@@ -246,11 +243,11 @@
                 AjaxRequests.addPhase
                     parent_phase_id: phaseId
                 , (phase) ->
-                    that.addPhase1 phase, true
+                    that.addPhase1 phase, true, true
             else
                 return
 
-        addPhase1: (phase_json, focus) ->
+        addPhase1: (phase_json, focus, anim) ->
             if not @model.subphases?
                 @model.subphases = new Array()
             phase_model = new Phase(phase_json)
@@ -258,9 +255,15 @@
             @model.subphases.push phase_model
             @listenTo(phase_model, 'deleted', @listener_deletedSubPhase)
             @listenTo(phase_model, 'estimate_update', @listen_estimateUpdate)
-            @subTaskPhasePlace.prepend sub_phase_view.render().el
-            if focus? && focus
-                sub_phase_view.edit()
+            $phase_el = $ sub_phase_view.render().el
+            if anim?
+                $phase_el.hide()
+                @subTaskPhasePlace.prepend $phase_el
+                $phase_el.show('fast', ->
+                    if focus? && focus then sub_phase_view.edit())
+            else
+                @subTaskPhasePlace.prepend $phase_el
+                if focus? && focus then sub_phase_view.edit()
             return phase_model
 
         listener_deletedSubPhase: (target) ->
