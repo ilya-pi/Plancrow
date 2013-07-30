@@ -52,6 +52,15 @@ AjaxRequests =
 
             dataType: "json"
 
+    movePhase: (params, callback) ->
+        $.ajax
+            type: "POST"
+            url: "/json/phase/move"
+            data:
+                data: JSON.stringify(params)
+            success: (data) ->
+                callback data
+            dataType: "json"
 
     rmPhase: (params, callback) ->
         $.ajax

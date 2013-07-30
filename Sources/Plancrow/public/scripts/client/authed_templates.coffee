@@ -15,7 +15,7 @@ templates.TaskView =
                     span.editarea(class=t.status) &nbsp;#{t.name}
                     span.drag_grab
                         &nbsp;
-                        i.icon-reorder.icon-large
+                        i.icon-reorder
         div.col-lg-1
             small(rel='tooltip', data-toggle='tooltip', title='posted / estimate') #{t.posted_str} /&nbsp;#{t.estimate_str}
         div.col-lg-3
@@ -52,7 +52,7 @@ templates.TaskEditView =
     '''
     span.drag_grab
         &nbsp;
-        i.pull-right.icon-reorder.icon-large
+        i.pull-right.icon-reorder
     form
         fieldset
             .form-group
@@ -68,10 +68,13 @@ templates.PhaseView =
   '''
   div.row.node
     div.col-lg-4
-        span.name.drop_point(data-phase-id=id)
+        span.name.reorder.drop_point(data-phase-id=id)
             i.toggle(data-phase-id=id)
             span.editable
                 span.editarea &nbsp; #{name}
+                span.drag_grab
+                    &nbsp;
+                    i.icon-reorder
     div.col-lg-2.estimate.text-center
     div.col-lg-6.btn-group
         button.btn.btn-default.btn-small.rmphase(type="button", data-phase-id=id) delete
@@ -86,6 +89,9 @@ templates.PhaseView =
 
 templates.PhaseEditView =
     '''
+    span.drag_grab
+        &nbsp;
+        i.pull-right.icon-reorder
     form
         fieldset
             .form-group
@@ -103,6 +109,9 @@ templates.PhaseEditView =
 templates.PhaseDoneEditingView =
     '''
     span.editarea &nbsp; #{name}
+    span.drag_grab
+        &nbsp;
+        i.icon-reorder
     '''
 
 templates.AssignmentView =

@@ -1,5 +1,7 @@
 orm = require("orm")
 conf = require("./crow-conf")
+_ = require("underscore")
+
 exports.wireIn = (app) ->
     app.post "/json/assignment/sync", exports.syncAssignment
     app.get "/json/userlinks/all", exports.allUserlinks
@@ -7,6 +9,7 @@ exports.wireIn = (app) ->
     app.get "/json/task/assigned", exports.assignedTasks
     app.get "/json/task/all", exports.allTasks
     app.post "/json/phase/update", exports.updatePhase
+    app.post "/json/phase/move", exports.movePhase
     app.post "/json/phase/add", exports.addPhase
     app.post "/json/phase/rm", exports.rmPhase
     app.post "/json/task/add", exports.addTask
@@ -122,38 +125,28 @@ exports.assignedTasks = (req, res) ->
         , (err, assignments) ->
             res.json assignments: assignments
 
+phase_tree = (phases) ->
+    buildTree = (branch, list) ->
+        return null if not branch?
+        tree = new Array()
+        for leaf in branch
+            leaf.subphases = buildTree(list[leaf.id], list)
+            tree.push leaf
+        tree
+    grouped_phases =_.groupBy(phases, 'parent_id');
+    buildTree(grouped_phases[null], grouped_phases)
 
-tree_from_list = (list, tasks, cb) ->
-    map = new Array()
-    result = new Array()
-    missed = new Array()
-    for i of list
-        list[i].subphases = `undefined`
-        list[i].tasks = `undefined`
-    for i of list
-        node = list[i]
-        map[node.id] = node
-        unless node.parent_id?
-            result.push node
-        else
-            unless map[node.parent_id] is `undefined`
-                map[node.parent_id].subphases = new Array()  if map[node.parent_id].subphases is `undefined`
-                map[node.parent_id].subphases.push node
-            else
-                missed.push node
-    taskIds = new Array()
-    for i of tasks
-        task = tasks[i]
-        taskIds.push task.id
-        task.completed = task.posted / task.estimate * 100
-        task.overdue = task.completed - 100  if task.completed > 100
-        unless map[task.project_phase_id] is `undefined`
-            phase = map[task.project_phase_id]
-            phase.tasks = new Array()  if phase.tasks is `undefined`
-
-            #            task.assignments = new Array(); //hack
-            phase.tasks.push task
-    cb result, taskIds, tasks
+tree_from_list = (phases, tasks, cb) ->
+    phases_map = new Array()
+    phases_map[phase.id] = phase for phase in phases
+    result = phase_tree(phases)
+    task_ids = new Array()
+    for task in tasks
+        phase = phases_map[task.project_phase_id]
+        phase.tasks = new Array() if not phase.tasks?
+        phase.tasks.push task
+        task_ids.push task.id
+    cb result, task_ids, tasks
 
 formatFloat = (val) ->
     Math.round(val * 100) / 100
@@ -203,6 +196,40 @@ exports.allTasks = (req, res) ->
                             res.json
                                 root: tree
                                 userlinks: userlinks
+
+exports.movePhase = (req, res) ->
+    data = JSON.parse(req.body.data)
+    project_id = conf.currentlyAuthorized(req).project_id
+    to_phase = data.to_phase
+    phase_id = data.phase_id
+    if to_phase is phase_id
+        res.json
+            status: 'error'
+            message: 'Cannot subphase itself'
+        return
+    #check for cycle dependency
+    req.models.project_phase.phases project_id, (err, phases) ->
+        if not err?
+            phases_map = new Array()
+            phases_map[phase.id] = phase for phase in phases
+            cur_phase = phases_map[to_phase]
+            while cur_phase.parent_id?
+                if cur_phase.parent_id is phase_id
+                    res.json
+                        status: 'error'
+                        message: 'This would create cycle dependency between phases'
+                    return
+                cur_phase = phases_map[cur_phase.parent_id]
+            req.models.project_phase.get data.phase_id, (err, fromdb) ->
+                fromdb.parent_id = to_phase
+                fromdb.save (err) ->
+                    res.json
+                        status: (if err? then 'error' else 'success')
+                        message: (if err? then err else 'OK')
+        else
+            res.json
+                status: 'error'
+                message: err
 
 exports.updatePhase = (req, res) ->
     phase = JSON.parse(req.body.data)

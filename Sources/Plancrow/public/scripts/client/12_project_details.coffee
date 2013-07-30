@@ -161,6 +161,24 @@
                                             message: 'Something went wrong: ' + JSON.stringify(resp.message, null, 2)
                                             cb: () ->
                                         )).show()
+                when 'PHASE'
+                    if  dragged_view.model.attributes.parent_id isnt @_target_view.model.attributes.id and (dragged_view.model.attributes.id isnt @_target_view.model.attributes.id)
+                        AjaxRequests.movePhase
+                                phase_id: dragged_view.model.attributes.id
+                                to_phase: @_target_view.model.attributes.id
+                                ,
+                                (resp) ->
+                                    if resp.status? and resp.status is 'success'
+                                        dragged_view._parent.rmPhase11(dragged_view)
+                                        dragged_view._parent.enableToggles()
+                                        that._target_view.addPhase11(dragged_view, false, true)
+                                        that._target_view.enableToggles()
+                                    else
+                                        new window.app.CrowInfoModalView(model: new window.app.CrowInfoModal(
+                                            title: resp.status
+                                            message: JSON.stringify(resp.message, null, 2)
+                                            cb: () ->
+                                        )).show()
     )
     PhaseView = Backbone.View.extend(
         tagName: "li"
@@ -177,10 +195,10 @@
 
         initialize: (options) ->
             _.bindAll this, 'edit', 'save', 'render', 'toggle'
-            _.bindAll this, 'addTask', 'addTask1', 'addTask11', 'addPhase', 'addPhase1', 'rmPhase', 'rmPhase1'
+            _.bindAll this, 'addTask', 'addTask1', 'addTask11', 'addPhase', 'addPhase1', 'addPhase11', 'rmPhase', 'rmPhase1'
             _.bindAll this, 'listener_deletedSubPhase', 'listen_estimateUpdate'
             _.bindAll this, 'view_setEstimatePosted'
-            _.bindAll this, 'rmTask11', 'enableToggles'
+            _.bindAll this, 'rmTask11', 'rmPhase11', 'enableToggles'
             @model.on(
                 "change:estimate change:posted": @view_setEstimatePosted
             );
@@ -249,7 +267,7 @@
 
         rmTask11: (task_view) ->
             task_view.el.remove
-            @model.subtasks.splice($.inArray(@model.subtasks, task_view), 1)
+            @model.subtasks.splice($.inArray(@model.subtasks, task_view) - 1, 1)
             task_view.model.trigger('estimate_update', 'del', task_view.model.attributes.estimate, task_view.model.attributes.posted)
             @stopListening(task_view.model)
             task_view.model.set({project_phase_id: undefined})
@@ -284,22 +302,31 @@
                 return
 
         addPhase1: (phase_json, focus, anim) ->
-            if not @model.subphases?
-                @model.subphases = new Array()
             phase_model = new Phase(phase_json)
             sub_phase_view = new PhaseView(model: phase_model)
+            sub_phase_view.render()
+            @addPhase11(sub_phase_view, focus, anim)
+
+        addPhase11: (phase_view, focus, anim) ->
+            if not @model.subphases?
+                @model.subphases = new Array()
+            phase_model = phase_view.model
             @model.subphases.push phase_model
+            phase_view.model.set({parent_id: @model.attributes.id})
+            phase_view._parent = this
             @listenTo(phase_model, 'deleted', @listener_deletedSubPhase)
             @listenTo(phase_model, 'estimate_update', @listen_estimateUpdate)
-            $phase_el = $ sub_phase_view.render().el
+            if phase_view.model.attributes.estimate? and phase_view.model.attributes.posted?
+                phase_view.model.trigger('estimate_update', 'add', phase_view.model.attributes.estimate, phase_view.model.attributes.posted)
             if anim?
-                $phase_el.hide()
-                @subTaskPhasePlace.prepend $phase_el
-                $phase_el.show('fast', ->
-                    if focus? && focus then sub_phase_view.edit())
+                phase_view.$el.hide()
+                @subTaskPhasePlace.prepend phase_view.el
+                phase_view.$el.show('fast', ->
+                    if focus? && focus then phase_view.edit())
             else
-                @subTaskPhasePlace.prepend $phase_el
-                if focus? && focus then sub_phase_view.edit()
+                @subTaskPhasePlace.prepend phase_view.el
+                if focus? && focus then phase_view.edit()
+            @enableToggles()
             return phase_model
 
         listener_deletedSubPhase: (target) ->
@@ -309,7 +336,7 @@
             that = this
             phase_id = $(target.toElement).data("phase-id")
             if phase_id is @model.attributes.id
-                if @model.subphases? or @model.subtasks?
+                if (@model.subphases? and @model.subphases.length > 0) or (@model.subtasks? and @model.subtasks.length > 0)
                     kiddies = new Array()
                     if @model.subtasks?
                         kiddies.push task.attributes.name for task in @model.subtasks
@@ -336,8 +363,7 @@
                 , (resp) ->
                     if resp.status and resp.status isnt 'error'
                         that.$el.hide('fast', ->
-                            that.model.trigger('deleted', that)
-                            that.$el.remove())
+                            that.rmPhase11 that)
                     else
                         new window.app.CrowInfoModalView(model: new window.app.CrowInfoModal(
                             title: resp.status
@@ -347,8 +373,20 @@
             else
                 return
 
+        rmPhase11: (phase_view) ->
+            phase_view.el.remove()
+            if phase_view._parent?
+                phase_view._parent.model.subphases.splice($.inArray(phase_view._parent.model.subphases, phase_view) - 1, 1)
+            if phase_view.model.attributes.estimate? and phase_view.model.attributes.posted?
+                phase_view.model.trigger('estimate_update', 'del', phase_view.model.attributes.estimate, phase_view.model.attributes.posted)
+            if phase_view._parent?
+                @stopListening(phase_view.model)
+            phase_view.model.set({parent_id: undefined})
+            if phase_view._parent?
+                phase_view._parent.enableToggles()
+
         enableToggles: ->
-            if @model.attributes.subphases or @model.attributes.tasks or (@model.subtasks and @model.subtasks.length > 0)
+            if @model.attributes.subphases or @model.attributes.tasks or (@model.subtasks and @model.subtasks.length > 0) or (@model.subphases and @model.subphases.length > 0)
                 @$el.find('i.toggle').first().attr('title', 'Collapse this branch').addClass('icon-minus-sign')
             else
                 @$el.find('i.toggle').first().removeClass('icon-minus-sign')
@@ -360,6 +398,9 @@
             #drag n drop {
             drop_view = new PhaseDropAreaView({el: @$el.find('.drop_point')[0]})
             drop_view._target_view = this
+
+            drag_view = new HackedDragView({model: new HackedDragModel({type: 'PHASE'}), el: @$el.find('.reorder')[0]})
+            drag_view._dragged_view = this
             #drag and drop }
 
             @subTaskPhasePlace = @$el.find(".subtasksnphases")

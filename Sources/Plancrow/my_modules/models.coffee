@@ -63,6 +63,8 @@ exports.wireInModels = (app) ->
                 notes: String
                 short_name: String
                 order_num: Number
+            ,
+                cache: false # nb!: otherwise phase movements are screwed
             )
             models.task = db.define("TASK",
                 id: Number
