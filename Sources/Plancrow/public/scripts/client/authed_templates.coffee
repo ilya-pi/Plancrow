@@ -7,12 +7,15 @@ templates.TaskView =
     '''
     div.row.task.node(id="#{t.id}", data-taskid="#{t.id}", data-taskname = "#{t.name}", data-tasknotes = "#{t.notes}")
         div.col-lg-4
-            span.name
+            span.name.reorder
                 - var task_icon = (t.status == 'C' ? 'icon-check' : 'icon-check-empty')
                 span(class=t.status)
                     i.status.icon-large(class=task_icon)
                 span.editable
                     span.editarea(class=t.status) &nbsp;#{t.name}
+                    span.drag_grab
+                        &nbsp;
+                        i.icon-reorder.icon-large
         div.col-lg-1
             small(rel='tooltip', data-toggle='tooltip', title='posted / estimate') #{t.posted_str} /&nbsp;#{t.estimate_str}
         div.col-lg-3
@@ -47,6 +50,9 @@ templates.TaskView =
 
 templates.TaskEditView =
     '''
+    span.drag_grab
+        &nbsp;
+        i.pull-right.icon-reorder.icon-large
     form
         fieldset
             .form-group
@@ -62,13 +68,12 @@ templates.PhaseView =
   '''
   div.row.node
     div.col-lg-4
-        span.name
-            i.toggle.icon-minus-sign(title='Collapse this branch')
+        span.name.drop_point(data-phase-id=id)
+            i.toggle(data-phase-id=id)
             span.editable
                 span.editarea &nbsp; #{name}
     div.col-lg-2.estimate.text-center
-    div.col-lg-2.droppable(data-phase-id=id) [ drag here ]
-    div.col-lg-4.btn-group
+    div.col-lg-6.btn-group
         button.btn.btn-default.btn-small.rmphase(type="button", data-phase-id=id) delete
         button.btn.btn-default.btn-small.addphase(type="button", data-phase-id=id)
             i.icon-plus

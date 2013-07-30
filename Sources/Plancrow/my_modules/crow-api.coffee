@@ -280,15 +280,12 @@ exports.updateTask = (req, res) ->
 
 exports.moveTask = (req, res) ->
     data = JSON.parse(req.body.data)
-
-    #    data.task_id
-    #    data.from_phase
-    #    data.to_phse
     req.models.task.get data.task_id, (err, fromdb) ->
         fromdb.project_phase_id = data.to_phase
         fromdb.save (err) ->
-            res.json fromdb
-
+            res.json
+                status: (if err? then 'error' else 'success')
+                message: (if err? then err else 'OK')
 
 exports.deleteTask = (req, res) ->
     data = JSON.parse(req.body.data)

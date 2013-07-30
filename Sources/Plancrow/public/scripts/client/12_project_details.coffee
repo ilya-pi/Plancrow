@@ -1,6 +1,20 @@
 (($) ->
     jade = require("jade")
 
+    HackedDragModel = Backbone.Model.extend(
+        defaults:
+            type: "TASK" #'TASK', 'PHASE'
+    )
+    HackedDragView = window.app.DraggableView.extend(
+        initialize: (options) ->
+            this.constructor.__super__.initialize.apply(this, [options])
+            _.bindAll this, 'dragStart'
+
+        dragStart: (dataTransfer, e) ->
+            @_dragged_view._dragged_type = @model.attributes.type
+            @_dragged_view
+    )
+
     Task = Backbone.Model.extend({})
     TaskView = Backbone.View.extend(
         tagName: "li"
@@ -13,34 +27,13 @@
             "click .status a[role = 'menuitem']": "changeStatus"
             "change .assignment": "syncAssignment"
             "click button.status": "rollStatus",
-            "click i.status" : "rollStatus"
+            "click i.status": "rollStatus"
 
         initialize: ->
-            _.bindAll this, 'render', 'syncAssignment', 'deleteTask', 'changeStatus', '_dragStartEvent'
+            _.bindAll this, 'render', 'syncAssignment', 'deleteTask', 'changeStatus'
             _.bindAll this, 'edit', 'save'
             _.bindAll this, 'rollStatus', 'updateTask1'
 
-            #draggable kitchen
-            @$el.attr "draggable", "true"
-            @$el.bind "dragstart", _.bind(@_dragStartEvent, this)
-
-        # Draggable kitchen {
-        _dragStartEvent: (e) ->
-            data = undefined
-            e = e.originalEvent  if e.originalEvent
-            e.dataTransfer.effectAllowed = "copy"
-            # default to copy
-            data = @dragStart(e.dataTransfer, e)
-            window._backboneDragDropObject = null
-            window._backboneDragDropObject = data  if data isnt `undefined` # we cant bind an object directly because it has to be a string, json just won't do
-
-        dragStart: (dataTransfer, e) ->
-            # console.info(this.model.attributes);
-            # override me, return data to be bound to drag
-            # probably json wont do, json only
-            @model.attributes
-
-        # } Draggable kitchen
         render: ->
             @$el.addClass('task prj-node').attr "data-taskid", @model.attributes.id
             @$el.html @template(
@@ -49,8 +42,9 @@
             )
             @$el.find(".assignment").select2()
             @$el.find("[rel='tooltip']").tooltip()
+            drag_view = new HackedDragView({model: new HackedDragModel({type: 'TASK'}), el: @$el.find('.reorder')[0]})
+            drag_view._dragged_view = this
             this
-
 
         edit: (e) ->
             if e?
@@ -140,6 +134,34 @@
             id: -1
             name: "n/a"
     )
+
+    PhaseDropAreaView = window.app.DroppableView.extend(
+        initialize: (options) ->
+            this.constructor.__super__.initialize.apply(this, [options])
+            _.bindAll this, 'drop'
+
+        drop: (dragged_view, dataTransfer, e) ->
+            that = this
+            switch dragged_view._dragged_type
+                when 'TASK'
+                    if  dragged_view.model.attributes.project_phase_id isnt @_target_view.model.attributes.id
+                        AjaxRequests.moveTask
+                                task_id: dragged_view.model.attributes.id
+                                to_phase: @_target_view.model.attributes.id
+                                ,
+                                (resp) ->
+                                    if resp.status? and resp.status is 'success'
+                                        dragged_view._parent.rmTask11(dragged_view)
+                                        dragged_view._parent.enableToggles()
+                                        that._target_view.addTask11(dragged_view, false, true)
+                                        that._target_view.enableToggles()
+                                    else
+                                        new window.app.CrowInfoModalView(model: new window.app.CrowInfoModal(
+                                            title: resp.status
+                                            message: 'Something went wrong: ' + JSON.stringify(resp.message, null, 2)
+                                            cb: () ->
+                                        )).show()
+    )
     PhaseView = Backbone.View.extend(
         tagName: "li"
         template: jade.compile(templates.PhaseView)
@@ -151,15 +173,17 @@
             "click .addtask": "addTask"
             "click .addphase": "addPhase"
             "click .rmphase": "rmPhase"
+            "click .toggle": "toggle"
 
-        initialize: ->
+        initialize: (options) ->
             _.bindAll this, 'edit', 'save', 'render', 'toggle'
-            _.bindAll this, 'addTask', 'addTask1', 'addPhase', 'addPhase1', 'rmPhase', 'rmPhase1'
+            _.bindAll this, 'addTask', 'addTask1', 'addTask11', 'addPhase', 'addPhase1', 'rmPhase', 'rmPhase1'
             _.bindAll this, 'listener_deletedSubPhase', 'listen_estimateUpdate'
             _.bindAll this, 'view_setEstimatePosted'
-            @model.on({
-            "change:estimate change:posted": @view_setEstimatePosted
-            });
+            _.bindAll this, 'rmTask11', 'enableToggles'
+            @model.on(
+                "change:estimate change:posted": @view_setEstimatePosted
+            );
 
         view_setEstimatePosted: ->
             est_str = window.app._formatEstimate(@model.attributes.estimate)
@@ -200,23 +224,35 @@
                 return
 
         addTask1: (task_json, focus, anim) ->
+            task_model = new Task(task_json)
+            task_view = new TaskView({model: task_model})
+            task_view.render()
+            @addTask11(task_view, focus, anim)
+
+        addTask11: (task_view, focus, anim) ->
             if not @model.subtasks?
                 @model.subtasks = new Array()
-            task_model = new Task(task_json)
-            @model.subtasks.push task_model
-            task_view = new TaskView(model: task_model)
-            $task_el = $ task_view.render().el
+            @model.subtasks.push task_view.model
+            task_view.model.set({project_phase_id: @model.attributes.id})
+            task_view._parent = this
             if anim?
-                $task_el.hide()
-                @subTaskPhasePlace.prepend $task_el
-                $task_el.show('fast', ->
+                task_view.$el.hide()
+                @subTaskPhasePlace.prepend task_view.el
+                task_view.$el.show('fast', ->
                     if focus? && focus then task_view.edit())
             else
-                @subTaskPhasePlace.prepend $task_el
+                @subTaskPhasePlace.prepend task_view.el
                 if focus? && focus then task_view.edit()
-            @listenTo(task_model, 'estimate_update', @listen_estimateUpdate)
-            task_model.trigger('estimate_update', 'add', task_model.attributes.estimate, task_model.attributes.posted)
-            return task_model
+            @listenTo(task_view.model, 'estimate_update', @listen_estimateUpdate)
+            task_view.model.trigger('estimate_update', 'add', task_view.model.attributes.estimate, task_view.model.attributes.posted)
+            return task_view.model
+
+        rmTask11: (task_view) ->
+            task_view.el.remove
+            @model.subtasks.splice($.inArray(@model.subtasks, task_view), 1)
+            task_view.model.trigger('estimate_update', 'del', task_view.model.attributes.estimate, task_view.model.attributes.posted)
+            @stopListening(task_view.model)
+            task_view.model.set({project_phase_id: undefined})
 
         listen_estimateUpdate: (op, inc_est, inc_pst)->
             if not @model.attributes.estimate?
@@ -311,13 +347,21 @@
             else
                 return
 
+        enableToggles: ->
+            if @model.attributes.subphases or @model.attributes.tasks or (@model.subtasks and @model.subtasks.length > 0)
+                @$el.find('i.toggle').first().attr('title', 'Collapse this branch').addClass('icon-minus-sign')
+            else
+                @$el.find('i.toggle').first().removeClass('icon-minus-sign')
+
         render: ->
             @$el.addClass("phase prj-node").attr "phase-id", @model.attributes.id
             @$el.html @template(@model.attributes)
-            if @model.attributes.subphases or @model.attributes.tasks
-                @$el.find('i.toggle').click(@toggle)
-            else
-                @$el.find('i.toggle').removeClass('icon-minus-sign')
+            @enableToggles()
+            #drag n drop {
+            drop_view = new PhaseDropAreaView({el: @$el.find('.drop_point')[0]})
+            drop_view._target_view = this
+            #drag and drop }
+
             @subTaskPhasePlace = @$el.find(".subtasksnphases")
             if @model.attributes.tasks
                 @addTask1(task) for task in @model.attributes.tasks
@@ -327,85 +371,19 @@
                 @model.attributes.subphases = undefined
             this
 
-        toggle: (e) ->
-            children = @$el.find(' > ul > li')
-            if children.is(':visible')
-                children.hide('fast')
-                @$el.find('i.toggle').first().attr('title',
-                    'Expand this branch').addClass('icon-plus-sign').removeClass('icon-minus-sign')
-            else
-                children.show('fast')
-                @$el.find('i.toggle').first().attr('title',
-                    'Collapse this branch').addClass('icon-minus-sign').removeClass('icon-plus-sign')
-            e.stopPropagation
-    )
-    DroppableView = Backbone.View.extend(
-        template: jade.compile("div.row-fluid.droppable\n\tdiv.name.span2 drag here [   ]")
-        initialize: ->
-            @$el.bind "dragover", _.bind(@_dragOverEvent, this)
-            @$el.bind "dragenter", _.bind(@_dragEnterEvent, this)
-            @$el.bind "dragleave", _.bind(@_dragLeaveEvent, this)
-            @$el.bind "drop", _.bind(@_dropEvent, this)
-            @_draghoverClassAdded = false
-
-        _dragOverEvent: (e) ->
-            e = e.originalEvent  if e.originalEvent
-            data = @_getCurrentDragData(e)
-            if @dragOver(data, e.dataTransfer, e) isnt false
-                e.preventDefault()  if e.preventDefault
-                e.dataTransfer.dropEffect = "copy" # default
-
-        _dragEnterEvent: (e) ->
-            e = e.originalEvent  if e.originalEvent
-            e.preventDefault()  if e.preventDefault
-
-        _dragLeaveEvent: (e) ->
-            e = e.originalEvent  if e.originalEvent
-            data = @_getCurrentDragData(e)
-            @dragLeave data, e.dataTransfer, e
-
-        _dropEvent: (e) ->
-            e = e.originalEvent  if e.originalEvent
-            data = @_getCurrentDragData(e)
-            e.preventDefault()  if e.preventDefault
-            e.stopPropagation()  if e.stopPropagation
-            # stops the browser from redirecting
-            @$el.removeClass "draghover"  if @_draghoverClassAdded
-            @drop data, e.dataTransfer, e
-
-        _getCurrentDragData: (e) ->
-            data = null
-            data = window._backboneDragDropObject  if window._backboneDragDropObject
-            data
-
-        dragOver: (data, dataTransfer, e) -> # optionally override me and set dataTransfer.dropEffect, return false if the data is not droppable
-            @$el.addClass "draghover"
-            @_draghoverClassAdded = true
-
-        dragLeave: (data, dataTransfer, e) -> # optionally override me
-            @$el.removeClass "draghover"  if @_draghoverClassAdded
-
-        drop: (data, dataTransfer, e) ->
-            console.info data
-            to_phase = $(e.toElement).data("phase-id")
-            AjaxRequests.moveTask
-                task_id: data.id
-                to_phase: to_phase
-            , (task) ->
-                $("div[data-taskid=" + data.id + "]").remove()
-                $("li.phase[id=" + to_phase + "]").append new TaskView(model: new Task(task)).render()
-
-                #                console.info(new TaskView({model: new Task(task)}).render());
-                #                $.extend(that.model.attributes, task);
-                #                that.render();
-                console.info "Saved"
-                console.info task
-
-
-        # overide me!  if the draggable class returned some data on 'dragStart' it will be the first argument
-        #     /* } Draggable kitchen */
-        render: ->
-            $(@$el).html @template(@model.attributes)
+        toggle: (target) ->
+            phaseId = $(target.toElement).data("phase-id")
+            if phaseId is @model.attributes.id
+                children = @$el.find(' > ul > li')
+                if children.is(':visible')
+                    children.hide('fast')
+                    @$el.find('i.toggle').first().attr('title',
+                        'Expand this branch').addClass('icon-plus-sign').removeClass('icon-minus-sign')
+                else
+                    children.show('fast')
+                    @$el.find('i.toggle').first().attr('title',
+                        'Collapse this branch').addClass('icon-minus-sign').removeClass('icon-plus-sign')
+                target.stopPropagation
     )
     ProjectDetailsScreen = Backbone.View.extend(
         el: $("body")
