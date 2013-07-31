@@ -1,8 +1,8 @@
 extends ../authed_layout
 
 block au_content
-    div.row-fluid
-        div.span12
+    div.row
+        div.col-lg-6.col-offset-3
             h3 Company customers
             table.table-bordered
                 tbody
@@ -10,4 +10,5 @@ block au_content
                         td Name
                         td
                             a(href="/pages/14_edit_customer") Edit
-            a(href="/pages/14_edit_customer") Create
+                        td
+                            a(href="/pages/14_edit_customer") Create

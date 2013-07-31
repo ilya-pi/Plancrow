@@ -1,8 +1,8 @@
 extends ../authed_layout
 
 block au_content
-    div.row-fluid
-        div.span6.offset3
+    div.row
+        div.col-lg-6.col-offset-3
             h1 Edit customer settings
             form.form-horizontal
                 fieldset
@@ -29,13 +29,13 @@ block au_content
                             form(action='/upload', enctype='multipart/form-data', method='post')
                                 input(type='file', name='upload')
                                 input(type='submit')
-                    label
+                    br
                     a(href="/dynamic") Download current invoice template
-                    label
+                    br
                     a(href="/dynamic") Download default invoice template
-                    label
+                    br
                     a(href="/static") Invoice template manual
-                    label
+                    br
                     div.control-group
                         div.controls
                             button.btn(type='submit') Save changes

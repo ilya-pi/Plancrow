@@ -1,8 +1,8 @@
 extends ../anon_layout
 
 block au_content
-    div.row-fluid
-        div.span6.offset3
+    div.row
+        div.col-lg-6.col-offset-3
             h3 Register
             form.form-horizontal
                 fieldset
@@ -73,8 +73,8 @@ block au_content
                     div.control-group
                         div.controls
                             button.btn.btn-primary(type='submit') Register
-        h3 Already a user?
-            label
-                div.control-group
-                    div.controls
-                        button.btn.btn-primary(type='submit') Sign in
+            h3 Already a user?
+                label
+                    div.control-group
+                        div.controls
+                            button.btn.btn-primary(type='submit') Sign in
