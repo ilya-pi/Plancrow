@@ -9,6 +9,7 @@
         "underscore-amd": "latest",
         "backbone-amd": "latest",
         "bootstrap": "latest",
+        "bootstrap-amd": "latest",
         "select2": "latest",
         "select2-bootstrap-css": "latest",
         "font-awesome": "latest"

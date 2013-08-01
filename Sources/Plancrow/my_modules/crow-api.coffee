@@ -17,6 +17,92 @@ exports.wireIn = (app) ->
     app.post "/json/task/move", exports.moveTask
     app.post "/json/task/delete", exports.deleteTask
 
+    app.get "/rest-crow/timeposting", exports.timePostingList
+
+
+
+## /timeposting/
+
+# For a given date, get the ISO week number
+# *
+# * Based on information at:
+# *
+# *    http://www.merlyn.demon.co.uk/weekcalc.htm#WNR
+# *
+# * Algorithm is to find nearest thursday, it's year
+# * is the year of the week number. Then get weeks
+# * between that date and the first day of that year.
+# *
+# * Note that dates in one year can be weeks of previous
+# * or next year, overlap is up to 3 days.
+# *
+# * e.g. 2014/12/29 is Monday in week  1 of 2015
+# *      2012/1/1   is Sunday in week 52 of 2011
+#
+getWeekNumber = (d) ->
+    # Copy date so don't modify original
+    d = new Date(d)
+    d.setHours 0, 0, 0
+    # Set to nearest Thursday: current date + 4 - current day number
+    # Make Sunday's day number 7
+    d.setDate d.getDate() + 4 - (d.getDay() or 7)
+    # Get first day of year
+    yearStart = new Date(d.getFullYear(), 0, 1)
+    # Calculate full weeks to nearest Thursday
+    weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7)
+    # Return array of year and week number
+    [d.getFullYear(), weekNo]
+
+
+#
+# task_id:
+# task_name:
+#
+#
+#
+exports.timePostingList = (req, res) ->
+    data = JSON.parse(req.body.data) if req.body.data?
+    current_week = getWeekNumber()
+    current_year = new Date().getFullYear()
+
+    year = if data? and data.year? then data.year else current_year
+    week_number = if data? and data.week_number? then data.week_number else current_week
+
+    customer_id = conf.currentlyAuthorized(req).customer_id
+
+    result = new Array()
+
+    req.models.userlink.find
+        user_id: customer_id
+        is_active: 'Y'
+        , (err, userlinks) ->
+            if err?
+                res.json
+                    status: 'error'
+                    message: err
+                return
+            userlink_ids = userlinks.map((v) ->
+                v.id)
+
+            # assigned active tasks
+            if week_number == current_week and year == current_year
+                req.models.assignment.find
+                    userlink_id: userlink_ids
+                , (err, assignments) ->
+                    if err?
+                        res.json
+                            status: 'error'
+                            message: err
+                    for assignment in assignments
+                        if assignment.task.status == 'A'
+                            result.push
+                                task_id: assignment.task.id
+                                task_name: assignment.task.name
+                    res.json result
+
+## -end- /timeposting/
+
+
 exports.postTime = (req, res) ->
     projectId = conf.currentlyAuthorized(req).project_id
     companyId = conf.currentlyAuthorized(req).company_id

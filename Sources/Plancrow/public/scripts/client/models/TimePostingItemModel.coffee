@@ -1,10 +1,7 @@
 define ['backbone'], (Backbone) ->
     TimePostingItemModel = Backbone.Model.extend(
-        defaults:
-            id: -1
-            name: "not specified"
-
         initialize: ->
+            console.info(@get 'task_name')
     )
 
     return TimePostingItemModel
