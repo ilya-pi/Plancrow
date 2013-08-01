@@ -113,11 +113,3 @@ templates.PhaseDoneEditingView =
         &nbsp;
         i.icon-reorder
     '''
-
-templates.AssignmentView =
-  '''
-  td= task.name
-  td.input-append(style='display: table-cell;')
-    input.posttime_val(type='text', value=task.posted)
-    button.btn.posttime(type='button') Post
-  '''

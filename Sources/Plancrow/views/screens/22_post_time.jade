@@ -1,17 +1,8 @@
 extends ../authed_layout
 
 block au_content
-    div.row-fluid
-        div.center.offset3.span6
-            table.table.table-bordered
-                caption Post Time
-                thead
-                    tr
-                        th Task
-                        th Time (millis)
-                tbody.assignments
-                    //tr
-                        td Page 22 Markup
-                        td 666
+    .row-fluid
+        .center.offset3.span6
+            #posttimescreen
 
-    script(type='text/javascript', src='/scripts/client/22_post_time.js')
+    script(data-main='/scripts/client/PostTimeApp.js', type='text/javascript', src='/scripts/vendor/requirejs/require.js')

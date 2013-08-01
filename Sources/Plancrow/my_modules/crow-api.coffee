@@ -123,7 +123,7 @@ exports.assignedTasks = (req, res) ->
         req.models.assignment.find
             userlink_id: userlinksIds
         , (err, assignments) ->
-            res.json assignments: assignments
+            res.json assignments
 
 phase_tree = (phases) ->
     buildTree = (branch, list) ->
