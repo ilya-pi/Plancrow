@@ -282,6 +282,10 @@
       "from": "underscore@",
       "resolved": "https://registry.npmjs.org/underscore/-/underscore-1.5.1.tgz"
     },
+    "async": {
+      "version": "0.2.9",
+      "from": "async@"
+    },
     "passport": {
       "version": "0.1.17",
       "from": "passport@",

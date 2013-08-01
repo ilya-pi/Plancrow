@@ -16,6 +16,7 @@ define ['backbone', 'bootstrap', '../collections/TimePostingList', './TimePostin
             @posting_items = new TimePostingList()
             this.listenTo(@posting_items, 'add', @addPostingItemView)
             @posting_items.fetch({url: '/rest-crow/timeposting/'}) # will fetch current week
+            this
 
         render: ->
             #timepostings

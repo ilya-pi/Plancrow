@@ -1,5 +1,6 @@
 orm = require("orm")
 conf = require("./crow-conf")
+data_util = require("./data_util")
 _ = require("underscore")
 
 exports.wireIn = (app) ->
@@ -54,6 +55,48 @@ getWeekNumber = (d) ->
     [d.getFullYear(), weekNo]
 
 
+construct_up_path = (node) ->
+    sqn_parts = new Array()
+    fqn_parts = new Array()
+    cur = if node.__parent? then node.__parent else node
+    while cur.__parent?
+        if cur.short_name? and cur.short_name.trim() isnt ''
+            sqn_parts.unshift cur.short_name
+        fqn_parts.unshift cur.name
+        cur = cur.__parent
+    if cur.short_name? and cur.short_name.trim() isnt ''
+        sqn_parts.unshift cur.short_name
+    fqn_parts.unshift cur.name
+    sqn: sqn_parts
+    fqn: fqn_parts
+
+ArrNoDup = (a) ->
+    temp = {}
+    i = 0
+    while i < a.length
+        temp[a[i]] = true
+        i++
+    r = []
+    for k of temp
+        r.push k
+    r
+
+enrich_timePostingTasks = (req, timePostingTasks, cb) ->
+    phases_ids = new Array()
+    phases_ids.push tpt.project_id for tpt in timePostingTasks
+    phases_ids = ArrNoDup(phases_ids)
+    req.models.project_phase.find
+        project_id: phases_ids
+    , (err, all_phases) ->
+        grouped_phases = _.groupBy(all_phases, 'project_id')
+        grouped_tasks = _.groupBy(timePostingTasks, 'project_id')
+        for project_id of grouped_tasks
+            prj_tree = data_util.tree_from_list(grouped_phases[project_id], grouped_tasks[project_id])
+            for task in grouped_tasks[project_id]
+                task.names = construct_up_path(task)
+                task.__parent = undefined
+        cb(timePostingTasks)
+
 #
 # task_id:
 # task_name:
@@ -95,10 +138,8 @@ exports.timePostingList = (req, res) ->
                             message: err
                     for assignment in assignments
                         if assignment.task.status == 'A'
-                            result.push
-                                task_id: assignment.task.id
-                                task_name: assignment.task.name
-                    res.json result
+                            result.push assignment.task
+                    enrich_timePostingTasks(req, result, (enriched) -> res.json enriched)
 
 ## -end- /timeposting/
 

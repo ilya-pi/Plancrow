@@ -1,7 +1,9 @@
 define [], () ->
     templates.TimePostingItemView =
         '''
-        td= task_name
+        td
+            small.more_info.text-muted
+            p &nbsp;#{name}
         td
             input(type='text', value='')
         td
