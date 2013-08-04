@@ -16,6 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `APP_VISITS`
+--
+
+DROP TABLE IF EXISTS `APP_VISITS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `APP_VISITS` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `EMAIL` varchar(45) COLLATE utf16_unicode_ci NOT NULL,
+  `USER_NAME` varchar(45) COLLATE utf16_unicode_ci DEFAULT NULL,
+  `VISIT_DATE` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf16 COLLATE=utf16_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `APP_VISITS`
+--
+
+LOCK TABLES `APP_VISITS` WRITE;
+/*!40000 ALTER TABLE `APP_VISITS` DISABLE KEYS */;
+INSERT INTO `APP_VISITS` VALUES (1,'test@test.com','Test User','2013-07-17 21:52:54');
+/*!40000 ALTER TABLE `APP_VISITS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
 -- Table structure for table `APP_USER`
 --
 
