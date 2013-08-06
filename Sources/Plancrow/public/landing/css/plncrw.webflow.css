@@ -1,0 +1,153 @@
+html {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333;
+    font-size: 12px;
+    line-height: 20px;
+}
+
+img {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    vertical-align: middle;
+}
+
+#landingmain {
+    height: 100%;
+    padding-top: 65px;
+}
+
+.signinsignup {
+    margin: 15px auto;
+}
+
+.section {
+    width: auto;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.section.header {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    background-color: #2e323d;
+}
+
+.section.hero {
+    padding-top: 55px;
+    padding-bottom: 0px;
+    background-color: #363b48;
+    text-align: center;
+}
+
+.section.grey {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+.section.centered {
+    background-color: #3ff;
+    text-align: center;
+}
+
+.section.footer {
+    padding-top: 10px;
+    padding-bottom: 15px;
+    text-align: center;
+}
+
+.section-subtitle {
+    margin-bottom: 43px;
+    color: #848999;
+    text-align: right;
+}
+
+.responsive-img {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.content-column {
+    padding-left: 31px;
+    text-align: center;
+}
+
+.icons {
+    display: inline-block;
+    width: 65px;
+    height: 65px;
+    margin-top: 30px;
+    padding-top: 7px;
+    float: none;
+    border-radius: 70px;
+    background-color: #eff1f4;
+}
+
+.featureimage {
+    padding: 10px 25px;
+    border-radius: 8px;
+    background-color: white;
+    background-image: none;
+    text-align: left;
+}
+
+.by-section {
+    text-align: left;
+}
+
+.right-footer-col {
+    text-align: right;
+}
+
+.separator {
+    height: 1px;
+    border: 0;
+    background-color: #d3d3d3;
+}
+
+.moreinfo {
+    text-align: center;
+}
+
+.bottomsignup {
+    text-align: center;
+}
+
+.featuretext {
+    padding: 65px 5px 5px 25px;
+}
+
+.featuretext h2 {
+    padding: 15px 0;
+}
+
+@media (max-width: 991px) {
+    #landingmain {
+        height: auto;
+        padding-top: 65px;
+    }
+}
+
+@media (max-width: 767px) {
+    #landingmain {
+        height: auto;
+        padding-top: 65px;
+    }
+}
+
+@media (max-width: 479px) {
+    #landingmain {
+        height: auto;
+        padding-top: 65px;
+    }
+}

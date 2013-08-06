@@ -1,0 +1,12 @@
+{
+  "name": "flat-ui-official",
+  "homepage": "https://github.com/designmodo/Flat-UI",
+  "_release": "2d42a6d2db",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "2d42a6d2db44b38efe6b84500b5463f768e2cdd5"
+  },
+  "_source": "git://github.com/designmodo/Flat-UI.git",
+  "_target": "*"
+}
