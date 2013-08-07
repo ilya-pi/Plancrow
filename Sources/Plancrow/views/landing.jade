@@ -6,80 +6,80 @@ html
         meta(name='description', content='')
         meta(name='viewport', content='width=device-width, initial-scale=1.0')
         link(rel='stylesheet', type='text/css', href='/landing/css/normalize.css')
-        link(rel='stylesheet', type='text/css', href='/landing/css/webflow.css')
+        link(rel='stylesheet', href='/scripts/vendor/bootstrap/dist/css/bootstrap.min.css')
         link(rel='stylesheet', type='text/css', href='/landing/css/plncrw.webflow.css')
         link(rel='stylesheet', href='/scripts/vendor/font-awesome/css/font-awesome.min.css')
         link(rel='stylesheet', href='/scripts/vendor/flat-ui-official/css/flat-ui.css')
         //link(rel='icon', type='image/x-icon', href='https://y7v4p6k4.ssl.hwcdn.net/placeholder/favicon.ico')
         //link(rel='apple-touch-icon', href='https://y7v4p6k4.ssl.hwcdn.net/51d2715929d9cfe03a000001/51e07282241660ce78000001_webclip-gallio.png')
-        script(type='text/javascript', src='/landing/js/webflow.js', defer='defer')
     body
         .section#landingmain
-            .w-container
-                p.section-subtitle Private Alpha
-                .w-row
-                    .w-col.w-col-6
+            .container
+                p.text-right.text-muted Private Alpha
+                .row
+                    .w-col.col-lg-6
                         img.responsive-img(src='/landing/images/mpp.jpg', width='452', alt='mpp.jpg')
-                    .w-col.w-col-6.w-clearfix.content-column
-                        .w-clearfix.icons
+                    .w-col.col-lg-6.clearfix.content-column
+                        .clearfix.icons
                             img(src='/images/crow-logo.png', width='128px', height='128px', alt='crow-logo.png')
                         h3 Import MS Project ® files and manage your timesheets
-                        .signinsignup
-                            button.btn.btn-primary(href='#') Sign In
+                        .signinsignup#signup
+                            button.signup.btn.btn-primary(href='#') Sign Up
                         .signinsignup
                             span or&nbsp;
-                                a(href='#') Sign Up
-                .moreinfo
-                    a(href='#') More info&nbsp;
-                        i.icon-chevron-down
+                                a(href='#') Sign In
+                .row.moreinfo
+                    .col-lg-12
+                        a(href='#') More info&nbsp;
+                            i.icon-chevron-down
         .separator
-        .w-clearfix.section
-            .w-container
-                article.w-row
-                    .w-col.w-col-6.w-clearfix
-                        .w-clearfix.featuretext
+        .clearfix.section#detailed
+            .container
+                article.row
+                    .col-offset-1.col-lg-5.clearfix
+                        .clearfix.featuretext
                             h2 Import MPP
                             h4 Import Microsof project files of any version
                             h4 Load data about tasks structure, schedule, resources & effort estimates
                             h4 View project data online
                             h4 Map resources from MPP to your project team
                             h4 Reload files multiple time without loosing anything (changes are merged)
-                    .w-col.w-col-6.w-clearfix
+                    .col-lg-5.clearfix
                         .featureimage
                             img(src='/landing/images/mpp.jpg', alt='mpp.jpg')
-        .w-clearfix.section
-            .w-container
-                article.w-row
-                    .w-col.w-col-6.w-clearfix
-                        .w-clearfix.featureimage
+        .clearfix.section
+            .container
+                article.row
+                    .col-offset-1.col-lg-5.clearfix
+                        .clearfix.featureimage
                             img(src='/landing/images/mpp.jpg', alt='mpp.jpg')
-                    .w-col.w-col-6.w-clearfix
+                    .col-lg-5.clearfix
                         .featuretext
                             h2 Track time
                             h4 Entering spent hours information is easier & faster then ever
                             h4 No need to select task manually
                             h4 System will identify tasks assigned to you and scheduled for current week
                             h4 System will show you any other tasks you entered your time in lately
-        .w-clearfix.section
-            .w-container
-                article.w-row
-                    .w-col.w-col-6.w-clearfix
-                        .w-clearfix.featuretext
+        .clearfix.section
+            .container
+                article.row
+                    .col-offset-1.col-lg-5.clearfix
+                        .clearfix.featuretext
                             h2 Analyze reports
                             h4 Overall chart for management
                             h4 Project charts for project managers
                             h4 Analysis of spent time per person
                             h4 Exports to MS Excel and other tools
-                    .w-col.w-col-6.w-clearfix
-                        .w-clearfix.featureimage
+                    .col-lg-5.clearfix
+                        .clearfix.featureimage
                             img(src='/landing/images/mpp.jpg', alt='mpp.jpg')
-            .w-clearfix.section
-                .w-container
-                    article.w-row
-                        .w-col.w-col-6.w-clearfix
-                            .w-clearfix.featureimage
+            .clearfix.section
+                .container
+                    article.row
+                        .col-offset-1.col-lg-5.clearfix
+                            .clearfix.featureimage
                                 img(src='/landing/images/mpp.jpg', alt='mpp.jpg')
-                        .w-col.w-col-6.w-clearfix
+                        .col-lg-5.clearfix
                             .featuretext
                                 h2 1 for free&nbsp;&#151;&nbsp;
                                     i.icon-euro
@@ -90,12 +90,20 @@ html
                                     i.icon-euro
                                     | 20/month
             .bottomsignup
-                a.btn.btn-large.btn-primary(href='#') Sign Up
+                .contaner
+                    .row
+                        .col-offset-4.col-lg-4
+                            button.signup.btn.btn-large.btn-primary(href='#') Sign Up
         .section.footer
-            .w-container
-                .w-row
-                    .w-col.w-col-2
-                    .w-col.w-col-8.right-footer-col
-                        a(href='#') Contact Us
-                    .w-col.w-col-2
+            .container
+                .row
+                    .col-offset-8.col-lg-2
+                        a(href='mailto:info@plancrow.com') Contact Us
+                    .col-lg-2
                         div © Plancrow 2013
+
+    //shim dependencies
+    script(type='text/javascript', src='/scripts/jade-hack/browser-jade.js')
+    script(type='text/javascript', src='/scripts/jade-hack/jade-shim.js')
+    //main requirejs module
+    script(data-main='/scripts/client/LandingApp.js', type='text/javascript', src='/scripts/vendor/requirejs/require.js')

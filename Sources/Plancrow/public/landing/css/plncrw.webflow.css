@@ -20,13 +20,27 @@ img {
     vertical-align: middle;
 }
 
-#landingmain {
-    height: 100%;
-    padding-top: 65px;
-}
-
 .signinsignup {
     margin: 15px auto;
+}
+
+#signup button,
+#signup input{
+    min-height: 20px;
+    width: 50%;
+}
+
+#signup input{
+    display: inline-block;
+    min-height: 20px;
+    width: 50%;
+    height: 40px;
+    padding: 5px;
+    font-size: 18px;
+}
+
+.bottomsignup button{
+    width: 100%;
 }
 
 .section {
@@ -65,12 +79,6 @@ img {
     text-align: center;
 }
 
-.section-subtitle {
-    margin-bottom: 43px;
-    color: #848999;
-    text-align: right;
-}
-
 .responsive-img {
     display: block;
     margin-right: auto;
@@ -103,10 +111,6 @@ img {
 
 .by-section {
     text-align: left;
-}
-
-.right-footer-col {
-    text-align: right;
 }
 
 .separator {
