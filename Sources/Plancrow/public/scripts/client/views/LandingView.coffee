@@ -12,20 +12,38 @@ define ['backbone', 'bootstrap', 'jquery', './SignInView', './SignUpView'], (Bac
             @$signin = this.$('#signin')
             @$signup = this.$('#signup')
             @$bottonsignup = this.$('#bottomsignup')
-            @$signin.html new SignInView({}).render().el
+            @signInView = new SignInView({el: @$signin})
             @signUpView = new SignUpView({el: @$signup})
+            @post_render()
             this
 
+        post_render: ->
+            that = this
+            @$('#one_import').animate(
+                opacity: "1"
+            , 750, ->
+                that.$('#two_enter').animate(
+                    opacity: "1"
+                , 750, ->
+                    that.$('#three_analyze').animate(
+                        opacity: "1"
+                    , 750, ->
+                        setTimeout(->
+                            that.$('#one_import, #two_enter, #three_analyze').addClass('btn')
+                        , 100)
+                    )
+                )
+            )
+
         clicked_moreInfo: ->
-            $('html, body').animate
-                scrollTop: $("#detailed").offset().top
-            , 250
+            $('body ').animate
+                scrollTop: $("#importmpp").offset().top
+            , 500
 
         clicked_bottomSignUp: ->
             that = this
             $('html, body').animate
                 scrollTop: 0
             , 1000, ->
-                console.info('ee')
                 that.signUpView.clicked_signup()
     )
