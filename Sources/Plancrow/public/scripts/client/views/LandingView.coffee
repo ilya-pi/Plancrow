@@ -29,7 +29,11 @@ define ['backbone', 'bootstrap', 'jquery', './SignInView', '../models/SignUpMode
                         opacity: "1"
                     , 750, ->
                         setTimeout(->
-                            that.$('#one_import, #two_enter, #three_analyze').addClass('btn')
+                            that.$('#one_import, #two_enter, #three_analyze').removeClass('btn-warning').addClass('btn-danger')
+                            setTimeout(->
+                                that.$('#one_import, #two_enter, #three_analyze').addClass('btn-warning')
+                                that.$('#one_import, #two_enter, #three_analyze').tooltip()
+                            , 300)
                         , 100)
                     )
                 )

@@ -30,6 +30,35 @@ img {
 }
 
 
+#triptih{
+    background: url("../images/schema.jpg");
+    background-size: 100% 100%;
+    margin: auto;
+    width: 550px;
+    height: 550px;
+}
+#t1import{
+    float:left;
+    width:50%;
+    position:relative;
+    top: 15%;
+    left: 7.5%;
+}
+#t2tracktime{
+    float:right;
+    width:50%;
+    height: 50%;
+    position:relative;
+    top: 25%;
+    left: 15%;
+}
+#t3content{
+    position: relative;
+    top: 15%;
+    left: 35%;
+    clear:both;
+}
+
 .signinsignup {
     margin: 15px auto;
 }
@@ -182,6 +211,10 @@ img {
 }
 
 @media (max-width: 991px) {
+    #triptih{
+        width: 550px;
+        height: 550px;
+    }
     #landingmain {
         height: auto;
         padding-top: 65px;
@@ -189,6 +222,16 @@ img {
 }
 
 @media (max-width: 767px) {
+    #triptih{
+        width: 350px;
+        height: 350px;
+    }
+    #one_import, #two_enter, #three_analyze{
+        padding: 5px 10px;
+        font-size: 12px;
+        line-height: 1.5;
+        border-radius: 3px;
+    }
     #landingmain {
         height: auto;
         padding-top: 65px;
@@ -196,6 +239,17 @@ img {
 }
 
 @media (max-width: 479px) {
+    #triptih{
+        width: 225px;
+        height: 225px;
+    }
+    #one_import, #two_enter, #three_analyze{
+        padding: 2px 5px;
+        font-size: 10px;
+        line-height: 1.5;
+        border-radius:   3px;
+    }
+
     #landingmain {
         height: auto;
         padding-top: 65px;
