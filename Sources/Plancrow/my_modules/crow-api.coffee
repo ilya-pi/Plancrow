@@ -19,7 +19,31 @@ exports.wireIn = (app) ->
     app.post "/json/task/delete", exports.deleteTask
 
     app.get "/rest-crow/timeposting", exports.timePostingList
+    app.post "/rest-crow/signup", exports.newSignup
 
+## /signup/
+exports.newSignup = (req, res) ->
+    if not req.body?
+        res.json
+            status: 'error'
+            message: 'no incoming data'
+        return
+    data = req.body
+    req.models.app_visits.create [
+        user_name: data.name
+        email: data.email
+        password: data.password
+        visit_date: new Date()
+    ], (err, items) ->
+        if err?
+            console.info err
+            res.json
+                status: 'error'
+                message: err
+        else
+            res.json items[0]
+
+## /signup/ — end
 
 
 ## /timeposting/

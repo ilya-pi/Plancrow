@@ -8,6 +8,14 @@ exports.wireInModels = (app) ->
             #             db.use(transaction);
             #
             db.settings.set "instance.cache", false
+            models.app_visits = db.define("APP_VISITS",
+                id: Number
+                email: String
+                user_name: String
+                visit_date: Date
+            ,
+                cache: false
+            )
             models.assignment = db.define("ASSIGNMENT",
                 id: Number
                 company_id: Number

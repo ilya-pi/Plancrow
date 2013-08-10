@@ -25,15 +25,22 @@ define [], () ->
 
     templates.SignUpView =
         '''
-        form
-            fieldset
-                .form-group
-                    input.form-control#login-name(type="text", placeholder="Enter your name")
-                .form-group
-                    input.form-control#email-name(type="text", placeholder="E-Mail")
-                .form-group
-                    input.form-control#password-name(type="password", placeholder="Password")
-                .form-group
-                    button.signup.btn.btn-primary(href='#') Sign Up
+        fieldset
+            .form-group
+                input.form-control#login-name(type="text", placeholder="Enter your name")
+            .form-group
+                input.form-control#email-name(type="text", placeholder="E-Mail")
+            .form-group
+                input.form-control#password-name(type="password", placeholder="Password")
+            .form-group
+                button.do_signup.btn.btn-primary Sign Up
+        '''
+
+    templates.SignUpView_signedUp =
+        '''
+        .well(style="display: inline-block; width: 75% !important")
+            h4 Thank you for you interest in our product!
+            p We are going through private alpha at the moment,
+            | release is planned for mid-September 2013.
         '''
     return templates

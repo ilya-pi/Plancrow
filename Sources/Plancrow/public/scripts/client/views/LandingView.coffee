@@ -1,4 +1,4 @@
-define ['backbone', 'bootstrap', 'jquery', './SignInView', './SignUpView'], (Backbone, bootstrap, $, SignInView, SignUpView) ->
+define ['backbone', 'bootstrap', 'jquery', './SignInView', '../models/SignUpModel', './SignUpView'], (Backbone, bootstrap, $, SignInView, SignUpModel, SignUpView) ->
     Backbone.View.extend( # LandingView
 
         el: 'body',
@@ -13,7 +13,7 @@ define ['backbone', 'bootstrap', 'jquery', './SignInView', './SignUpView'], (Bac
             @$signup = this.$('#signup')
             @$bottonsignup = this.$('#bottomsignup')
             @signInView = new SignInView({el: @$signin})
-            @signUpView = new SignUpView({el: @$signup})
+            @signUpView = new SignUpView({el: @$signup, model: new SignUpModel()})
             @post_render()
             this
 
