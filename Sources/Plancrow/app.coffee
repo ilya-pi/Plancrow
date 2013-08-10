@@ -96,14 +96,14 @@ app.use express.static(path.join(__dirname, "public_compiled_css"))
 app.use express.errorHandler()  if "development" is app.get("env")
 #app.get "/", routes.index
 app.get "/", routes.landing
-app.get "/pages/01_welcome_page", screens.screen01_welcome_page
-app.get "/pages/02_pricing_page", screens.screen02_pricing_page
-app.get "/pages/03_registration_page", screens.screen03_registration_page
-app.get "/pages/04_sign_in_page", screens.screen04_sign_in_page
-app.post "/pages/04_sign_in_page", passport.authenticate("local",
-    successRedirect: "/pages/09_project_list"
-    failureRedirect: "/pages/04_sign_in_page"
-)
+#app.get "/pages/01_welcome_page", screens.screen01_welcome_page
+#app.get "/pages/02_pricing_page", screens.screen02_pricing_page
+#app.get "/pages/03_registration_page", screens.screen03_registration_page
+#app.get "/pages/04_sign_in_page", screens.screen04_sign_in_page
+#app.post "/pages/04_sign_in_page", passport.authenticate("local",
+#    successRedirect: "/pages/09_project_list"
+#    failureRedirect: "/pages/04_sign_in_page"
+#)
 
 ensureAuthenticated = (req, res, next) ->
     if req.isAuthenticated()

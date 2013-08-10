@@ -39,8 +39,8 @@ define [], () ->
     templates.SignUpView_signedUp =
         '''
         .well(style="display: inline-block; width: 75% !important")
-            h4 Thank you for you interest in our product!
+            h4 Thank you for your interest in our product!
             p We are going through private alpha at the moment,
-            | release is planned for mid-September 2013.
+            | release is planned in mid-September 2013.
         '''
     return templates
