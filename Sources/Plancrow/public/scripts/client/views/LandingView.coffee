@@ -38,7 +38,7 @@ define ['backbone', 'bootstrap', 'jquery', './SignInView', '../models/SignUpMode
                                 that.$('#one_import, #two_enter, #three_analyze').addClass('btn-warning')
                                 that.$('#one_import, #two_enter, #three_analyze').tooltip()
                             , 300)
-                        , 100)
+                        , 150)
                     )
                 )
             )

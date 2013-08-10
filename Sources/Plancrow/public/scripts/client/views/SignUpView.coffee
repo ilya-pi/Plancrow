@@ -9,11 +9,11 @@ define ['backbone', 'bootstrap', '../models/SignUpModel', '../templates/LandingS
             'click button.do_signup': 'clicked_doSignup'
 
         initialize: ->
-            _.bindAll this, 'clicked_signup', 'clicked_doSignup'
-            @model.on(
-                "invalid": (msg) ->
-                    console.info(msg.validationError)
-            );
+            _.bindAll this, 'clicked_signup', 'clicked_doSignup', 'highlightErrors', 'dismissErrorMessages'
+            @listenTo(@model, 'invalid', @highlightErrors)
+#            @model.on(
+#                "invalid": @highlightErrors
+#            );
             this
 
         render: ->
@@ -21,7 +21,28 @@ define ['backbone', 'bootstrap', '../models/SignUpModel', '../templates/LandingS
             @$name = @$('#login-name')
             @$email = @$('#email-name')
             @$password = @$('#password-name')
+            @$do_signup = @$('button.do_signup')
             this
+
+        highlightErrors: (e) ->
+            @dismissErrorMessages()
+            $ve
+            switch @model.validationError.field
+                when "name" then $ve = @$name
+                when "email" then $ve = @$email
+                when "password" then $ve = @$password
+            _popover = $ve.popover(
+                trigger: "manual",
+                placement: "top",
+                content: @model.validationError.message,
+                template: "<div class=\"popover\"><div class=\"arrow\"></div><div class=\"popover-inner\"><div class=\"popover-content\"><p></p></div></div></div>"
+            )
+            $ve.popover("show")
+            $ve.focus()
+
+        dismissErrorMessages: ->
+            #was not able to get rid of them by other means
+            @$('.popover').remove()
 
         render_signedUp: ->
             @$el.html @template_signedUp({})
@@ -31,17 +52,26 @@ define ['backbone', 'bootstrap', '../models/SignUpModel', '../templates/LandingS
             @render()
 
         clicked_doSignup: ->
-            that = this
-            @model.save(
+            @model.set(
                 email: @$email.val()
                 name: @$name.val()
                 password: @$password.val()
-            ,
-                success: ->
-                    that.render_signedUp()
-                error: (model, error) ->
-                    #todo error here
-                    console.info model
-                    console.info error
             )
+            if @model.isValid()
+                that = this
+                @$do_signup.button('loading')
+                @dismissErrorMessages()
+                @model.save(
+                    email: @$email.val()
+                    name: @$name.val()
+                    password: @$password.val()
+                ,
+                    success: ->
+                        that.$do_signup.button('reset')
+                        that.render_signedUp()
+                    error: (model, error) ->
+                        #todo error here
+                        console.info model
+                        console.info error
+                )
     )
