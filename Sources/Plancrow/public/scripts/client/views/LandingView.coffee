@@ -6,9 +6,13 @@ define ['backbone', 'bootstrap', 'jquery', './SignInView', '../models/SignUpMode
         events:
             'click .bottomsignup button.signup': 'clicked_bottomSignUp'
             'click .moreinfo': 'clicked_moreInfo'
+            'click #one_import': 'clicked_import'
+            'click #two_enter': 'clicked_enter'
+            'click #three_analyze': 'clicked_analyze'
 
         initialize: ->
             _.bindAll this, 'clicked_bottomSignUp', 'clicked_moreInfo'
+            _.bindAll this, 'clicked_import', 'clicked_enter', 'clicked_analyze'
             @$signin = this.$('#signin')
             @$signup = this.$('#signup')
             @$bottonsignup = this.$('#bottomsignup')
@@ -42,6 +46,21 @@ define ['backbone', 'bootstrap', 'jquery', './SignInView', '../models/SignUpMode
         clicked_moreInfo: ->
             $('body ').animate
                 scrollTop: $("#importmpp").offset().top
+            , 500
+
+        clicked_import: ->
+            $('body ').animate
+                scrollTop: $("article#importmpp").offset().top
+            , 500
+
+        clicked_enter: ->
+            $('body ').animate
+                scrollTop: $("article#tracktime").offset().top
+            , 500
+
+        clicked_analyze: ->
+            $('body ').animate
+                scrollTop: $("article#analyze").offset().top
             , 500
 
         clicked_bottomSignUp: ->
