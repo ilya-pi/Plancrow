@@ -12,14 +12,19 @@ define ['backbone', 'bootstrap', 'jquery', './SignInView', '../models/SignUpMode
 
         initialize: ->
             _.bindAll this, 'clicked_bottomSignUp', 'clicked_moreInfo'
-            _.bindAll this, 'clicked_import', 'clicked_enter', 'clicked_analyze'
+            _.bindAll this, 'clicked_import', 'clicked_enter', 'clicked_analyze', 'signedUp'
             @$signin = this.$('#signin')
             @$signup = this.$('#signup')
             @$bottonsignup = this.$('#bottomsignup')
             @signInView = new SignInView({el: @$signin})
-            @signUpView = new SignUpView({el: @$signup, model: new SignUpModel()})
+            signUpModel = new SignUpModel()
+            @signUpView = new SignUpView({el: @$signup, model: signUpModel})
+            @listenTo(signUpModel, 'sync', @signedUp)
             @post_render()
             this
+
+        signedUp: ->
+          @$signin.remove()
 
         post_render: ->
             that = this

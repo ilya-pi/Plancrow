@@ -11,9 +11,6 @@ define ['backbone', 'bootstrap', '../models/SignUpModel', '../templates/LandingS
         initialize: ->
             _.bindAll this, 'clicked_signup', 'clicked_doSignup', 'highlightErrors', 'dismissErrorMessages'
             @listenTo(@model, 'invalid', @highlightErrors)
-#            @model.on(
-#                "invalid": @highlightErrors
-#            );
             this
 
         render: ->
