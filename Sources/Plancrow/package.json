@@ -15,6 +15,8 @@
         "orm": "2.0.15",
         "passport-local": "0.1.6",
         "underscore": "1.5.1",
-        "async": "0.2.9"
+        "async": "0.2.9",
+        "locale": "0.0.10",
+        "money": "0.1.3"
     }
 }

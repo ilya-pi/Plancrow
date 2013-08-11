@@ -17,7 +17,7 @@ html
             .row#titlesection
                 .col-lg-12(style="height: 100%")
                     .row(style="height: 5%")
-                        p.text-right.text-muted Private Alpha
+                        p.text-right.text-muted Private Alpha #{currency}
                     .row(style="height: 90%")
                         .col-lg-6
                             #triptih
@@ -86,13 +86,27 @@ html
                 .col-lg-4.clearfix
                     .featuretext
                         h2 1 for free&nbsp;&#151;&nbsp;
-                            i.icon-euro
-                            | 20 for all
+                            - if (currency === "EUR") {
+                            i.icon-eur #{price}
+                            - }else if (currency === "USD") {
+                            |#{price}
+                            i.icon-usd
+                            - }else if (currency === "GBP") {
+                            i.icon-gbp #{price}
+                            - }
+                            | &nbsp;for all
                         h4 Unlimited users
                         h4 1 project free
                         h4 Unlimited projects at&nbsp;
-                            i.icon-euro
-                            | 20/month
+                            - if (currency === "EUR") {
+                            i.icon-eur #{price}
+                            - }else if (currency === "USD") {
+                            |#{price}
+                            i.icon-usd
+                            - }else if (currency === "GBP") {
+                            i.icon-gbp #{price}
+                            - }
+                            |/month
                     .bottomsignup
                         button.signup.btn.btn-large.btn-primary(href='#') Sign Up
             .footer.row

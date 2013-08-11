@@ -1,3 +1,5 @@
+fx = require("money")
+
 ###
 Prepare and return correct environment specific (either local of appfog) connection string for the database
 
@@ -23,3 +25,21 @@ exports.withCompany = (req, cb)->
     req.models.company.get exports.currentlyAuthorized(req).company_id, (err, fromdb) ->
         cb(fromdb)
 
+exports.currency = (loc) ->
+  switch loc
+    when "en", "en_US", "fr_CA"
+      return "USD"
+    when "nl", "fr", "de", "it", "nb", "nn", "sv"
+      return "EUR"
+    when "en_GB"
+      return "GBP"
+  return "n/a"
+
+exports.price = (curr) ->
+  # nb: todo ilya: use money.js project to acquire proper prices in future
+  #fx.convert(20.00, {from: "EUR", to: local_currency})
+  switch curr
+    when "USD" then return "25"
+    when "EUR" then return "20"
+    when "GBP" then return "15"
+  return "n/a"

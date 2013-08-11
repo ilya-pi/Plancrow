@@ -13,6 +13,8 @@ orm = require("orm")
 models = require("./my_modules/models")
 passport = require("passport")
 LocalStrategy = require("passport-local").Strategy
+locale = require("locale")
+supported = ["en", "en_US", "en_GB", "nl", "fr", "de", "it", "nb", "nn", "sv", "fr_CA"]
 app = express()
 
 AppUser = undefined
@@ -46,6 +48,7 @@ app.use express.cookieParser("your secret here")
 app.use express.session()
 app.use passport.initialize()
 app.use passport.session()
+app.use locale(supported)
 passport.use new LocalStrategy((username, password, done) ->
     AppUser.find
         login: username
