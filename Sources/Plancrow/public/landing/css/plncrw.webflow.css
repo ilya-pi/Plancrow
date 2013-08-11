@@ -102,11 +102,6 @@ img {
     width: 100%;
 }
 
-.bottomsignup{
-    padding-top: 25px;
-    padding-bottom: 25px;
-}
-
 .footer{
     padding-top: 15px;
     padding-bottom: 15px;
@@ -197,7 +192,7 @@ img {
 }
 
 .featuretext {
-    padding: 65px 5px 5px 25px;
+    padding: 35px 5px 5px 25px;
 }
 
 .featuretext h2 {
