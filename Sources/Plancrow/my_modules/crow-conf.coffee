@@ -1,4 +1,4 @@
-fx = require("money")
+#fx = require("money")
 
 ###
 Prepare and return correct environment specific (either local of appfog) connection string for the database
