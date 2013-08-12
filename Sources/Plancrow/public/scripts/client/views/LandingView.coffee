@@ -71,7 +71,7 @@ define ['backbone', 'bootstrap', 'jquery', './SignInView', '../models/SignUpMode
         clicked_bottomSignUp: ->
             that = this
             $('html, body').animate
-                scrollTop: 0
+                scrollTop: $("#signupsection").offset().top
             , 1000, ->
                 that.signUpView.clicked_signup()
     )
