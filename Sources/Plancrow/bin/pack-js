@@ -1,0 +1,7 @@
+#! /usr/bin/env sh
+cp ./public/landing.build.js ./public_compiled_js
+r.js -o ./public_compiled_js/landing.build.js
+
+#so that it will match path with uncompiled version
+mkdir -p ./public_compiled_packed_js/scripts/client/
+cp ./public_compiled_packed_js/LandingApp.js ./public_compiled_packed_js/scripts/client/LandingApp.js
