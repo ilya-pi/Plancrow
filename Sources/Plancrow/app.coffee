@@ -97,6 +97,7 @@ app.use express.static(path.join(__dirname, "public"))
 app.use express.static(path.join(__dirname, "public_compiled_js"))
 app.use express.static(path.join(__dirname, "public_compiled_css"))
 app.use express.errorHandler()  if "development" is app.get("env")
+app.use express.compress()
 #app.get "/", routes.index
 app.get "/", routes.landing
 app.get "/stat", routes.stat

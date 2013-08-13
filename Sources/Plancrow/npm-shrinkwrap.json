@@ -291,6 +291,10 @@
       "from": "locale@",
       "resolved": "https://registry.npmjs.org/locale/-/locale-0.0.10.tgz"
     },
+    "requirejs": {
+      "version": "2.1.8",
+      "from": "requirejs@"
+    },
     "passport": {
       "version": "0.1.17",
       "from": "passport@",

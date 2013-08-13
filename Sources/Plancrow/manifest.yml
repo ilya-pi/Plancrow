@@ -1,0 +1,17 @@
+--- 
+applications: 
+  .: 
+    instances: 3
+    mem: 128M
+    url: plancrow.com
+    services: 
+      plancrowdb: 
+        type: mysql
+    infra: aws
+    framework: 
+      name: node
+      info: 
+        mem: 64M
+        exec: 
+        description: timetrackingapp
+    name: plancrow
