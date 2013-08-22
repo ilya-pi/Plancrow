@@ -118,6 +118,17 @@ span.amp {
     font-size: 18px;
 }
 
+#signup input[type~="checkbox"]{
+    min-height: 20px;
+    margin-right: 5px;
+    width: auto;
+    margin-bottom: 12px;
+    margin-left: 0px;
+    margin-right: 5px;
+    margin-top: 10px;
+}
+
+
 .bottomsignup button{
     width: 100%;
 }

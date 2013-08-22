@@ -33,6 +33,12 @@ define [], () ->
             .form-group.hidden
                 input.form-control#password-name(type="password", placeholder="Password", value="123qwerty")
             .form-group
+                input.checkbox(type="checkbox", checked)
+                | I accept
+                a(href="/terms") Terms&nbsp;
+                    span.amp &amp;&nbsp;
+                    | Privacy
+            .form-group
                 button.do_signup.btn.btn-primary(data-loading-text="Signing up…") Sign Up
         '''
 
