@@ -207,8 +207,14 @@ span.amp {
 
 @media (max-width: 991px) {
     #triptih{
-        width: 550px;
-        height: 550px;
+        width: 410px;
+        height: 410px;
+    }
+    #one_import, #two_enter, #three_analyze{
+        padding: 7px 12px;
+        font-size: 13px;
+        line-height: 1.5;
+        border-radius: 3px;
     }
     #landingmain {
         height: auto;
