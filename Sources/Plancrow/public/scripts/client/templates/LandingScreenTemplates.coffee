@@ -30,8 +30,8 @@ define [], () ->
                 input.form-control#login-name(type="text", placeholder="Enter your name")
             .form-group
                 input.form-control#email-name(type="text", placeholder="E-Mail")
-            .form-group
-                input.form-control#password-name(type="password", placeholder="Password")
+            .form-group.hidden
+                input.form-control#password-name(type="password", placeholder="Password", value="123qwerty")
             .form-group
                 button.do_signup.btn.btn-primary(data-loading-text="Signing up…") Sign Up
         '''
