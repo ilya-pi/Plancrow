@@ -70,6 +70,14 @@ img {
     clear:both;
 }
 
+span.amp {
+    font-family: Baskerville, Palatino, "Book Antiqua", serif;
+    font-style: italic;
+    font-size: 45px;
+    /*padding-top: 4px;*/
+    /*display: inline-block;*/
+}
+
 .signinsignup {
     margin: 15px auto;
 }
