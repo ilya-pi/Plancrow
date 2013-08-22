@@ -20,6 +20,13 @@ exports.landing = (req, res) ->
         currency: local_currency
         price: conf.price(local_currency)
 
+exports.terms = (req, res) ->
+    local_currency = conf.currency(req.locale)
+    res.render "terms",
+        title: "Plancrow"
+        screen_name: ""
+        currency: local_currency
+
 exports.stat = (req, res) ->
   req.models.app_visits.count {}, (err, count) ->
       res.render "stat",
