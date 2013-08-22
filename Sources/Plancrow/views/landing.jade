@@ -48,11 +48,13 @@ html
                 .col-12.col-sm-6.col-offset-1.col-lg-5.clearfix
                     .clearfix.featuretext
                         h2 Import MPP
-                        h4 Import Microsof project files of any version
-                        h4 Load data about tasks structure, schedule, resources & effort estimates
-                        h4 View project data online
-                        h4 Map resources from MPP to your project team
-                        h4 Reload files multiple time without loosing anything (changes are merged)
+                        h4
+                            ul
+                                li Import Microsof project files of any version
+                                li Load data about tasks structure, schedule, resources & effort estimates
+                                li View project data online
+                                li Map resources from MPP to your project team
+                                li Reload files multiple time without loosing anything (changes are merged)
                 .col-sm-6.col-lg-5.hidden-sm.clearfix
                     .featureimage
                         img(src='/landing/images/mpp.jpg', alt='mpp.jpg')
@@ -63,18 +65,22 @@ html
                 .col-12.col-sm-6.col-lg-5.clearfix
                     .featuretext
                         h2 Track time
-                        h4 Entering spent hours information is easier & faster then ever
-                        h4 No need to select task manually
-                        h4 System will identify tasks assigned to you and scheduled for current week
-                        h4 System will show you any other tasks you entered your time in lately
+                        h4
+                            ul
+                                li Entering spent hours information is easier & faster then ever
+                                li No need to select task manually
+                                li System will identify tasks assigned to you and scheduled for current week
+                                li System will show you any other tasks you entered your time in lately
             article.row#analyze
                 .col-12.col-sm-6.col-offset-2.col-lg-4.clearfix
                     .clearfix.featuretext
                         h2 Analyze reports
-                        h4 Overall chart for management
-                        h4 Project charts for project managers
-                        h4 Analysis of spent time per person
-                        h4 Exports to MS Excel and other tools
+                        h4
+                            ul
+                                li Overall chart for management
+                                li Project charts for project managers
+                                li Analysis of spent time per person
+                                li Exports to MS Excel and other tools
                 .hidden-sm.col-sm-6.col-lg-4.hidden-sm.clearfix
                     .clearfix.featureimage
                         img(src='/landing/images/analyze.jpg', alt='analyze.jpg')
@@ -94,18 +100,20 @@ html
                             i.icon-gbp #{price}
                             - }
                             | &nbsp;for all
-                        h4 Unlimited users
-                        h4 1 project free
-                        h4 Unlimited projects at&nbsp;
-                            - if (currency === "EUR") {
-                            i.icon-eur #{price}
-                            - }else if (currency === "USD") {
-                            |#{price}
-                            i.icon-usd
-                            - }else if (currency === "GBP") {
-                            i.icon-gbp #{price}
-                            - }
-                            |/month
+                        h4
+                            ul
+                                li Unlimited users
+                                li 1 project free
+                                li Unlimited projects at&nbsp;
+                                    - if (currency === "EUR") {
+                                    i.icon-eur #{price}
+                                    - }else if (currency === "USD") {
+                                    |#{price}
+                                    i.icon-usd
+                                    - }else if (currency === "GBP") {
+                                    i.icon-gbp #{price}
+                                    - }
+                                    |/month
                     .bottomsignup
                         button.signup.btn.btn-large.btn-primary(href='#') Sign Up
             .footer.row
