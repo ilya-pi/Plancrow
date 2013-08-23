@@ -49,12 +49,12 @@ define ['backbone', 'bootstrap', 'jquery', './SignInView', '../models/SignUpMode
             )
 
         clicked_moreInfo: ->
-            $('body ').animate
-                scrollTop: $("#importmpp").offset().top
+            $('body').animate
+                scrollTop: $("article#importmpp").offset().top
             , 500
 
         clicked_import: ->
-            $('body ').animate
+            $('body').animate
                 scrollTop: $("article#importmpp").offset().top
             , 500
 
