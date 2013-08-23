@@ -18,9 +18,10 @@ define [], () ->
                                 input.form-control#email-name(type="text", placeholder="E-Mail")
                             .form-group
                                 input.form-control#password-name(type="password", placeholder="Password")
+                            p.error(style="color: #e74c3c; visibility:hidden;") Wrong e-mail or password
                             a(href="forgot password") Forgot password?
                     .text-center.modal-footer
-                        button.signup.btn.btn-primary(href='#') Sign In
+                        button.do_signin.btn.btn-primary(href='#') Sign In
         '''
 
     templates.SignUpView =
