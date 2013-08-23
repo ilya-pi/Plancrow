@@ -205,6 +205,10 @@ span.amp {
     font-weight: 200;
 }
 
+.tooltip-inner {
+    white-space: pre-wrap;
+}
+
 @media (max-width: 991px) {
     #triptih{
         width: 410px;

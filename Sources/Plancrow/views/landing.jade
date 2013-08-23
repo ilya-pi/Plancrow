@@ -1,134 +1,111 @@
-!!! 5
-html
-    head
-        meta(charset='utf-8')
-        title Plancrow
-        meta(name='description', content='')
-        meta(name='viewport', content='width=device-width, initial-scale=1.0')
-        link(rel='stylesheet', type='text/css', href='/landing/main.css')
-        //link(rel='stylesheet', type='text/css', href='/landing.min.css')
-        link(rel='icon', type='image/x-icon', href='/landing/images/favicon.ico')
-        //link(rel='apple-touch-icon', href='https://y7v4p6k4.ssl.hwcdn.net/51d2715929d9cfe03a000001/51e07282241660ce78000001_webclip-gallio.png')
-    body
-        .container
-            .row#titlesection
-                .col-12
-                    .row
-                        p.text-right.text-muted Private Alpha
-                    .row
-                        .col-12.col-sm-6.col-lg-6
-                            #triptih
-                                #t1import
-                                    #one_import.btn.btn-small.btn-mini.btn-warning(style="opacity: 0", data-toggle="tooltip", title="Import Microsoft project files of any version. Learn more…")
-                                        | 1. Import MPP
-                                #t2tracktime
-                                    #two_enter.btn.btn-warning(style="opacity: 0", data-toggle="tooltip", title="System will identify tasks assigned to you and scheduled for current week. Learn more…")
-                                        | 2. Track time
-                                #t3content
-                                    #three_analyze.btn.btn-warning(style="opacity: 0", data-toggle="tooltip", title="Analysis of spent time per person. Learn more…")
-                                        | 3. Analyze reports
-                        .col-12.col-sm-6.col-lg-6.clearfix.content-column#signupsection
-                            .clearfix.icons
-                                img(src='/images/crow-logo.png', width='128', height='128', alt='crow-logo.png')
-                            h2 Import MS Project ® files
-                            span.big.amp &amp;
-                            h3 manage your timesheets
-                            .signinsignup#signup
-                                button.signup.btn.btn-primary(href='#') Sign Up
-                            .signinsignup#signin
-                                span or&nbsp;
-                                    a.signin(href='#') Sign In
-                    .row.moreinfo(style="height: 5%")
-                        .col-12.col-sm-12.col-lg-12
-                            a(href='#') More info&nbsp;
-                                i.icon-chevron-down
-                    .row
-                        hr
-            article.row#importmpp
-                .col-12.col-sm-6.col-offset-1.col-lg-5.clearfix
-                    .clearfix.featuretext
-                        h2 Import MPP
-                        h4
-                            ul
-                                li Import Microsoft project files of any version
-                                li Load data about tasks structure, schedule, resources & effort estimates
-                                li View project data online
-                                li Map resources from MPP to your project team
-                                li Reload files multiple time without loosing anything (changes are merged)
-                .col-sm-6.col-lg-5.hidden-sm.clearfix
-                    .featureimage
-                        img(src='/landing/images/mpp.jpg', alt='mpp.jpg')
-            article.row#tracktime
-                .hidden-sm.col-sm-6.col-offset-1.col-lg-5.clearfix
-                    .clearfix.featureimage
-                        img(src='/landing/images/track.jpg', alt='track.jpg')
-                .col-12.col-sm-6.col-lg-5.clearfix
-                    .featuretext
-                        h2 Track time
-                        h4
-                            ul
-                                li Entering spent hours information is easier & faster than ever
-                                li No need to select task manually
-                                li System will identify tasks assigned to you and scheduled for current week
-                                li System will show you any other tasks you entered your time in lately
-            article.row#analyze
-                .col-12.col-sm-6.col-offset-2.col-lg-4.clearfix
-                    .clearfix.featuretext
-                        h2 Analyze reports
-                        h4
-                            ul
-                                li Overall chart for management
-                                li Project charts for project managers
-                                li Analysis of spent time per person
-                                li Exports to MS Excel and other tools
-                .hidden-sm.col-sm-6.col-lg-4.hidden-sm.clearfix
-                    .clearfix.featureimage
-                        img(src='/landing/images/analyze.jpg', alt='analyze.jpg')
-            article.row
-                .hidden-sm.col-sm-6.col-offset-2.col-lg-4.clearfix
-                    .clearfix.hidden-sm.featureimage
-                        img(src='/landing/images/piggybank.png', alt='piggybank.png')
-                .col-12.col-sm-6.col-lg-4.clearfix
-                    .featuretext
-                        h2 1 for free&nbsp;&#151;&nbsp;
-                            - if (currency === "EUR") {
-                            i.icon-eur #{price}
-                            - }else if (currency === "USD") {
-                            |#{price}
-                            i.icon-usd
-                            - }else if (currency === "GBP") {
-                            i.icon-gbp #{price}
-                            - }
-                            | &nbsp;for all
-                        h4
-                            ul
-                                li Unlimited users
-                                li 1 project free
-                                li Unlimited projects at&nbsp;
-                                    - if (currency === "EUR") {
-                                    i.icon-eur #{price}
-                                    - }else if (currency === "USD") {
-                                    |#{price}
-                                    i.icon-usd
-                                    - }else if (currency === "GBP") {
-                                    i.icon-gbp #{price}
-                                    - }
-                                    |/month
-                    .bottomsignup
-                        button.signup.btn.btn-large.btn-primary(href='#') Sign Up
-            .footer.row
-                .col-6.text-left.bottom-menu
-                    a(href='mailto:info@plancrow.com') Contact Us
-                    a(href='/terms') Terms&nbsp;
-                        span.amp &amp;&nbsp;
-                        | privacy
-                .col-6.text-right
-                    | © Plancrow 2013
+extends landing-layout
 
-    //shim dependencies
-    script(type='text/javascript', src='/scripts/jade-hack/browser-jade.js')
-    script(type='text/javascript', src='/scripts/jade-hack/jade-shim.js')
-    //main requirejs module
-    //script(data-main='/LandingApp.js', type='text/javascript', src='/scripts/vendor/requirejs/require.js')
-    script(data-main='/scripts/client/LandingApp.js', type='text/javascript', src='/scripts/vendor/requirejs/require.js')
-    script(type='text/javascript', src='/landing/js/ga.js')
+block landing-body
+    .row#titlesection
+        .col-12
+            .row
+                p.text-right.text-muted Private Alpha
+            .row
+                .col-12.col-sm-6.col-lg-6
+                    #triptih
+                        #t1import
+                            #one_import.btn.btn-small.btn-mini.btn-warning(style="opacity: 0", data-toggle="tooltip", title="Import Microsoft project files of any version. \
+                                Learn more ↓")
+                                | 1. Import MPP
+                        #t2tracktime
+                            #two_enter.btn.btn-warning(style="opacity: 0", data-toggle="tooltip", title="System will identify tasks assigned to you and scheduled for current week. \
+                                Learn more ↓")
+                                | 2. Track time
+                        #t3content
+                            #three_analyze.btn.btn-warning(style="opacity: 0", data-toggle="tooltip", title="Analysis of spent time per person. \
+                                Learn more ↓")
+                                | 3. Analyze reports
+                .col-12.col-sm-6.col-lg-6.clearfix.content-column#signupsection
+                    .clearfix.icons
+                        img(src='/images/crow-logo-min.png', alt='crow-logo-min.png')
+                    h2 Import MS Project ® files
+                    span.big.amp &amp;
+                    h3 manage your timesheets
+                    .signinsignup#signup
+                        button.signup.btn.btn-primary(href='#') Sign Up
+                    .signinsignup#signin
+                        span or&nbsp;
+                            a.signin(href='#') Sign In
+            .row.moreinfo(style="height: 5%")
+                .col-12.col-sm-12.col-lg-12
+                    a(href='#') More info&nbsp;
+                        i.icon-chevron-down
+            .row
+                hr
+        article.row#importmpp
+            .col-12.col-sm-6.col-offset-1.col-lg-5.clearfix
+                .clearfix.featuretext
+                    h2 Import MPP
+                    h4
+                        ul
+                            li Import Microsoft project files of any version
+                            li Load data about tasks structure, schedule, resources & effort estimates
+                            li View project data online
+                            li Map resources from MPP to your project team
+                            li Reload files multiple time without loosing anything (changes are merged)
+            .col-sm-6.col-lg-5.hidden-sm.clearfix
+                .featureimage
+                    img(src='/landing/images/mpp.jpg', alt='mpp.jpg')
+        article.row#tracktime
+            .hidden-sm.col-sm-6.col-offset-1.col-lg-5.clearfix
+                .clearfix.featureimage
+                    img(src='/landing/images/track.jpg', alt='track.jpg')
+            .col-12.col-sm-6.col-lg-5.clearfix
+                .featuretext
+                    h2 Track time
+                    h4
+                        ul
+                            li Entering spent hours information is easier & faster than ever
+                            li No need to select task manually
+                            li System will identify tasks assigned to you and scheduled for current week
+                            li System will show you any other tasks you entered your time in lately
+        article.row#analyze
+            .col-12.col-sm-6.col-offset-2.col-lg-4.clearfix
+                .clearfix.featuretext
+                    h2 Analyze reports
+                    h4
+                        ul
+                            li Overall chart for management
+                            li Project charts for project managers
+                            li Analysis of spent time per person
+                            li Exports to MS Excel and other tools
+            .hidden-sm.col-sm-6.col-lg-4.hidden-sm.clearfix
+                .clearfix.featureimage
+                    img(src='/landing/images/analyze.jpg', alt='analyze.jpg')
+        article.row
+            .hidden-sm.col-sm-6.col-offset-2.col-lg-4.clearfix
+                .clearfix.hidden-sm.featureimage
+                    img(src='/landing/images/piggybank.png', alt='piggybank.png')
+            .col-12.col-sm-6.col-lg-4.clearfix
+                .featuretext
+                    h2 1 for free&nbsp;&#151;&nbsp;
+                        - if (currency === "EUR") {
+                        i.icon-eur #{price}
+                        - }else if (currency === "USD") {
+                        |#{price}
+                        i.icon-usd
+                        - }else if (currency === "GBP") {
+                        i.icon-gbp #{price}
+                        - }
+                        | &nbsp;for all
+                    h4
+                        ul
+                            li Unlimited users
+                            li 1 project free
+                            li Unlimited projects at&nbsp;
+                                - if (currency === "EUR") {
+                                i.icon-eur #{price}
+                                - }else if (currency === "USD") {
+                                |#{price}
+                                i.icon-usd
+                                - }else if (currency === "GBP") {
+                                i.icon-gbp #{price}
+                                - }
+                                |/month
+                .bottomsignup
+                    button.signup.btn.btn-large.btn-primary(href='#') Sign Up

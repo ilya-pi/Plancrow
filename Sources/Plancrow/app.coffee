@@ -102,7 +102,6 @@ app.use express.compress()
 #app.get "/", routes.index
 app.get "/", routes.landing
 app.get "/terms", routes.terms
-app.get "/privacy", routes.privacy
 app.get "/stat", routes.stat
 #app.get "/pages/01_welcome_page", screens.screen01_welcome_page
 #app.get "/pages/02_pricing_page", screens.screen02_pricing_page
