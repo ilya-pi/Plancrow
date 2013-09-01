@@ -74,6 +74,11 @@ img {
     font-size: 45px;
 }
 
+.big.amp {
+    display: inline-block;
+    padding-top: 5px;
+}
+
 span.amp {
     font-family: Baskerville, Palatino, "Book Antiqua", serif;
     font-style: italic;
@@ -125,6 +130,10 @@ span.amp {
     margin-bottom: 12px;
     margin-left: 0px;
     margin-right: 5px;
+    margin-top: 10px;
+}
+
+#signupsection h3 {
     margin-top: 10px;
 }
 
