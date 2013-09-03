@@ -1,6 +1,12 @@
 extends landing-layout
 
 block landing-body
+    //shim dependencies
+    script(type='text/javascript', src='/scripts/jade-hack/browser-jade.js')
+    script(type='text/javascript', src='/scripts/jade-hack/jade-shim.js')
+    //main requirejs module
+    script(data-main='/scripts/client/LandingApp.js', type='text/javascript', src='/scripts/vendor/requirejs/require.js')
+
     .row#titlesection
         .col-12
             .row
