@@ -11,4 +11,6 @@ requirejs.config
             deps: ["jquery"],
 
 requirejs ['views/LandingView'], (LandingView) ->
+#    $(window).bind("load", ->
     new LandingView()
+#    )

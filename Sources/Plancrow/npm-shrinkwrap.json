@@ -295,6 +295,37 @@
       "version": "2.1.8",
       "from": "requirejs@"
     },
+    "gzippo": {
+      "version": "0.2.0",
+      "from": "gzippo@",
+      "resolved": "https://registry.npmjs.org/gzippo/-/gzippo-0.2.0.tgz",
+      "dependencies": {
+        "send": {
+          "version": "0.1.4",
+          "from": "send@*",
+          "resolved": "https://registry.npmjs.org/send/-/send-0.1.4.tgz",
+          "dependencies": {
+            "debug": {
+              "version": "0.7.2",
+              "from": "debug@*"
+            },
+            "mime": {
+              "version": "1.2.11",
+              "from": "mime@~1.2.9"
+            },
+            "fresh": {
+              "version": "0.2.0",
+              "from": "fresh@0.2.0",
+              "resolved": "https://registry.npmjs.org/fresh/-/fresh-0.2.0.tgz"
+            },
+            "range-parser": {
+              "version": "0.0.4",
+              "from": "range-parser@0.0.4"
+            }
+          }
+        }
+      }
+    },
     "passport": {
       "version": "0.1.17",
       "from": "passport@",
