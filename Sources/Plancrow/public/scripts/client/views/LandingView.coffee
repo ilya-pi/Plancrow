@@ -1,5 +1,6 @@
-define ['backbone', 'bootstrap', 'jquery', './SignInView', '../models/SignUpModel', './SignUpView'], (Backbone, bootstrap, $, SignInView, SignUpModel, SignUpView) ->
-    Backbone.View.extend( # LandingView
+define ['backbone', 'bootstrap', 'jquery', './SignInView', '../models/SignUpModel',
+        './SignUpView'], (Backbone, bootstrap, $, SignInView, SignUpModel, SignUpView) ->
+    Backbone.View.extend(# LandingView
 
         el: 'body',
 
@@ -15,7 +16,7 @@ define ['backbone', 'bootstrap', 'jquery', './SignInView', '../models/SignUpMode
             _.bindAll this, 'clicked_import', 'clicked_enter', 'clicked_analyze', 'signedUp'
             @$signin = this.$('#signin')
             @$signup = this.$('#signup')
-            @$bottonsignup = this.$('#bottomsignup')
+            @$bottonsignup = this.$('.bottomsignup')
             @signInView = new SignInView({el: @$signin})
             signUpModel = new SignUpModel()
             @signUpView = new SignUpView({el: @$signup, model: signUpModel})
@@ -24,7 +25,8 @@ define ['backbone', 'bootstrap', 'jquery', './SignInView', '../models/SignUpMode
             this
 
         signedUp: ->
-          @$signin.remove()
+            @$signin.remove()
+            @$bottonsignup.remove()
 
         post_render: ->
             that = this
