@@ -36,7 +36,7 @@ define [], () ->
             .form-group
                 input.checkbox(type="checkbox", checked)
                 | I accept
-                a(href="/terms") Terms&nbsp;
+                a(href="/terms", target="_blank") Terms&nbsp;
                     span.amp &amp;&nbsp;
                     | Privacy
             .form-group
