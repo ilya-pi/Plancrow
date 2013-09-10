@@ -95,8 +95,8 @@ app.use require("connect-coffee-script")(
     bare: true
 )
 app.use express.static(path.join(__dirname, "public"))
-#app.use express.static(path.join(__dirname, "public_compiled_js"))
-app.use gzippo.staticGzip(path.join(__dirname, "public_compiled_packed_js"))
+app.use express.static(path.join(__dirname, "public_compiled_js"))
+#app.use gzippo.staticGzip(path.join(__dirname, "public_compiled_packed_js"))
 app.use gzippo.staticGzip(path.join(__dirname, "public_compiled_css"))
 app.use express.errorHandler()  if "development" is app.get("env")
 app.use express.compress()
