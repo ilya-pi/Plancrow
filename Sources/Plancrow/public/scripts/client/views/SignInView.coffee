@@ -1,16 +1,14 @@
-define ['backbone', 'bootstrap', '../templates/LandingScreenTemplates'], (Backbone, bootstrap, templates) ->
-    Backbone.View.extend( # SignInView
+define ['backbone', 'bootstrap', 'underscore', '../templates/LandingScreenTemplates'], (Backbone, bootstrap, _, templates) ->
+    Backbone.View.extend(
 
-#        tag: 'form'
-
-        template: jade.compile(templates.SignInView)
+        template: _.template(templates._SignInView)
 
         events:
             'click .signin': 'clicked_signin'
             'click .do_signin': 'clicked_doSignin'
 
         initialize: ->
-            _.bindAll this, 'clicked_signin'
+            _.bindAll this, 'clicked_signin', 'clicked_doSignin'
             this
 
         render: ->
@@ -23,7 +21,6 @@ define ['backbone', 'bootstrap', '../templates/LandingScreenTemplates'], (Backbo
 
         clicked_signin: ->
             that = this
-            console.info("clicked signin")
             @render()
             @$('#myModal').modal()
 #            @$save_button.button('loading')
@@ -49,4 +46,5 @@ define ['backbone', 'bootstrap', '../templates/LandingScreenTemplates'], (Backbo
                 that.$email.focus()
             , 500)
           , 300 + Math.floor(Math.random() * (1000 - 500 + 1)) + 500)
+#          true
     )

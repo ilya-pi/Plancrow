@@ -1,6 +1,6 @@
 define ['backbone', 'bootstrap', 'jquery', './SignInView', '../models/SignUpModel',
         './SignUpView'], (Backbone, bootstrap, $, SignInView, SignUpModel, SignUpView) ->
-    Backbone.View.extend(# LandingView
+    Backbone.View.extend(
 
         el: 'body',
 

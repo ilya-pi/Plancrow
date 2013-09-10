@@ -1,8 +1,8 @@
-define ['backbone', 'bootstrap', '../models/SignUpModel', '../templates/LandingScreenTemplates'], (Backbone, bootstrap, SignUpModel, templates) ->
-    Backbone.View.extend( # SignUpView
+define ['backbone', 'bootstrap', 'underscore', '../models/SignUpModel', '../templates/LandingScreenTemplates'], (Backbone, bootstrap, _, SignUpModel, templates) ->
+    Backbone.View.extend(
 
-        template: jade.compile(templates.SignUpView)
-        template_signedUp: jade.compile(templates.SignUpView_signedUp)
+        template: _.template(templates._SignUpView)
+        template_signedUp: _.template(templates._SignUpView_signedUp)
 
         events:
             'click button.signup': 'clicked_signup'

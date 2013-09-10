@@ -1,4 +1,3 @@
-jade = require("jade") #yet to be refactored as an AMD dependency. currently relying on CommonJS
 
 requirejs.config
     paths:
@@ -11,6 +10,4 @@ requirejs.config
             deps: ["jquery"],
 
 requirejs ['views/LandingView'], (LandingView) ->
-#    $(window).bind("load", ->
     new LandingView()
-#    )
