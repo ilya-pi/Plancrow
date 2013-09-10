@@ -51,28 +51,28 @@ define ['backbone', 'bootstrap', 'jquery', './SignInView', '../models/SignUpMode
             )
 
         clicked_moreInfo: ->
-            $('body').animate
+            $('body,html').animate
                 scrollTop: $("article#importmpp").offset().top
             , 500
 
         clicked_import: ->
-            $('body').animate
+            $('body,html').animate
                 scrollTop: $("article#importmpp").offset().top
             , 500
 
         clicked_enter: ->
-            $('body ').animate
+            $('body,html').animate
                 scrollTop: $("article#tracktime").offset().top
             , 500
 
         clicked_analyze: ->
-            $('body ').animate
+            $('body,html').animate
                 scrollTop: $("article#analyze").offset().top
             , 500
 
         clicked_bottomSignUp: ->
             that = this
-            $('html, body').animate
+            $('body,html').animate
                 scrollTop: $("#signupsection").offset().top
             , 1000, ->
                 that.signUpView.clicked_signup()
